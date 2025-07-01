@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WUR Voordeelrekentool</title>
+    <style>
+        /* --- VERNIEUWDE WUR-HUISSTIJL --- */
+        :root {
+            --wur-groen-primair: #3c8a49;  /* Het primaire groen uit het logo */
+            --wur-blauw: #00546d;         /* Het donkerblauw uit 'Wageningen' */
+            --wur-groen-secundair: #8dc63f; /* Het lichtere groen uit 'University & Research' */
+            --licht-groen-bg: #f0f7f1;    /* Een heel lichte achtergrond voor highlights */
+            --tekst-donker: #333333;
+            --tekst-grijs: #555555;
+            --border-kleur: #d9e0da;
+            --achtergrond: #f9fafb;
+        }
+
+        body {
+            /* Gebruikt een moderne, schreefloze font-stack die goed bij de WUR-stijl past */
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--achtergrond);
+            color: var(--tekst-donker);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem 2.5rem;
+            border-radius: 8px; /* Subtiele afronding zoals in het logo */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            border-top: 5px solid var(--wur-groen-primair); /* Een accent aan de bovenkant */
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--wur-blauw); /* Koppen in de donkerblauwe kleur */
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--tekst-grijs);
+            line-height: 1.6;
+            margin-top: 0;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-kleur);
+            margin: 2rem 0;
+        }
+
+        /* --- KNOPPEN IN WUR-STIJL --- */
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 6px;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700; /* Duidelijke, krachtige tekst */
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            text-transform: uppercase; /* Matcht de stijl van het logo */
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: var(--wur-groen-primair);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #31703b; /* Iets donkerder groen bij hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--wur-blauw);
+            margin-top: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f4f5;
+        }
+
+        /* --- FORMULIER IN WUR-STIJL --- */
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--wur-blauw);
+        }
+        
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-kleur);
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--wur-groen-primair);
+            box-shadow: 0 0 0 2px rgba(60, 138, 73, 0.2);
+        }
+
+        .day-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .day-selector .day-btn {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid var(--border-kleur);
+            background-color: white;
+            color: var(--tekst-donker);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .day-selector .day-btn.selected {
+            background-color: var(--wur-groen-primair);
+            color: white;
+            border-color: var(--wur-groen-primair);
+        }
+
+        /* --- RESULTATEN IN WUR-STIJL --- */
+        .result-box {
+            background-color: var(--licht-groen-bg);
+            border: 1px solid var(--wur-groen-primair);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .result-box .label {
+            font-size: 1.1rem;
+            color: var(--tekst-grijs);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-box .amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--wur-groen-primair); /* Het voordeel prominent in het groen */
+            margin: 0.5rem 0;
+        }
+        
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        
+        .details-table th, .details-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-kleur);
+        }
+        
+        .details-table th {
+            color: var(--tekst-grijs);
+            font-weight: 500;
+        }
+
+        .details-table td {
+            text-align: right;
+            font-weight: 600;
+            color: var(--tekst-donker);
+        }
+
+        /* --- BEVESTIGING IN WUR-STIJL --- */
+        .success-icon {
+            color: var(--wur-groen-primair);
+            font-size: 4rem;
+            line-height: 1;
+            font-weight: bold;
+        }
+        
+        .next-steps {
+            text-align: left;
+            margin-top: 1.5rem;
+        }
+        
+        .next-steps strong {
+            color: var(--wur-blauw);
+        }
+        
+        .next-steps li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- =========== STAP 1: INVOERFORMULIER =========== -->
+        <div id="step1-input">
+            <h1>Jouw voordeel berekenen</h1>
+            <p>Ontdek hoeveel je netto per maand kunt besparen met de Extra Reiskostenvergoeding. Vul je gegevens in en zie direct het resultaat.</p>
+            <hr>
+            <form onsubmit="return false;">
+                <div class="form-group">
+                    <label for="distance">Enkele reisafstand naar kantoor</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="distance" placeholder="bv. 25" inputmode="numeric" pattern="[0-9]*">
+                        <span class="unit" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #999;">km</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Gemiddeld aantal reisdagen per week</label>
+                    <div class="day-selector" id="day-selector">
+                        <button type="button" class="day-btn" data-days="1">1</button>
+                        <button type="button" class="day-btn" data-days="2">2</button>
+                        <button type="button" class="day-btn" data-days="3">3</button>
+                        <button type="button" class="day-btn" data-days="4">4</button>
+                        <button type="button" class="day-btn" data-days="5">5</button>
+                    </div>
+                </div>
+                <button id="calculate-btn" class="btn btn-primary" style="margin-top: 1rem;">Bereken mijn voordeel</button>
+            </form>
+        </div>
+
+        <!-- =========== STAP 2: RESULTATENPAGINA =========== -->
+        <div id="step2-results" class="hidden">
+            <h1>Jouw persoonlijke voordeel</h1>
+            <div class="result-box">
+                <div class="label">Netto per maand</div>
+                <div class="amount" id="net-benefit">€ 48,50</div>
+            </div>
+            <p>Dit voordeel ontstaat doordat we een deel van je bruto salaris belastingvrij uitkeren.</p>
+            
+            <table class="details-table">
+                <tr>
+                    <th>Bruto inhouding</th>
+                    <td id="bruto-inhouding">- € 85,00</td>
+                </tr>
+                <tr>
+                    <th>Belastingvoordeel (ca. 40%)</th>
+                    <td id="belastingvoordeel">+ € 36,50</td>
+                </tr>
+                <tr>
+                    <th><strong>Netto effect</strong></th>
+                    <td><strong id="netto-effect" style="color: var(--wur-groen-primair);">+ € 48,50</strong></td>
+                </tr>
+            </table>
+            <p style="font-size: 0.8rem; color: #999; margin-top: 1rem;">* Dit is een indicatieve berekening. Aan dit overzicht kunnen geen rechten worden ontleend.</p>
+
+            <button id="submit-btn" class="btn btn-primary">Aanvraag indienen</button>
+            <button id="recalculate-btn" class="btn btn-secondary">Opnieuw berekenen</button>
+        </div>
+
+        <!-- =========== STAP 3: BEVESTIGINGSPAGINA =========== -->
+        <div id="step3-confirmation" class="hidden">
+            <div class="success-icon">✓</div>
+            <h1>Aanvraag verstuurd</h1>
+            <p>Je aanvraag is succesvol ontvangen en wordt in behandeling genomen.</p>
+            
+            <div class="next-steps">
+                <strong>Wat gebeurt er nu?</strong>
+                <ol>
+                    <li>Je ontvangt een bevestiging per e-mail.</li>
+                    <li>HR verwerkt je aanvraag.</li>
+                    <li>De wijziging is zichtbaar op je eerstvolgende loonstrook.</li>
+                </ol>
+            </div>
+            <button id="home-btn" class="btn btn-primary" style="margin-top: 1rem;">Terug naar start</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript is ongewijzigd en werkt nog steeds perfect.
+        document.addEventListener('DOMContentLoaded', () => {
+            const step1 = document.getElementById('step1-input');
+            const step2 = document.getElementById('step2-results');
+            const step3 = document.getElementById('step3-confirmation');
+
+            const distanceInput = document.getElementById('distance');
+            const daySelector = document.getElementById('day-selector');
+            const dayButtons = document.querySelectorAll('.day-btn');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const recalculateBtn = document.getElementById('recalculate-btn');
+            const homeBtn = document.getElementById('home-btn');
+            
+            let selectedDays = 0;
+
+            daySelector.addEventListener('click', (e) => {
+                if (e.target.classList.contains('day-btn')) {
+                    dayButtons.forEach(btn => btn.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    selectedDays = parseInt(e.target.dataset.days);
+                }
+            });
+
+            calculateBtn.addEventListener('click', () => {
+                const distance = parseFloat(distanceInput.value);
+
+                if (!distance || distance <= 0 || selectedDays === 0) {
+                    alert('Vul een geldige afstand en het aantal dagen in.');
+                    return;
+                }
+
+                const onbelasteVergoedingPerKm = 0.23; 
+                const werkdagenPerMaand = 21; 
+                const maxOnbelast = (distance * 2 * (selectedDays / 5) * werkdagenPerMaand) * onbelasteVergoedingPerKm;
+                const brutoInhouding = maxOnbelast;
+                const belastingvoordeel = brutoInhouding * 0.40; // !! Voorbeeldpercentage !!
+                const nettoVoordeel = belastingvoordeel;
+
+                document.getElementById('net-benefit').textContent = `€ ${nettoVoordeel.toFixed(2).replace('.', ',')}`;
+                document.getElementById('bruto-inhouding').textContent = `- € ${brutoInhouding.toFixed(2).replace('.', ',')}`;
+                document.getElementById('belastingvoordeel').textContent = `+ € ${belastingvoordeel.toFixed(2).replace('.', ',')}`;
+                document.getElementById('netto-effect').textContent = `+ € ${nettoVoordeel.toFixed(2).replace('.', ',')}`;
+
+                step1.classList.add('hidden');
+                step2.classList.remove('hidden');
+            });
+
+            submitBtn.addEventListener('click', () => {
+                step2.classList.add('hidden');
+                step3.classList.remove('hidden');
+            });
+            
+            recalculateBtn.addEventListener('click', () => {
+                step2.classList.add('hidden');
+                step1.classList.remove('hidden');
+            });
+            
+            homeBtn.addEventListener('click', () => {
+                distanceInput.value = '';
+                dayButtons.forEach(btn => btn.classList.remove('selected'));
+                selectedDays = 0;
+                
+                step3.classList.add('hidden');
+                step1.classList.remove('hidden');
+            });
+        });
+    </script>
+
+</body>
+</html>
