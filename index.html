@@ -7,9 +7,8 @@
     <style>
         :root {
             --wur-groen-primair: #3c8a49; --wur-blauw: #00546d;
-            --kleur-oranje: #f0ad4e; --kleur-rood: #c94c4c; 
-            --licht-grijs: #f8f9fa; --tekst-donker: #343a40; --tekst-grijs: #6c757d; 
-            --border-kleur: #dee2e6;
+            --kleur-rood: #c94c4c; --licht-grijs: #f8f9fa; --tekst-donker: #343a40; 
+            --tekst-grijs: #6c757d; --border-kleur: #dee2e6;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -60,7 +59,13 @@
         .hero-result .value { font-size: 3rem; font-weight: 700; color: var(--wur-blauw); margin: 0.5rem 0; display: block; }
         
         .details-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-        .result-box h3 { font-size: 1.2rem; font-weight: 600; color: var(--tekst-donker); text-align: center; margin-bottom: 1.5rem; }
+        .result-box h3 { 
+            font-size: 1.2rem; 
+            font-weight: 700;  /* <<-- DEZE IS AANGEPAST NAAR 700 -->> */
+            color: var(--tekst-donker); 
+            text-align: center; 
+            margin-bottom: 1.5rem; 
+        }
         .calculation-item { display: flex; justify-content: space-between; align-items: flex-start; background-color: #fbfcfb; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #f1f3f5;}
         .item-label .main-label { font-weight: 600; }
         .item-label .sub-label { font-size: 0.85rem; color: var(--tekst-grijs); }
@@ -149,6 +154,7 @@
 </div>
 
 <script>
+// De JavaScript-code is ongewijzigd gebleven omdat de berekening correct was.
 document.addEventListener('DOMContentLoaded', () => {
     // VASTE PARAMETERS
     const BELASTING_PERCENTAGE = 0.50;
