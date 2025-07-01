@@ -3,27 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WUR Optare Rekentool</title>
+    <title>WUR Berekeningsmodel Uitruil</title>
     <style>
         :root {
             --wur-groen-primair: #3c8a49; --wur-blauw: #00546d;
-            --kleur-oranje: #f0ad4e; --kleur-rood: #d9534f;
-            --licht-grijs: #f8f9fa; --tekst-donker: #343a40; --tekst-grijs: #6c757d;
+            --kleur-oranje: #f0ad4e; --kleur-rood: #c94c4c; 
+            --licht-grijs: #f8f9fa; --tekst-donker: #343a40; --tekst-grijs: #6c757d; 
             --border-kleur: #dee2e6;
         }
         body {
-            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; background-color: var(--licht-grijs);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--licht-grijs);
             color: var(--tekst-donker); display: flex; justify-content: center; align-items: flex-start;
             min-height: 100vh; padding: 2rem; box-sizing: border-box;
         }
-        .container { max-width: 900px; width: 100%; }
+        .container { max-width: 1000px; width: 100%; }
         .header { text-align: center; margin-bottom: 2rem; }
         .header h1 { font-size: 2.2rem; color: var(--wur-blauw); margin: 0; }
-        .header p { font-size: 1.1rem; color: var(--tekst-grijs); }
-        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        .card { background-color: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 1.5rem; margin-bottom: 2rem; }
+        .main-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2.5rem; }
+        .card { 
+            background-color: white; border-radius: 12px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07); 
+            padding: 2rem; margin-bottom: 2rem; 
+        }
         .card:last-child { margin-bottom: 0; }
-        .card h2 { font-size: 1.4rem; color: var(--wur-blauw); margin-top: 0; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-kleur); }
+        .card h2 { font-size: 1.5rem; color: var(--wur-blauw); margin-top: 0; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-kleur); }
+        
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
+        .input-group { margin-bottom: 0.5rem; }
+        .input-group label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; font-weight: 600; color: var(--tekst-grijs); min-height: 2.4em; }
+        .input-group input, .input-group select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-kleur); background-color: #fdfdfd; box-sizing: border-box; font-size: 1rem; }
+        .input-group input:focus { outline: none; border-color: var(--wur-groen-primair); box-shadow: 0 0 0 3px rgba(60, 138, 73, 0.1); }
         
         .budget-info .row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
         .budget-info .label { color: var(--tekst-grijs); }
@@ -33,12 +43,6 @@
         .progress-bar-inner.is-normal { background-color: var(--wur-groen-primair); }
         .progress-bar-inner.is-warning { background-color: var(--kleur-oranje); }
         .progress-bar-inner.is-danger { background-color: var(--kleur-rood); }
-
-        .input-group { margin-bottom: 1rem; }
-        .input-group label { display: block; margin-bottom: 0.25rem; font-size: 0.9rem; font-weight: 600; }
-        .input-group input { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border-kleur); box-sizing: border-box; }
-        .reiskosten-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .max-bedrag-info { font-size: 0.9rem; color: var(--tekst-grijs); margin-top: -0.5rem; margin-bottom: 1rem; }
         
         .options-list { max-height: 260px; overflow-y: auto; padding-right: 10px; }
         .option { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 10px; margin-bottom: 8px; border-radius: 6px; border: 1px solid var(--border-kleur); }
@@ -50,126 +54,141 @@
         .option .input-group-option span { margin-right: 5px; }
         .option input[type="number"] { width: 80px; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-kleur); text-align: right; }
         .option input[type="number"]:disabled { background-color: #f1f3f5; cursor: not-allowed; }
-
-        .results-hero { text-align: center; padding: 1.5rem 0; }
-        .results-hero .label { font-size: 1rem; color: var(--tekst-grijs); }
-        .results-hero .new-salary { font-size: 2.8rem; font-weight: 700; color: var(--wur-blauw); margin: 0.25rem 0; }
-        .results-hero .change { font-size: 1.5rem; font-weight: 600; }
-        .results-hero .change.positive { color: var(--wur-groen-primair); }
-        .results-hero .change.negative { color: var(--kleur-rood); }
         
-        .button-group { margin-top: 1.5rem; display: flex; gap: 1rem; }
-        .btn { flex-grow: 1; border: none; border-radius: 6px; padding: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .btn-primary { background-color: var(--wur-groen-primair); color: white; }
-        .btn-primary:disabled { background-color: #a5c9ac; cursor: not-allowed; }
-        .btn-secondary { background-color: #e9ecef; color: var(--tekst-donker); }
-
-        .disclaimer { text-align: center; margin-top: 2rem; color: var(--tekst-grijs); font-size: 0.9rem; }
+        .hero-result { text-align: center; padding: 1.5rem; background-color: #eaf3eb; border-radius: 8px; }
+        .hero-result .label { font-size: 1.2rem; color: var(--wur-groen-primair); font-weight: 600; }
+        .hero-result .value { font-size: 3rem; font-weight: 700; color: var(--wur-blauw); margin: 0.5rem 0; display: block; }
+        
+        .details-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .result-box h3 { font-size: 1.2rem; font-weight: 600; color: var(--tekst-donker); text-align: center; margin-bottom: 1.5rem; }
+        .calculation-item { display: flex; justify-content: space-between; align-items: flex-start; background-color: #fbfcfb; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #f1f3f5;}
+        .item-label .main-label { font-weight: 600; }
+        .item-label .sub-label { font-size: 0.85rem; color: var(--tekst-grijs); }
+        .item-value { text-align: right; }
+        .item-value .amount { font-size: 1.1rem; font-weight: 700; display: block; }
+        .item-value.text-positive .amount { color: var(--wur-groen-primair); }
+        .item-value.text-negative .amount { color: var(--kleur-rood); }
+        .calculation-item.is-total { background: none; border: none; border-top: 3px solid var(--wur-blauw); border-radius: 0; padding-top: 1rem; margin-top: 1rem; }
+        .is-total .main-label, .is-total .amount { font-size: 1.2rem; font-weight: 700; }
+        
+        .calculation-details { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
+        .calculation-details.is-visible { max-height: 300px; }
+        .toggle-details-btn { display: block; text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--wur-blauw); text-decoration: none; font-weight: 600; cursor: pointer; }
+        .toggle-details-btn:hover { text-decoration: underline; }
+        
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header class="header"><h1>Jouw Keuzemodel Simulatie</h1><p>Vink opties aan en zie direct de impact op je budget en netto salaris.</p></header>
+    <header class="header"><h1>Berekeningsmodel voor uitruil</h1></header>
     <div class="main-grid">
-        <div class="left-column">
-            <div class="card">
+        <!-- LINKER KOLOM: INPUTS -->
+        <div class="input-column">
+             <div class="card">
                 <h2>Jouw Budget</h2>
                 <div class="budget-info">
-                    <div class="row"><span class="label">Beschikbare Fiscale Ruimte</span><span class="value" id="available-space">€ 0,00</span></div>
-                    <div class="row"><span class="label">Totaal ingezet bedrag</span><span class="value" id="selected-cost">€ 0,00</span></div>
+                    <div class="row"><span class="label">Beschikbare Bron (<span id="budget_bron_naam"></span>)</span><span class="value" id="budget_bron_totaal"></span></div>
+                    <div class="row"><span class="label">Totaal ingezet bedrag</span><span class="value" id="budget_inzet"></span></div>
                 </div>
-                <div class="progress-bar"><div class="progress-bar-inner" id="progress-bar"></div></div>
+                <div class="progress-bar"><div class="progress-bar-inner" id="progress_bar"></div></div>
             </div>
-
-            <!-- VERNIEUWD REISKOSTENBLOK MET GEDETAILLEERDE LOGICA -->
             <div class="card">
-                <h2>Uitruil Reiskostenvergoeding</h2>
-                <div class="reiskosten-inputs">
-                    <div class="input-group">
-                        <label for="reiskosten-km">Enkele reisafstand (km)</label>
-                        <input type="number" id="reiskosten-km" placeholder="bv. 40">
-                    </div>
-                    <div class="input-group">
-                        <label for="reiskosten-dagen">Aantal reisdagen p/w</label>
-                        <input type="number" id="reiskosten-dagen" placeholder="bv. 2">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label for="reiskosten-reeds-uitgeruild">Reeds uitgeruild bedrag dit jaar</label>
-                    <input type="number" id="reiskosten-reeds-uitgeruild" value="100" placeholder="€">
-                </div>
-                <hr style="border:none; border-top:1px dashed #ccc; margin: 1rem 0;">
-                 <div class="input-group">
-                    <label for="reiskosten-inzet">Bedrag om uit te ruilen</label>
-                    <input type="number" id="reiskosten-inzet" placeholder="€">
-                    <div class="max-bedrag-info" id="reiskosten-max-info">Max. beschikbaar: € 0,00</div>
+                <h2>Uitruil Reiskosten</h2>
+                <div class="input-grid">
+                    <div class="input-group"><label for="max_vakantiegeld">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="4000"></div>
+                    <div class="input-group"><label for="max_eindejaarsuitkering">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="3491.30"></div>
+                    <div class="input-group"><label for="reisdagen_gedeclareerd">Gedeclareerde reisdagen (VA64)</label><input type="number" id="reisdagen_gedeclareerd" value="122"></div>
+                    <div class="input-group"><label for="km_fiscaal">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="72"></div>
+                    <div class="input-group"><label for="reeds_uitgeruild">Reeds uitgeruild dit jaar</label><input type="number" id="reeds_uitgeruild" placeholder="0"></div>
+                    <div class="input-group"><label for="keuze_inzet">Welke bron wil je inzetten?</label><select id="keuze_inzet"><option value="eindejaarsuitkering">Eindejaarsuitkering</option><option value="vakantiegeld">Vakantiegeld</option></select></div>
                 </div>
             </div>
-
-            <div class="card"><h2>Overige opties</h2><div class="options-list" id="options-container"></div></div>
+            <div class="card">
+                <h2>Overige Opties</h2>
+                <div class="options-list" id="options-container"></div>
+            </div>
         </div>
-        <div class="right-column">
+
+        <!-- RECHTER KOLOM: RESULTATEN -->
+        <div class="results-column">
+             <div class="card">
+                <h2>Jouw Netto Voordeel</h2>
+                <div class="hero-result">
+                    <div class="label">Je houdt netto méér over op jaarbasis:</div>
+                    <span class="value" id="verschil_netto"></span>
+                </div>
+            </div>
             <div class="card">
-                <h2>Jouw Nieuwe Situatie</h2>
-                <div class="results-hero">
-                    <div class="label">Nieuw netto maandsalaris (schatting)</div>
-                    <div class="new-salary" id="new-net-salary">€ 2.800,00</div>
-                    <div class="change" id="salary-change">+ € 0,00</div>
-                </div>
-                <hr style="border:none; border-top:1px solid var(--border-kleur); margin: 1rem 0;">
-                <div class="budget-info">
-                     <div class="row"><span class="label">Huidig netto salaris</span><span class="value" id="current-net-salary">€ 2.800,00</span></div>
-                     <div class="row"><span class="label">Resterend budget</span><span class="value" id="remaining-space">€ 0,00</span></div>
-                </div>
-                <div class="button-group">
-                    <button class="btn btn-secondary" id="reset-btn">Reset</button>
-                    <button class="btn btn-primary" id="submit-btn">Aanvraag Indienen</button>
+                <h2>De Details van de Berekening</h2>
+                <div class="details-grid">
+                    <div class="result-box">
+                        <h3>Huidige Situatie</h3>
+                        <div class="calculation-details">
+                            <div class="calculation-item"><div class="item-label"><span class="main-label">Bruto</span><span class="sub-label bron_naam"></span></div><div class="item-value"><span class="amount" id="huidig_bruto"></span></div></div>
+                            <div class="calculation-item"><div class="item-label"><span class="main-label">Belasting (ca. 50%)</span></div><div class="item-value text-negative"><span class="amount" id="huidig_belasting"></span></div></div>
+                        </div>
+                        <div class="calculation-item is-total"><div class="item-label"><span class="main-label">Netto uitbetaald</span></div><div class="item-value"><span class="amount" id="huidig_netto"></span></div></div>
+                        <a class="toggle-details-btn">Toon details</a>
+                    </div>
+                    <div class="result-box">
+                        <h3>Situatie na Uitruil</h3>
+                         <div class="calculation-details">
+                            <div class="calculation-item"><div class="item-label"><span class="main-label">Bruto</span><span class="sub-label bron_naam"></span></div><div class="item-value"><span class="amount" id="nieuw_bruto"></span></div></div>
+                            <div class="calculation-item"><div class="item-label"><span class="main-label">Belasting (ca. 50%)</span></div><div class="item-value text-negative"><span class="amount" id="nieuw_belasting"></span></div></div>
+                            <div class="calculation-item"><div class="item-label"><span class="main-label">+ Belastingvrije uitruil</span></div><div class="item-value text-positive"><span class="amount" id="nieuw_uitruil"></span></div></div>
+                        </div>
+                         <div class="calculation-item is-total"><div class="item-label"><span class="main-label">Netto uitbetaald</span></div><div class="item-value"><span class="amount" id="nieuw_netto"></span></div></div>
+                         <a class="toggle-details-btn">Toon details</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <p class="disclaimer">* Dit is een indicatieve berekening waaraan geen rechten kunnen worden ontleend.</p>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
-    const fiscalData = { totalYearlySpace: 5000.00, alreadyUsed: 1500.00 };
-    const salaryData = { currentNetMonthly: 2800.00, taxRate: 0.50 }; // Aangepast naar 50% volgens Excel
-    const travelParams = { ratePerKm: 0.23, workWeeksPerYear: 46 }; 
+    // VASTE PARAMETERS
+    const BELASTING_PERCENTAGE = 0.50;
+    const KM_VERGOEDING_STANDAARD = 0.14;
+    const KM_VERGOEDING_FISCAAL = 0.23;
     const optareOptions = [
         { id: 'dca', name: 'DCA', type: 'checkbox', cost: 250 },
         { id: 'dca-sport', name: 'DCA Sport', type: 'checkbox', cost: 300 },
-        { id: 'vujeju-verlof', name: 'VU/EJU met verlof', type: 'checkbox', cost: 1200 },
-        { id: 'vujeju-zonder', name: 'VU/EJU zonder verlof', type: 'checkbox', cost: 1200 },
-        { id: 'eju-verlof', name: 'EJU met verlof', type: 'checkbox', cost: 800 },
-        { id: 'eju-zonder', name: 'EJU zonder verlof', type: 'checkbox', cost: 800 },
         { id: 'vakbond', name: 'Vakbondscontributie', type: 'checkbox', cost: 180 },
         { id: 'fiets', name: 'Vergoeding fiets', type: 'input', cost: 0, maxValue: 1500 },
         { id: 'studie', name: 'Studiekosten', type: 'input', cost: 0, maxValue: 5000 }
     ];
 
-    const formatCurrency = (value) => `€ ${value.toFixed(2).replace('.', ',')}`;
-    
-    // --- VIND ALLE ELEMENTEN ---
-    const reiskostenKmInput = document.getElementById('reiskosten-km');
-    const reiskostenDagenInput = document.getElementById('reiskosten-dagen');
-    const reiskostenReedsUitgeruildInput = document.getElementById('reiskosten-reeds-uitgeruild');
-    const reiskostenInzetInput = document.getElementById('reiskosten-inzet');
-    const reiskostenMaxInfoEl = document.getElementById('reiskosten-max-info');
+    const inputs = {
+        max_vakantiegeld: document.getElementById('max_vakantiegeld'),
+        max_eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering'),
+        reisdagen_gedeclareerd: document.getElementById('reisdagen_gedeclareerd'),
+        km_fiscaal: document.getElementById('km_fiscaal'),
+        reeds_uitgeruild: document.getElementById('reeds_uitgeruild'),
+        keuze_inzet: document.getElementById('keuze_inzet')
+    };
 
-    const optionsContainer = document.getElementById('options-container');
-    const availableSpaceEl = document.getElementById('available-space');
-    const selectedCostEl = document.getElementById('selected-cost');
-    const remainingSpaceEl = document.getElementById('remaining-space');
-    const currentNetSalaryEl = document.getElementById('current-net-salary');
-    const newNetSalaryEl = document.getElementById('new-net-salary');
-    const salaryChangeEl = document.getElementById('salary-change');
-    const progressBar = document.getElementById('progress-bar');
-    const submitBtn = document.getElementById('submit-btn');
-    const resetBtn = document.getElementById('reset-btn');
+    const outputs = {
+        optionsContainer: document.getElementById('options-container'),
+        budget_bron_naam: document.getElementById('budget_bron_naam'),
+        budget_bron_totaal: document.getElementById('budget_bron_totaal'),
+        budget_inzet: document.getElementById('budget_inzet'),
+        progress_bar: document.getElementById('progress_bar'),
+        bron_namen: document.querySelectorAll('.sub-label.bron_naam'),
+        huidig_bruto: document.getElementById('huidig_bruto'),
+        huidig_belasting: document.getElementById('huidig_belasting'),
+        huidig_netto: document.getElementById('huidig_netto'),
+        nieuw_bruto: document.getElementById('nieuw_bruto'),
+        nieuw_belasting: document.getElementById('nieuw_belasting'),
+        nieuw_uitruil: document.getElementById('nieuw_uitruil'),
+        nieuw_netto: document.getElementById('nieuw_netto'),
+        verschil_netto: document.getElementById('verschil_netto')
+    };
+
+    const formatCurrency = (value) => `€ ${value.toFixed(2).replace('.', ',')}`;
 
     function initializeTool() {
         optareOptions.forEach(option => {
@@ -179,44 +198,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? `<div class="input-group-option"><span>€</span><input type="number" id="input-${option.id}" class="option-input" placeholder="0" min="0" max="${option.maxValue || ''}" disabled></div>` 
                 : `<span class="cost">${formatCurrency(option.cost)}</span>`;
             optionDiv.innerHTML = `<input type="checkbox" id="${option.id}" data-cost="${option.cost}" data-type="${option.type}"><label for="${option.id}">${option.name}</label>${controlHtml}`;
-            optionsContainer.appendChild(optionDiv);
+            outputs.optionsContainer.appendChild(optionDiv);
         });
 
-        document.body.addEventListener('change', updateCalculations);
         document.body.addEventListener('input', updateCalculations);
-        resetBtn.addEventListener('click', () => {
-            document.querySelectorAll('input').forEach(input => {
-                if(input.type === 'checkbox') input.checked = false;
-                if(input.type === 'number') input.value = '';
+        
+        document.querySelectorAll('.toggle-details-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const detailsContainer = this.parentElement.querySelector('.calculation-details');
+                detailsContainer.classList.toggle('is-visible');
+                this.textContent = detailsContainer.classList.contains('is-visible') ? 'Verberg details' : 'Toon details';
             });
-            reiskostenReedsUitgeruildInput.value = '100'; // Reset naar default
-            updateCalculations();
         });
+
         updateCalculations();
     }
-
+    
     function updateCalculations() {
-        // --- Berekening Reiskosten volgens nieuwe logica ---
-        const km = parseFloat(reiskostenKmInput.value) || 0;
-        const days = parseFloat(reiskostenDagenInput.value) || 0;
-        const reedsUitgeruild = parseFloat(reiskostenReedsUitgeruildInput.value) || 0;
-        
-        const maxBrutoReiskosten = (km * 2) * days * travelParams.workWeeksPerYear * travelParams.ratePerKm;
-        const maxNogTeGebruikenReiskosten = Math.max(0, maxBrutoReiskosten - reedsUitgeruild);
-        
-        reiskostenMaxInfoEl.textContent = `Max. beschikbaar: ${formatCurrency(maxNogTeGebruikenReiskosten)}`;
-        
-        let travelCostInzet = parseFloat(reiskostenInzetInput.value) || 0;
-        if (travelCostInzet > maxNogTeGebruikenReiskosten) {
-            reiskostenInzetInput.style.borderColor = 'var(--kleur-rood)';
-            travelCostInzet = maxNogTeGebruikenReiskosten; // Beperk de inzet tot het maximum
-        } else {
-            reiskostenInzetInput.style.borderColor = 'var(--border-kleur)';
-        }
+        const v = {
+            max_vakantiegeld: parseFloat(inputs.max_vakantiegeld.value) || 0,
+            max_eindejaarsuitkering: parseFloat(inputs.max_eindejaarsuitkering.value) || 0,
+            reisdagen_gedeclareerd: parseFloat(inputs.reisdagen_gedeclareerd.value) || 0,
+            km_fiscaal: parseFloat(inputs.km_fiscaal.value) || 0,
+            reeds_uitgeruild: parseFloat(inputs.reeds_uitgeruild.value) || 0,
+            keuze_inzet: inputs.keuze_inzet.value
+        };
 
-        // --- Berekening Overige Opties ---
+        const km_afgetopt = Math.min(v.km_fiscaal, 60);
+        const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
+        const standaardVergoeding = km_afgetopt * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
+        const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
+        const reiskostenUitruilBedrag = Math.max(0, teBenuttenReiskosten - v.reeds_uitgeruild);
+
         let otherOptionsCost = 0;
-        optionsContainer.querySelectorAll('.option').forEach(optionDiv => {
+        outputs.optionsContainer.querySelectorAll('.option').forEach(optionDiv => {
             const checkbox = optionDiv.querySelector('input[type="checkbox"]');
             const numberInput = optionDiv.querySelector('input[type="number"]');
             optionDiv.classList.toggle('selected', checkbox.checked);
@@ -232,39 +248,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // --- Totaalberekening ---
-        const totalSelectedCost = travelCostInzet + otherOptionsCost;
-        const availableSpace = fiscalData.totalYearlySpace - fiscalData.alreadyUsed;
-        const remainingSpace = availableSpace - totalSelectedCost;
-        const netBenefit = totalSelectedCost * salaryData.taxRate;
-        const monthlyBenefit = netBenefit / 12;
-        const newNetSalary = salaryData.currentNetMonthly + monthlyBenefit;
-
-        // --- Update UI ---
-        availableSpaceEl.textContent = formatCurrency(availableSpace);
-        selectedCostEl.textContent = formatCurrency(totalSelectedCost);
-        currentNetSalaryEl.textContent = formatCurrency(salaryData.currentNetMonthly);
-        newNetSalaryEl.textContent = formatCurrency(newNetSalary);
-        remainingSpaceEl.textContent = formatCurrency(remainingSpace);
-
-        salaryChangeEl.textContent = `${monthlyBenefit >= 0 ? '+' : ''} ${formatCurrency(monthlyBenefit)} per maand`;
-        salaryChangeEl.className = 'change ' + (monthlyBenefit >= 0 ? 'positive' : 'negative');
+        const totaalIngezetBedrag = reiskostenUitruilBedrag + otherOptionsCost;
+        const brutoBronHuidig = (v.keuze_inzet === 'vakantiegeld') ? v.max_vakantiegeld : v.max_eindejaarsuitkering;
         
-        let progressPercentage = availableSpace > 0 ? (totalSelectedCost / availableSpace) * 100 : 0;
-        progressBar.style.width = `${Math.min(progressPercentage, 100)}%`;
+        const belastingHuidig = brutoBronHuidig * BELASTING_PERCENTAGE;
+        const nettoHuidig = brutoBronHuidig - belastingHuidig;
         
-        progressBar.classList.remove('is-normal', 'is-warning', 'is-danger');
-        if (remainingSpace < 0) {
-            progressBar.classList.add('is-danger');
-            submitBtn.disabled = true;
-        } else if (progressPercentage > 80) {
-            progressBar.classList.add('is-warning');
-            submitBtn.disabled = false;
-        } else {
-            progressBar.classList.add('is-normal');
-            submitBtn.disabled = false;
-        }
-        if (totalSelectedCost === 0) submitBtn.disabled = true;
+        const brutoBronNieuw = brutoBronHuidig - totaalIngezetBedrag;
+        const belastingNieuw = brutoBronNieuw * BELASTING_PERCENTAGE;
+        const nettoNieuw = brutoBronNieuw - belastingNieuw + totaalIngezetBedrag;
+        
+        const verschilNetto = nettoNieuw - nettoHuidig;
+        
+        const bronNaam = v.keuze_inzet === 'vakantiegeld' ? 'Vakantiegeld' : 'Eindejaarsuitkering';
+        outputs.bron_namen.forEach(el => el.textContent = bronNaam);
+        outputs.budget_bron_naam.textContent = bronNaam;
+
+        outputs.budget_bron_totaal.textContent = formatCurrency(brutoBronHuidig);
+        outputs.budget_inzet.textContent = formatCurrency(totaalIngezetBedrag);
+        
+        outputs.huidig_bruto.textContent = formatCurrency(brutoBronHuidig);
+        outputs.huidig_belasting.textContent = formatCurrency(-belastingHuidig);
+        outputs.huidig_netto.textContent = formatCurrency(nettoHuidig);
+        
+        outputs.nieuw_bruto.textContent = formatCurrency(brutoBronNieuw);
+        outputs.nieuw_belasting.textContent = formatCurrency(-belastingNieuw);
+        outputs.nieuw_uitruil.textContent = formatCurrency(totaalIngezetBedrag);
+        outputs.nieuw_netto.textContent = formatCurrency(nettoNieuw);
+        
+        outputs.verschil_netto.textContent = formatCurrency(verschilNetto);
+        
+        let progressPercentage = brutoBronHuidig > 0 ? (totaalIngezetBedrag / brutoBronHuidig) * 100 : 0;
+        outputs.progress_bar.style.width = `${Math.min(progressPercentage, 100)}%`;
+        outputs.progress_bar.classList.remove('is-normal', 'is-warning', 'is-danger');
+        if (totaalIngezetBedrag > brutoBronHuidig) outputs.progress_bar.classList.add('is-danger');
+        else if (progressPercentage > 80) outputs.progress_bar.classList.add('is-warning');
+        else outputs.progress_bar.classList.add('is-normal');
     }
 
     initializeTool();
