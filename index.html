@@ -20,7 +20,7 @@
         .container { max-width: 1000px; width: 100%; }
         .header { text-align: center; margin-bottom: 2rem; }
         .header h1 { font-size: 2.2rem; color: var(--wur-blauw); margin: 0; }
-        .main-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2.5rem; }
+        .main-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2.5rem; align-items: start; }
         .card { 
             background-color: white; border-radius: 12px; 
             box-shadow: 0 5px 20px rgba(0,0,0,0.07); 
@@ -75,6 +75,8 @@
         .calculation-details.is-visible { max-height: 300px; }
         .toggle-details-btn { display: block; text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--wur-blauw); text-decoration: none; font-weight: 600; cursor: pointer; }
         .toggle-details-btn:hover { text-decoration: underline; }
+
+        .footer-disclaimer { text-align: center; margin-top: 1rem; color: var(--tekst-grijs); font-size: 0.85rem; }
         
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
@@ -144,6 +146,8 @@
                     </div>
                 </div>
             </div>
+            <!-- DISCLAIMER IS HIER GEPLAATST -->
+            <p class="footer-disclaimer">* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.</p>
         </div>
     </div>
 </div>
@@ -227,8 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const km_afgetopt = Math.min(v.km_fiscaal, 60);
         const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
-        // Correctie hier toegepast: geen retourrit voor standaard vergoeding
-        const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
+        const standaardVergoeding = km_afgetopt * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
         const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
         const reiskostenUitruilBedrag = Math.max(0, teBenuttenReiskosten - v.reeds_uitgeruild);
 
