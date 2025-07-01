@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const km_afgetopt = Math.min(v.km_fiscaal, 60);
         const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
-        const standaardVergoeding = km_afgetopt * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
+        const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
         const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
         const reiskostenUitruilBedrag = Math.max(0, teBenuttenReiskosten - v.reeds_uitgeruild);
 
