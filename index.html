@@ -88,11 +88,11 @@
             <div class="card">
                 <h2>Uitruil Reiskosten</h2>
                 <div class="input-grid">
-                    <div class="input-group"><label for="max_vakantiegeld">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="4000"></div>
-                    <div class="input-group"><label for="max_eindejaarsuitkering">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="3491.30"></div>
-                    <div class="input-group"><label for="reisdagen_gedeclareerd">Gedeclareerde reisdagen (VA64)</label><input type="number" id="reisdagen_gedeclareerd" value="122"></div>
-                    <div class="input-group"><label for="km_fiscaal">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="72"></div>
-                    <div class="input-group"><label for="reeds_uitgeruild">Reeds uitgeruild dit jaar</label><input type="number" id="reeds_uitgeruild" placeholder="0"></div>
+                    <div class="input-group"><label for="max_vakantiegeld">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="4000" min="0"></div>
+                    <div class="input-group"><label for="max_eindejaarsuitkering">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="3491.30" min="0"></div>
+                    <div class="input-group"><label for="reisdagen_gedeclareerd">Gedeclareerde reisdagen (VA64)</label><input type="number" id="reisdagen_gedeclareerd" value="122" min="0"></div>
+                    <div class="input-group"><label for="km_fiscaal">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="72" min="0"></div>
+                    <div class="input-group"><label for="reeds_uitgeruild">Reeds uitgeruild dit jaar</label><input type="number" id="reeds_uitgeruild" placeholder="0" min="0"></div>
                     <div class="input-group"><label for="keuze_inzet">Welke bron wil je inzetten?</label><select id="keuze_inzet"><option value="eindejaarsuitkering">Eindejaarsuitkering</option><option value="vakantiegeld">Vakantiegeld</option></select></div>
                 </div>
             </div>
