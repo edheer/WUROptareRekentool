@@ -20,7 +20,7 @@
         .container { max-width: 1000px; width: 100%; }
         .header { text-align: center; margin-bottom: 2rem; }
         .header h1 { font-size: 2.2rem; color: var(--wur-blauw); margin: 0; }
-        .main-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 2.5rem; align-items: start; }
+        .main-grid { display: grid; grid-template-columns: 1.3fr 1.1fr; gap: 2.5rem; align-items: start; }
         .card { 
             background-color: white; border-radius: 12px; 
             box-shadow: 0 5px 20px rgba(0,0,0,0.07); 
@@ -98,10 +98,10 @@
             <div class="card">
                 <h2>Uitruil Reiskosten</h2>
                 <div class="input-grid">
-                    <div class="input-group"><label for="max_vakantiegeld">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="4000" min="0"></div>
-                    <div class="input-group"><label for="max_eindejaarsuitkering">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="3491.30" min="0"></div>
-                    <div class="input-group"><label for="reisdagen_gedeclareerd">Gedeclareerde reisdagen</label><input type="number" id="reisdagen_gedeclareerd" value="122" min="0"></div>
-                    <div class="input-group"><label for="km_fiscaal">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="72" min="0"></div>
+                    <div class="input-group"><label for="max_vakantiegeld">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="0" min="0"></div>
+                    <div class="input-group"><label for="max_eindejaarsuitkering">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="0" min="0"></div>
+                    <div class="input-group"><label for="reisdagen_gedeclareerd">Gedeclareerde reisdagen</label><input type="number" id="reisdagen_gedeclareerd" value="0" min="0"></div>
+                    <div class="input-group"><label for="km_fiscaal">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="0" min="0"></div>
                     <!-- VERWIJDERD: Input voor "reeds uitgeruild" stond hier -->
                     <div class="input-group">
                         <label for="keuze_inzet">Welke bron wil je inzetten?</label>
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div class="action-container">
-                    <a href="#" target="_blank" class="info-link">Hier vindt u meer uitleg over de uitruilregeling</a>
+                    <a href="#" target="_blank" class="info-link">Uitleg van berekening</a>
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@
                     <span class="value" id="verschil_netto"></span>
                 </div>
                 <div class="action-container">
-                    <a href="#" target="_blank" class="cta-button">Direct aanvragen in de Keuzetool</a>
+                    <a href="https://workforce.nl.adp.com/PV_Web/composer/workspace.jsp?mode=medewerker&action=screen&service=flex_cockpit" target="_blank" class="cta-button">Direct aanvragen in de Keuzetool</a>
                 </div>
             </div>
             <div class="card">
