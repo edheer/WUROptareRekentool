@@ -122,21 +122,21 @@
     <div class="language-switcher">
         <button id="translate-btn" title="Switch language"></button>
     </div>
-    <header class="header"><h1 data-translate-key="headerTitle">Berekeningsmodel voor uitruil</h1></header>
+    <header class="header"><h1 data-translate-key="headerTitle">Simulatietool Optare</h1></header>
             <p class="footer-disclaimer" data-translate-key="disclaimer">* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.</p>
     <div class="main-grid">
         <!-- LINKER KOLOM: INPUTS -->
         <div class="input-column">
              <div class="card">
-                <h2 data-translate-key="yourBudget">Jouw Budget</h2>
+                <h2 data-translate-key="yourBudget">Jouw budget</h2>
                 <div class="budget-info">
-                    <div class="row"><span class="label"><span data-translate-key="availableSource">Beschikbare Bron</span> (<span id="budget_bron_naam"></span>)</span><span class="value" id="budget_bron_totaal"></span></div>
+                    <div class="row"><span class="label"><span data-translate-key="availableSource">Beschikbare bron</span> (<span id="budget_bron_naam"></span>)</span><span class="value" id="budget_bron_totaal"></span></div>
                     <div class="row"><span class="label" data-translate-key="totalUsedAmount">Totaal ingezet bedrag</span><span class="value" id="budget_inzet"></span></div>
                 </div>
                 <div class="progress-bar"><div class="progress-bar-inner" id="progress_bar"></div></div>
             </div>
             <div class="card">
-                <h2 data-translate-key="travelCostExchange">Uitruil Reiskosten</h2>
+                <h2 data-translate-key="travelCostExchange">Uitruil reiskosten</h2>
                 <div class="input-grid">
                     <div class="input-group"><label for="max_vakantiegeld" data-translate-key="labelHolidayPay">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="0" min="0"></div>
                     <div class="input-group"><label for="max_eindejaarsuitkering" data-translate-key="labelYearEndBonus">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="0" min="0"></div>
@@ -158,20 +158,20 @@
         <!-- RECHTER KOLOM: RESULTATEN -->
         <div class="results-column">
              <div class="card">
-                <h2 data-translate-key="yourNetBenefit">Jouw Netto Voordeel</h2>
+                <h2 data-translate-key="yourNetBenefit">Jouw netto voordeel</h2>
                 <div class="hero-result">
                     <div class="label" data-translate-key="netBenefitLabel">Je houdt netto méér over op jaarbasis:</div>
                     <span class="value" id="verschil_netto"></span>
                 </div>
                 <div class="action-container">
-                    <a href="https://workforce.nl.adp.com/PV_Web/composer/workspace.jsp?mode=medewerker&action=screen&service=flex_cockpit" target="_blank" class="cta-button" data-translate-key="applyButton">Direct aanvragen in de Keuzetool</a>
+                    <a href="https://workforce.nl.adp.com/PV_Web/composer/workspace.jsp?mode=medewerker&action=screen&service=flex_cockpit" target="_blank" class="cta-button" data-translate-key="applyButton">Direct aanvragen in Optare</a>
                 </div>
             </div>
             <div class="card">
-                <h2 data-translate-key="calculationDetails">De Details van de Berekening</h2>
+                <h2 data-translate-key="calculationDetails">De details van de berekening</h2>
                 <div class="details-grid">
                     <div class="result-box">
-                        <h3 data-translate-key="currentSituation">Huidige Situatie</h3>
+                        <h3 data-translate-key="currentSituation">Huidige situatie</h3>
                         <div class="calculation-details">
                             <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="gross">Bruto </span><span class="sub-label bron_naam"></span></div><div class="item-value"><span class="amount" id="huidig_bruto"></span></div></div>
                             <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span></div><div class="item-value text-negative"><span class="amount" id="huidig_belasting"></span></div></div>
@@ -180,7 +180,7 @@
                         <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
                     </div>
                     <div class="result-box">
-                        <h3 data-translate-key="situationAfterExchange">Situatie na Uitruil</h3>
+                        <h3 data-translate-key="situationAfterExchange">Situatie na uitruil</h3>
                          <div class="calculation-details">
                             <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="gross">Bruto </span><span class="sub-label bron_naam"></span></div><div class="item-value"><span class="amount" id="nieuw_bruto"></span></div></div>
                             <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span></div><div class="item-value text-negative"><span class="amount" id="nieuw_belasting"></span></div></div>
@@ -264,12 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
         nl: {
             translateBtnText: "EN",
             pageTitle: "WUR Berekeningsmodel Uitruil",
-            headerTitle: "Berekeningsmodel voor uitruil",
+            headerTitle: "Simulatietool Optare",
             disclaimer: "* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.",
-            yourBudget: "Jouw Budget",
-            availableSource: "Beschikbare Bron",
+            yourBudget: "Jouw budget",
+            availableSource: "Beschikbare bron",
             totalUsedAmount: "Totaal ingezet bedrag",
-            travelCostExchange: "Uitruil Reiskosten",
+            travelCostExchange: "Uitruil reiskosten",
             labelHolidayPay: "Max. inzet vakantiegeld",
             labelYearEndBonus: "Max. inzet eindejaarsuitkering",
             labelTravelDays: "Gedeclareerde reisdagen",
@@ -278,12 +278,12 @@ document.addEventListener('DOMContentLoaded', () => {
             optionYearEndBonus: "Eindejaarsuitkering",
             optionBoth: "Vakantiegeld & Eindejaarsuitkering",
             explanationLink: "Uitleg van berekening",
-            yourNetBenefit: "Jouw Netto Voordeel",
+            yourNetBenefit: "Jouw netto voordeel",
             netBenefitLabel: "Je houdt netto méér over op jaarbasis:",
-            applyButton: "Direct aanvragen in de Keuzetool",
-            calculationDetails: "De Details van de Berekening",
-            currentSituation: "Huidige Situatie",
-            situationAfterExchange: "Situatie na Uitruil",
+            applyButton: "Direct aanvragen in Optare",
+            calculationDetails: "De details van de berekening",
+            currentSituation: "Huidige situatie",
+            situationAfterExchange: "Situatie na uitruil",
             gross: "Bruto ",
             tax: "Belasting (ca. 50%)",
             netPaid: "Netto uitbetaald",
@@ -331,11 +331,11 @@ document.addEventListener('DOMContentLoaded', () => {
         en: {
             translateBtnText: "NL",
             pageTitle: "WUR Exchange Calculation Model",
-            headerTitle: "Exchange Calculation Model",
+            headerTitle: "Simulation tool Optare",
             disclaimer: "* Please note: this is an indicative calculation. No rights can be derived from the results.",
-            yourBudget: "Your Budget",
-            availableSource: "Available Source",
-            totalUsedAmount: "Total Amount Used",
+            yourBudget: "Your budget",
+            availableSource: "Available source",
+            totalUsedAmount: "Total amount used",
             travelCostExchange: "Travel Cost Exchange",
             labelHolidayPay: "Max. holiday allowance to use",
             labelYearEndBonus: "Max. year-end bonus to use",
@@ -345,12 +345,12 @@ document.addEventListener('DOMContentLoaded', () => {
             optionYearEndBonus: "Year-end bonus",
             optionBoth: "Holiday allowance & Year-end bonus",
             explanationLink: "Explanation of calculation",
-            yourNetBenefit: "Your Net Benefit",
+            yourNetBenefit: "Your net benefit",
             netBenefitLabel: "Your net annual benefit is:",
-            applyButton: "Apply directly in the Choice Tool",
-            calculationDetails: "Calculation Details",
-            currentSituation: "Current Situation",
-            situationAfterExchange: "Situation after Exchange",
+            applyButton: "Apply directly in Optare",
+            calculationDetails: "Calculation details",
+            currentSituation: "Current situation",
+            situationAfterExchange: "Situation after exchange",
             gross: "Gross ",
             tax: "Tax (approx. 50%)",
             netPaid: "Net Paid",
