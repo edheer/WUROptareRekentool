@@ -111,12 +111,36 @@
         .modal-content ul.checkmark-list { list-style-type: '✔  '; padding-left: 1.5rem; }
         .modal-content strong { color: var(--wur-groen-primair); }
         .modal-content .calculation-example { background: #f8f9fa; border: 1px solid var(--border-kleur); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
-        
+        /* --- CSS VOOR DE QR CODE CONTAINER --- */
+#qr-code-container {
+    top: 20px;
+    left: 20px;
+    width: 105px;  /* Pas de grootte hier aan indien nodig */
+    height: 105px; /* Pas de grootte hier aan indien nodig */
+    z-index: 1002;
+    padding: 8px;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+/* Zorgt dat de afbeelding netjes in de container past */
+#qr-code-container img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
+<!-- QR CODE IN DE LINKER BOVENHOEK -->
+<div id="qr-code-container">
+    <a href="https://wuroptarerekentool.netlify.app/" target="_blank" title="Open de tool in een nieuw tabblad">
+        <img src="images/qr-code.png" alt="QR Code naar WUR Optare Rekentool">
+    </a>
+</div>
 <div class="container">
     <!-- GEWIJZIGD: Container met knop -->
     <div class="language-switcher">
