@@ -68,7 +68,7 @@
         .footer-disclaimer { text-align: center; margin-top: 1rem; color: var(--tekst-grijs); font-size: 0.85rem; }
         
         .action-container { margin-top: 1.5rem; text-align: center; }
-        .info-link { color: var(--wur-blauw); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        .info-link { color: var(--wur-blauw); text-decoration: none; font-weight: 600; font-size: 0.95rem; cursor: pointer;}
         .info-link:hover { text-decoration: underline; }
         .cta-button {
             display: inline-block; background-color: var(--wur-groen-primair); color: white; padding: 12px 24px; border-radius: 8px;
@@ -76,6 +76,49 @@
         }
         .cta-button:hover { background-color: #2e6b37; }
 
+        /* --- MODAL STYLES --- */
+        .modal-container {
+            display: none; position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1000; align-items: center; justify-content: center;
+        }
+        .modal-container.is-active { display: flex; }
+        .modal-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+        }
+        .modal-content {
+            position: relative; z-index: 1001;
+            background: white; border-radius: 12px;
+            padding: 2.5rem; max-width: 750px; width: 90%;
+            max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .modal-close-btn {
+            position: absolute; top: 15px; right: 20px;
+            background: none; border: none; font-size: 2rem;
+            color: var(--tekst-grijs); cursor: pointer; line-height: 1;
+        }
+        .modal-close-btn:hover { color: var(--tekst-donker); }
+        .modal-content h2 { color: var(--wur-blauw); margin-top: 0; }
+        .modal-content h3 { color: var(--wur-blauw); border-bottom: 1px solid var(--border-kleur); padding-bottom: 0.5rem; margin-top: 1.5rem; }
+        
+        /* --- GEWIJZIGD: Standaard lijststijl --- */
+        .modal-content ul {
+            list-style-type: disc;
+            padding-left: 2rem;
+        }
+        .modal-content li { margin-bottom: 0.75rem; }
+        /* --- GEWIJZIGD: Speciale lijststijl voor vinkjes --- */
+        .modal-content ul.checkmark-list {
+            list-style-type: '✔  ';
+            padding-left: 1.5rem;
+        }
+
+        .modal-content strong { color: var(--wur-groen-primair); }
+        .modal-content .calculation-example { background: #f8f9fa; border: 1px solid var(--border-kleur); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
+        
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -102,7 +145,6 @@
                     <div class="input-group"><label for="max_eindejaarsuitkering">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="0" min="0"></div>
                     <div class="input-group"><label for="reisdagen_gedeclareerd">Gedeclareerde reisdagen</label><input type="number" id="reisdagen_gedeclareerd" value="0" min="0"></div>
                     <div class="input-group"><label for="km_fiscaal">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="0" min="0"></div>
-                    <!-- VERWIJDERD: Input voor "reeds uitgeruild" stond hier -->
                     <div class="input-group">
                         <label for="keuze_inzet">Welke bron wil je inzetten?</label>
                         <select id="keuze_inzet">
@@ -112,7 +154,7 @@
                     </div>
                 </div>
                 <div class="action-container">
-                    <a href="#" target="_blank" class="info-link">Uitleg van berekening</a>
+                    <a id="open-info-modal-link" class="info-link">Uitleg van berekening</a>
                 </div>
             </div>
         </div>
@@ -156,6 +198,69 @@
     </div>
 </div>
 
+<!-- MODAL HTML -->
+<div id="info-modal" class="modal-container">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <button id="close-modal-btn" class="modal-close-btn">×</button>
+        <h2>Reiskosten, vakantie-uitkering en eindejaarsuitkering zonder verlof</h2>
+
+        <h3>Korte uitleg van de regeling</h3>
+        <p>Met deze regeling kun je extra reiskostenvergoeding ontvangen door je eindejaarsuitkering (EJU) en/of vakantie-uitkering in te ruilen. Je ontvangt:</p>
+        <ul>
+            <li><strong>€ 0,23</strong> per kilometer in plaats van € 0,14 (voor de eerste 60km per dag).</li>
+            <li><strong>€ 0,23</strong> voor alle kilometers boven de 60km enkele reis.</li>
+            <li>De uitbetaling is twee keer per jaar, in mei en november.</li>
+        </ul>
+        <p>Let op: je moet je reisdagen maandelijks blijven registreren in MyHR.</p>
+
+        <h3>Voor wie is deze regeling interessant?</h3>
+        <!-- GEWIJZIGD: class="checkmark-list" toegevoegd -->
+        <ul class="checkmark-list">
+            <li>Je reist met eigen vervoer.</li>
+            <li>Je werkt regelmatig op locatie.</li>
+            <li>Je hebt voldoende reisdagen dit jaar.</li>
+            <li>Je wilt fiscaal voordeel over je EJU of vakantie-uitkering.</li>
+            <li>Je wilt geen verlof inzetten als ruilmiddel.</li>
+        </ul>
+
+        <h3>Voor wie is deze regeling minder interessant?</h3>
+        <ul>
+            <li>Je reist met het openbaar vervoer en ontvangt daarvoor een vergoeding.</li>
+            <li>Je bent niet consequent in het registreren van je reisdagen in MyHR.</li>
+            <li>Je hebt een korte afstand en weinig reisdagen (dan is het voordeel relatief klein, maar nog steeds een voordeel).</li>
+        </ul>
+
+        <h3>Wat zijn de voorwaarden / consequenties?</h3>
+        <p><strong>Voorwaarden:</strong></p>
+        <ul>
+            <li>Je reist met eigen vervoer.</li>
+            <li>Je declareert je reisdagen maandelijks in MyHR.</li>
+            <li>Je doet één aanvraag per jaar via de Keuzetool.</li>
+            <li>Je ruilt (deels) je bruto vakantie-uitkering en/of eindejaarsuitkering in.</li>
+            <li>Als je bronnen niet voldoende zijn, wordt het resterende bedrag ingehouden op je bruto salaris van mei of november.</li>
+        </ul>
+        <p><strong>Consequenties:</strong></p>
+        <ul>
+            <li>Je ontvangt de extra reiskostenvergoeding in mei en in november.</li>
+            <li>Je brutoloon in die maanden kan lager zijn als je bronnen niet toereikend zijn.</li>
+            <li>Geen declaraties = geen extra vergoeding, ook niet als je wél een aanvraag hebt gedaan.</li>
+        </ul>
+
+        <h3>Voorbeeldsituatie</h3>
+        <p><strong>Scenario:</strong> Thomas reist 50 km enkele reis en werkt 3 dagen per week op locatie. Hij verwacht 150 reisdagen te declareren. Zijn vakantie-uitkering is € 2.500 en zijn eindejaarsuitkering is € 2.400.</p>
+        <div class="calculation-example">
+            <p><strong>Berekening extra vergoeding:</strong></p>
+            <ul>
+                <li>Over de eerste 60 km (heen en terug) krijgt Thomas € 0,09 extra: <br>150 dagen × 60 km × € 0,09 = <strong>€ 810</strong></li>
+                <li>Over de resterende 40 km (100 km - 60 km) krijgt hij € 0,23: <br>150 dagen × 40 km × € 0,23 = <strong>€ 1.380</strong></li>
+                <li>Totaal extra te ontvangen: <strong>€ 2.190</strong> (belastingvrij)</li>
+            </ul>
+             <p>Thomas ruilt dit bedrag in tegen zijn bruto vakantie-uitkering en eindejaarsuitkering. Dit levert hem een netto voordeel op van circa 50% van € 2.190, dus <strong>€ 1.095</strong>.</p>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     // VASTE PARAMETERS
@@ -163,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const KM_VERGOEDING_STANDAARD = 0.14;
     const KM_VERGOEDING_FISCAAL = 0.23;
 
-    // VERWIJZIGD: 'reeds_uitgeruild' is weggehaald
     const inputs = {
         max_vakantiegeld: document.getElementById('max_vakantiegeld'),
         max_eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering'),
@@ -188,6 +292,12 @@ document.addEventListener('DOMContentLoaded', () => {
         verschil_netto: document.getElementById('verschil_netto')
     };
 
+    const openInfoModalLink = document.getElementById('open-info-modal-link');
+    const infoModal = document.getElementById('info-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalOverlay = infoModal.querySelector('.modal-overlay');
+
+
     const formatCurrency = (value) => `€ ${value.toFixed(2).replace('.', ',')}`;
 
     function initializeTool() {
@@ -202,11 +312,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        openInfoModalLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            infoModal.classList.add('is-active');
+        });
+
+        const closeModal = () => {
+            infoModal.classList.remove('is-active');
+        };
+        closeModalBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', closeModal);
+
+
         updateCalculations();
     }
     
     function updateCalculations() {
-        // VERWIJZIGD: 'reeds_uitgeruild' is weggehaald
         const v = {
             max_vakantiegeld: parseFloat(inputs.max_vakantiegeld.value) || 0,
             max_eindejaarsuitkering: parseFloat(inputs.max_eindejaarsuitkering.value) || 0,
@@ -220,7 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
         const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
         
-        // VERWIJZIGD: Berekening van ingezet bedrag versimpeld
         const totaalIngezetBedrag = Math.max(0, teBenuttenReiskosten);
 
         let brutoBronHuidig;
