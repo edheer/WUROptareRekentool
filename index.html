@@ -67,6 +67,15 @@
 
         .footer-disclaimer { text-align: center; margin-top: 1rem; color: var(--tekst-grijs); font-size: 0.85rem; }
         
+        .action-container { margin-top: 1.5rem; text-align: center; }
+        .info-link { color: var(--wur-blauw); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+        .info-link:hover { text-decoration: underline; }
+        .cta-button {
+            display: inline-block; background-color: var(--wur-groen-primair); color: white; padding: 12px 24px; border-radius: 8px;
+            text-decoration: none; font-weight: 700; transition: background-color 0.3s ease;
+        }
+        .cta-button:hover { background-color: #2e6b37; }
+
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -93,8 +102,17 @@
                     <div class="input-group"><label for="max_eindejaarsuitkering">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="3491.30" min="0"></div>
                     <div class="input-group"><label for="reisdagen_gedeclareerd">Gedeclareerde reisdagen</label><input type="number" id="reisdagen_gedeclareerd" value="122" min="0"></div>
                     <div class="input-group"><label for="km_fiscaal">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="72" min="0"></div>
-                    <div class="input-group"><label for="reeds_uitgeruild">Reeds uitgeruild dit jaar</label><input type="number" id="reeds_uitgeruild" placeholder="0" min="0"></div>
-                    <div class="input-group"><label for="keuze_inzet">Welke bron wil je inzetten?</label><select id="keuze_inzet"><option value="eindejaarsuitkering">Eindejaarsuitkering</option><option value="vakantiegeld">Vakantiegeld</option></select></div>
+                    <!-- VERWIJDERD: Input voor "reeds uitgeruild" stond hier -->
+                    <div class="input-group">
+                        <label for="keuze_inzet">Welke bron wil je inzetten?</label>
+                        <select id="keuze_inzet">
+                            <option value="eindejaarsuitkering">Eindejaarsuitkering</option>
+                            <option value="beide">Vakantiegeld & Eindejaarsuitkering</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="action-container">
+                    <a href="#" target="_blank" class="info-link">Hier vindt u meer uitleg over de uitruilregeling</a>
                 </div>
             </div>
         </div>
@@ -105,6 +123,9 @@
                 <div class="hero-result">
                     <div class="label">Je houdt netto méér over op jaarbasis:</div>
                     <span class="value" id="verschil_netto"></span>
+                </div>
+                <div class="action-container">
+                    <a href="#" target="_blank" class="cta-button">Direct aanvragen in de Keuzetool</a>
                 </div>
             </div>
             <div class="card">
@@ -142,12 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const KM_VERGOEDING_STANDAARD = 0.14;
     const KM_VERGOEDING_FISCAAL = 0.23;
 
+    // VERWIJZIGD: 'reeds_uitgeruild' is weggehaald
     const inputs = {
         max_vakantiegeld: document.getElementById('max_vakantiegeld'),
         max_eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering'),
         reisdagen_gedeclareerd: document.getElementById('reisdagen_gedeclareerd'),
         km_fiscaal: document.getElementById('km_fiscaal'),
-        reeds_uitgeruild: document.getElementById('reeds_uitgeruild'),
         keuze_inzet: document.getElementById('keuze_inzet')
     };
 
@@ -185,12 +206,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function updateCalculations() {
+        // VERWIJZIGD: 'reeds_uitgeruild' is weggehaald
         const v = {
             max_vakantiegeld: parseFloat(inputs.max_vakantiegeld.value) || 0,
             max_eindejaarsuitkering: parseFloat(inputs.max_eindejaarsuitkering.value) || 0,
             reisdagen_gedeclareerd: parseFloat(inputs.reisdagen_gedeclareerd.value) || 0,
             km_fiscaal: parseFloat(inputs.km_fiscaal.value) || 0,
-            reeds_uitgeruild: parseFloat(inputs.reeds_uitgeruild.value) || 0,
             keuze_inzet: inputs.keuze_inzet.value
         };
 
@@ -198,9 +219,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
         const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
         const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
-        const totaalIngezetBedrag = Math.max(0, teBenuttenReiskosten - v.reeds_uitgeruild); // Dit is nu het enige ingezette bedrag
+        
+        // VERWIJZIGD: Berekening van ingezet bedrag versimpeld
+        const totaalIngezetBedrag = Math.max(0, teBenuttenReiskosten);
 
-        const brutoBronHuidig = (v.keuze_inzet === 'vakantiegeld') ? v.max_vakantiegeld : v.max_eindejaarsuitkering;
+        let brutoBronHuidig;
+        let bronNaam;
+
+        switch (v.keuze_inzet) {
+            case 'beide':
+                brutoBronHuidig = v.max_vakantiegeld + v.max_eindejaarsuitkering;
+                bronNaam = 'Vakantiegeld & Eindejaarsuitkering';
+                break;
+            case 'eindejaarsuitkering':
+            default:
+                brutoBronHuidig = v.max_eindejaarsuitkering;
+                bronNaam = 'Eindejaarsuitkering';
+                break;
+        }
         
         const belastingHuidig = brutoBronHuidig * BELASTING_PERCENTAGE;
         const nettoHuidig = brutoBronHuidig - belastingHuidig;
@@ -211,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const verschilNetto = nettoNieuw - nettoHuidig;
         
-        const bronNaam = v.keuze_inzet === 'vakantiegeld' ? 'Vakantiegeld' : 'Eindejaarsuitkering';
         outputs.bron_namen.forEach(el => el.textContent = bronNaam);
         outputs.budget_bron_naam.textContent = bronNaam;
 
