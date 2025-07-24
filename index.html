@@ -21,7 +21,6 @@
         .header { text-align: center; margin-bottom: 2rem; padding-top: 2rem; }
         .header h1 { font-size: 2.2rem; color: var(--wur-blauw); margin: 0; }
         
-        /* --- GEWIJZIGD: Stijl voor NL/EN knop --- */
         .language-switcher {
             position: absolute; top: 0px; right: 0px;
         }
@@ -40,6 +39,38 @@
             background-color: #f8f9fa;
             transform: translateY(-1px);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- NIEUW: Stijl voor bronnen dropdown --- */
+        .source-selector-container {
+            text-align: center;
+            margin-bottom: 2.5rem; /* Meer ruimte voor de content */
+            margin-top: -1rem; /* Iets dichter bij de titel */
+        }
+        #source-selector-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--wur-blauw);
+        }
+        #source-selector {
+            padding: 12px 20px;
+            border: 1px solid var(--border-kleur);
+            border-radius: 8px;
+            background-color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--wur-blauw);
+            min-width: 350px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        #source-selector:focus {
+            outline: none;
+            border-color: var(--wur-groen-primair);
+            box-shadow: 0 0 0 3px rgba(60, 138, 73, 0.1), 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .main-grid { display: grid; grid-template-columns: 1.3fr 1.1fr; gap: 2.5rem; align-items: start; }
@@ -111,26 +142,14 @@
         .modal-content ul.checkmark-list { list-style-type: '✔  '; padding-left: 1.5rem; }
         .modal-content strong { color: var(--wur-groen-primair); }
         .modal-content .calculation-example { background: #f8f9fa; border: 1px solid var(--border-kleur); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
-        /* --- CSS VOOR DE QR CODE CONTAINER --- */
-#qr-code-container {
-    top: 20px;
-    left: 20px;
-    width: 105px;  /* Pas de grootte hier aan indien nodig */
-    height: 105px; /* Pas de grootte hier aan indien nodig */
-    z-index: 1002;
-    padding: 8px;
-    background-color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-
-/* Zorgt dat de afbeelding netjes in de container past */
-#qr-code-container img {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
+        
+        #qr-code-container {
+            top: 20px; left: 20px; width: 105px; height: 105px; z-index: 1002;
+            padding: 8px; background-color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 12px; box-sizing: border-box;
+        }
+        #qr-code-container img { width: 100%; height: 100%; display: block; }
+        
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -142,12 +161,24 @@
     </a>
 </div>
 <div class="container">
-    <!-- GEWIJZIGD: Container met knop -->
     <div class="language-switcher">
         <button id="translate-btn" title="Switch language"></button>
     </div>
     <header class="header"><h1 data-translate-key="headerTitle">Simulatietool Optare</h1></header>
-            <p class="footer-disclaimer" data-translate-key="disclaimer">* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.</p>
+
+    <!-- NIEUW: Bronnen selectie dropdown -->
+    <div class="source-selector-container">
+        <label for="source-selector" id="source-selector-label" data-translate-key="sourceSelectorLabel">Kies uw berekening</label>
+        <select id="source-selector">
+            <option value="reiskosten" selected data-translate-key="sourceTravel">Reiskosten</option>
+            <option value="fiets" data-translate-key="sourceBike">Fiets</option>
+            <option value="extra_verlof" data-translate-key="sourceLeave">Extra verlof</option>
+            <option value="vakbond" data-translate-key="sourceUnion">Vakbondcontributie</option>
+        </select>
+    </div>
+    <!-- EINDE NIEUW -->
+
+    <p class="footer-disclaimer" data-translate-key="disclaimer">* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.</p>
     <div class="main-grid">
         <!-- LINKER KOLOM: INPUTS -->
         <div class="input-column">
@@ -225,7 +256,6 @@
     <div class="modal-content">
         <button id="close-modal-btn" class="modal-close-btn">×</button>
         <h2 data-translate-key="modalTitle1">Reiskosten, vakantie-uitkering en eindejaarsuitkering zonder verlof</h2>
-
         <h3 data-translate-key="modalTitle2">Korte uitleg van de regeling</h3>
         <p data-translate-key="modalP1">Met deze regeling kun je extra reiskostenvergoeding ontvangen door je eindejaarsuitkering (EJU) en/of vakantie-uitkering in te ruilen. Je ontvangt:</p>
         <ul>
@@ -234,7 +264,6 @@
             <li data-translate-key="modalLi3">De uitbetaling is twee keer per jaar, in mei en november.</li>
         </ul>
         <p data-translate-key="modalP2">Let op: je moet je reisdagen maandelijks blijven registreren in MyHR.</p>
-
         <h3 data-translate-key="modalTitle3">Voor wie is deze regeling interessant?</h3>
         <ul class="checkmark-list">
             <li data-translate-key="modalLi4">Je reist met eigen vervoer.</li>
@@ -243,14 +272,12 @@
             <li data-translate-key="modalLi7">Je wilt fiscaal voordeel over je EJU of vakantie-uitkering.</li>
             <li data-translate-key="modalLi8">Je wilt geen verlof inzetten als ruilmiddel.</li>
         </ul>
-
         <h3 data-translate-key="modalTitle4">Voor wie is deze regeling minder interessant?</h3>
         <ul>
             <li data-translate-key="modalLi9">Je reist met het openbaar vervoer en ontvangt daarvoor een vergoeding.</li>
             <li data-translate-key="modalLi10">Je bent niet consequent in het registreren van je reisdagen in MyHR.</li>
             <li data-translate-key="modalLi11">Je hebt een korte afstand en weinig reisdagen (dan is het voordeel relatief klein, maar nog steeds een voordeel).</li>
         </ul>
-
         <h3 data-translate-key="modalTitle5">Wat zijn de voorwaarden / consequenties?</h3>
         <p><strong data-translate-key="modalStrong1">Voorwaarden:</strong></p>
         <ul>
@@ -266,7 +293,6 @@
             <li data-translate-key="modalLi18">Je brutoloon in die maanden kan lager zijn als je bronnen niet toereikend zijn.</li>
             <li data-translate-key="modalLi19">Geen declaraties = geen extra vergoeding, ook niet als je wél een aanvraag hebt gedaan.</li>
         </ul>
-
         <h3 data-translate-key="modalTitle6">Voorbeeldsituatie</h3>
         <p data-translate-key="modalP3"><strong>Scenario:</strong> Thomas reist 50 km enkele reis en werkt 3 dagen per week op locatie. Hij verwacht 150 reisdagen te declareren. Zijn vakantie-uitkering is € 2.500 en zijn eindejaarsuitkering is € 2.400.</p>
         <div class="calculation-example">
@@ -283,9 +309,10 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // --- GEWIJZIGD: Vertalingen Object met knoptekst ---
+    // --- GEWIJZIGD: Vertalingen object uitgebreid met de nieuwe dropdown teksten ---
     const translations = {
         nl: {
+            // Bestaande vertalingen
             translateBtnText: "EN",
             pageTitle: "WUR Berekeningsmodel Uitruil",
             headerTitle: "Simulatietool Optare",
@@ -316,6 +343,15 @@ document.addEventListener('DOMContentLoaded', () => {
             hideDetails: "Verberg details",
             sourceYearEndBonus: "Eindejaarsuitkering",
             sourceBoth: "Vakantiegeld & Eindejaarsuitkering",
+            
+            // Nieuwe vertalingen voor dropdown
+            sourceSelectorLabel: "Kies uw berekening",
+            sourceTravel: "Reiskosten",
+            sourceBike: "Fiets",
+            sourceLeave: "Extra verlof",
+            sourceUnion: "Vakbondcontributie",
+            
+            // Bestaande modal vertalingen...
             modalTitle1: "Reiskosten, vakantie-uitkering en eindejaarsuitkering zonder verlof",
             modalTitle2: "Korte uitleg van de regeling",
             modalP1: "Met deze regeling kun je extra reiskostenvergoeding ontvangen door je eindejaarsuitkering (EJU) en/of vakantie-uitkering in te ruilen. Je ontvangt:",
@@ -353,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modalP4: "Thomas ruilt dit bedrag in tegen zijn bruto vakantie-uitkering en eindejaarsuitkering. Dit levert hem een netto voordeel op van circa 50% van € 2.190, dus <strong>€ 1.095</strong>."
         },
         en: {
+            // Bestaande vertalingen
             translateBtnText: "NL",
             pageTitle: "WUR Exchange Calculation Model",
             headerTitle: "Simulation tool Optare",
@@ -383,6 +420,15 @@ document.addEventListener('DOMContentLoaded', () => {
             hideDetails: "Hide details",
             sourceYearEndBonus: "Year-end bonus",
             sourceBoth: "Holiday allowance & Year-end bonus",
+
+            // Nieuwe vertalingen voor dropdown
+            sourceSelectorLabel: "Choose your calculation",
+            sourceTravel: "Travel costs",
+            sourceBike: "Bicycle",
+            sourceLeave: "Extra leave",
+            sourceUnion: "Union dues",
+            
+            // Bestaande modal vertalingen...
             modalTitle1: "Travel costs, holiday allowance, and year-end bonus without leave",
             modalTitle2: "Brief explanation of the scheme",
             modalP1: "With this scheme, you can receive extra travel allowance by exchanging your year-end bonus (YEB) and/or holiday allowance. You receive:",
@@ -468,12 +514,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         document.documentElement.lang = lang;
-        // Update de knoptekst
         translateBtn.textContent = translations[lang].translateBtnText;
     }
 
     function initializeTool() {
-        translatePage(currentLang); // Zet de initiële taal goed
+        translatePage(currentLang); 
 
         document.body.addEventListener('input', updateCalculations);
         
@@ -505,6 +550,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function updateCalculations() {
+        // De rest van de berekeningslogica blijft hetzelfde
+        // Deze wordt niet beïnvloed door de nieuwe dropdown, aangezien de dropdown
+        // in de toekomst zal bepalen welke *gehele* tool wordt getoond.
+        // Voor nu blijft de reiskostenberekening actief.
         const v = {
             max_vakantiegeld: parseFloat(inputs.max_vakantiegeld.value) || 0,
             max_eindejaarsuitkering: parseFloat(inputs.max_eindejaarsuitkering.value) || 0,
