@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Vertalingen object uitgebreid met de nieuwe dropdown teksten
     const translations = {
         nl: {
-            // Bestaande vertalingen
             translateBtnText: "EN",
             pageTitle: "WUR Berekeningsmodel Uitruil",
             headerTitle: "Simulatietool Optare",
@@ -15,9 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
             labelYearEndBonus: "Max. inzet eindejaarsuitkering",
             labelTravelDays: "Gedeclareerde reisdagen",
             labelDistance: "Enkele reisafstand",
-            labelSourceToUse: "Welke bron wil je inzetten?",
-            optionYearEndBonus: "Eindejaarsuitkering",
-            optionBoth: "Vakantiegeld & Eindejaarsuitkering",
             explanationLink: "Uitleg van berekening",
             yourNetBenefit: "Jouw netto voordeel",
             netBenefitLabel: "Je houdt netto méér over op jaarbasis:",
@@ -33,15 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
             hideDetails: "Verberg details",
             sourceYearEndBonus: "Eindejaarsuitkering",
             sourceBoth: "Vakantiegeld & Eindejaarsuitkering",
-            
-            // Nieuwe vertalingen voor dropdown
             sourceSelectorLabel: "Kies uw berekening",
             sourceTravel: "Reiskosten",
             sourceBike: "Fiets",
             sourceLeave: "Extra verlof",
             sourceUnion: "Vakbondcontributie",
-            
-            // Bestaande modal vertalingen...
+            labelExchangeType: "Kies de soort uitruil:",
+            optTravelEJUWithoutLeaveWithHolidayPay: "EJU zonder verlof met vakantiegeld",
+            optTravelEJUWithoutLeave: "EJU zonder verlof",
+            optTravelEJUMetLeaveWithHolidayPay: "EJU met verlof met vakantiegeld",
+            optTravelEJUMetLeave: "EJU met verlof",
+            notImplemented: "Deze berekening is nog niet geïmplementeerd.",
+            contactHR: "Neem contact op met HR voor meer informatie.",
             modalTitle1: "Reiskosten, vakantie-uitkering en eindejaarsuitkering zonder verlof",
             modalTitle2: "Korte uitleg van de regeling",
             modalP1: "Met deze regeling kun je extra reiskostenvergoeding ontvangen door je eindejaarsuitkering (EJU) en/of vakantie-uitkering in te ruilen. Je ontvangt:",
@@ -79,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modalP4: "Thomas ruilt dit bedrag in tegen zijn bruto vakantie-uitkering en eindejaarsuitkering. Dit levert hem een netto voordeel op van circa 50% van € 2.190, dus <strong>€ 1.095</strong>."
         },
         en: {
-            // Bestaande vertalingen
             translateBtnText: "NL",
             pageTitle: "WUR Exchange Calculation Model",
             headerTitle: "Simulation tool Optare",
@@ -92,9 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
             labelYearEndBonus: "Max. year-end bonus to use",
             labelTravelDays: "Declared travel days",
             labelDistance: "One-way travel distance",
-            labelSourceToUse: "Which source do you want to use?",
-            optionYearEndBonus: "Year-end bonus",
-            optionBoth: "Holiday allowance & Year-end bonus",
             explanationLink: "Explanation of calculation",
             yourNetBenefit: "Your net benefit",
             netBenefitLabel: "Your net annual benefit is:",
@@ -110,15 +104,18 @@ document.addEventListener('DOMContentLoaded', () => {
             hideDetails: "Hide details",
             sourceYearEndBonus: "Year-end bonus",
             sourceBoth: "Holiday allowance & Year-end bonus",
-
-            // Nieuwe vertalingen voor dropdown
             sourceSelectorLabel: "Choose your calculation",
             sourceTravel: "Travel costs",
             sourceBike: "Bicycle",
             sourceLeave: "Extra leave",
             sourceUnion: "Union dues",
-            
-            // Bestaande modal vertalingen...
+            labelExchangeType: "Choose exchange type:",
+            optTravelEJUWithoutLeaveWithHolidayPay: "YEB without leave with holiday pay",
+            optTravelEJUWithoutLeave: "YEB without leave",
+            optTravelEJUMetLeaveWithHolidayPay: "YEB with leave with holiday pay",
+            optTravelEJUMetLeave: "YEB with leave",
+            notImplemented: "This calculation is not yet implemented.",
+            contactHR: "Please contact HR for more information.",
             modalTitle1: "Travel costs, holiday allowance, and year-end bonus without leave",
             modalTitle2: "Brief explanation of the scheme",
             modalP1: "With this scheme, you can receive extra travel allowance by exchanging your year-end bonus (YEB) and/or holiday allowance. You receive:",
@@ -159,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentLang = 'nl';
 
-    // VASTE PARAMETERS
     const BELASTING_PERCENTAGE = 0.50;
     const KM_VERGOEDING_STANDAARD = 0.14;
     const KM_VERGOEDING_FISCAAL = 0.23;
@@ -168,8 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         max_vakantiegeld: document.getElementById('max_vakantiegeld'),
         max_eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering'),
         reisdagen_gedeclareerd: document.getElementById('reisdagen_gedeclareerd'),
-        km_fiscaal: document.getElementById('km_fiscaal'),
-        keuze_inzet: document.getElementById('keuze_inzet')
+        km_fiscaal: document.getElementById('km_fiscaal')
     };
 
     const outputs = {
@@ -188,6 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
         verschil_netto: document.getElementById('verschil_netto')
     };
 
+    const sourceSelector = document.getElementById('source-selector');
+    const travelOptionsContainer = document.getElementById('travel-exchange-options-container');
+    const mainGrid = document.querySelector('.main-grid');
+    const otherCalculationTypesDiv = document.getElementById('other-calculation-types');
+    const radioOptions = document.querySelectorAll('.radio-option');
+
     const openInfoModalLink = document.getElementById('open-info-modal-link');
     const infoModal = document.getElementById('info-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');
@@ -199,71 +200,75 @@ document.addEventListener('DOMContentLoaded', () => {
     function translatePage(lang) {
         document.querySelectorAll('[data-translate-key]').forEach(el => {
             const key = el.dataset.translateKey;
-            if (translations[lang][key]) {
+            if (translations[lang] && translations[lang][key]) {
                 el.innerHTML = translations[lang][key];
             }
         });
         document.documentElement.lang = lang;
         translateBtn.textContent = translations[lang].translateBtnText;
+        document.querySelectorAll('.toggle-details-btn').forEach(button => {
+            const detailsContainer = button.parentElement.querySelector('.calculation-details');
+            const isVisible = detailsContainer.classList.contains('is-visible');
+            button.textContent = isVisible ? translations[currentLang].hideDetails : translations[currentLang].showDetails;
+        });
     }
 
-    function initializeTool() {
-        translatePage(currentLang); 
-
-        document.body.addEventListener('input', updateCalculations);
+    function handleSourceSelection() {
+        const selectedSource = sourceSelector.value;
         
-        document.querySelectorAll('.toggle-details-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const detailsContainer = this.parentElement.querySelector('.calculation-details');
-                const isVisible = detailsContainer.classList.toggle('is-visible');
-                this.textContent = isVisible ? translations[currentLang].hideDetails : translations[currentLang].showDetails;
-            });
-        });
+        travelOptionsContainer.style.display = 'none';
+        mainGrid.style.display = 'none';
+        otherCalculationTypesDiv.style.display = 'none';
 
-        openInfoModalLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            infoModal.classList.add('is-active');
-        });
-
-        const closeModal = () => infoModal.classList.remove('is-active');
-        closeModalBtn.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', closeModal);
-
-        translateBtn.addEventListener('click', () => {
-            currentLang = currentLang === 'nl' ? 'en' : 'nl';
-            translatePage(currentLang);
-            updateCalculations();
-        });
-
+        if (selectedSource === 'reiskosten') {
+            travelOptionsContainer.style.display = 'block';
+            mainGrid.style.display = 'grid';
+        } else {
+            otherCalculationTypesDiv.style.display = 'block';
+        }
         updateCalculations();
     }
-    
+
     function updateCalculations() {
+        if (travelOptionsContainer.style.display === 'none') {
+            return;
+        }
+
         const v = {
             max_vakantiegeld: parseFloat(inputs.max_vakantiegeld.value) || 0,
             max_eindejaarsuitkering: parseFloat(inputs.max_eindejaarsuitkering.value) || 0,
             reisdagen_gedeclareerd: parseFloat(inputs.reisdagen_gedeclareerd.value) || 0,
-            km_fiscaal: parseFloat(inputs.km_fiscaal.value) || 0,
-            keuze_inzet: inputs.keuze_inzet.value
+            km_fiscaal: parseFloat(inputs.km_fiscaal.value) || 0
         };
 
-        const km_afgetopt = Math.min(v.km_fiscaal, 60);
-        const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
-        const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
-        const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
-        
+        const totaalFiscaleRuimte = (v.km_fiscaal * 2) * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
+        const standaardVergoeding = (Math.min(v.km_fiscaal * 2, 60)) * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
+        const teBenuttenReiskosten = totaalFiscaleRuimte - standaardVergoeding;
         const totaalIngezetBedrag = Math.max(0, teBenuttenReiskosten);
 
         let brutoBronHuidig;
         let bronNaamKey;
+        
+        const selectedRadio = document.querySelector('input[name="travel_exchange_type"]:checked');
+        const selectedTravelExchangeType = selectedRadio?.value;
+        
+        // Update de visuele staat van de radiobuttons
+        radioOptions.forEach(option => {
+            option.classList.remove('is-selected');
+        });
+        if (selectedRadio) {
+            selectedRadio.closest('.radio-option').classList.add('is-selected');
+        }
 
-        switch (v.keuze_inzet) {
-            case 'beide':
+
+        switch (selectedTravelExchangeType) {
+            case 'eju_zonder_verlof_met_vakantiegeld':
+            case 'eju_met_verlof_met_vakantiegeld':
                 brutoBronHuidig = v.max_vakantiegeld + v.max_eindejaarsuitkering;
                 bronNaamKey = 'sourceBoth';
                 break;
-            case 'eindejaarsuitkering':
+            case 'eju_zonder_verlof':
+            case 'eju_met_verlof':
             default:
                 brutoBronHuidig = v.max_eindejaarsuitkering;
                 bronNaamKey = 'sourceYearEndBonus';
@@ -300,9 +305,51 @@ document.addEventListener('DOMContentLoaded', () => {
         let progressPercentage = brutoBronHuidig > 0 ? (totaalIngezetBedrag / brutoBronHuidig) * 100 : 0;
         outputs.progress_bar.style.width = `${Math.min(progressPercentage, 100)}%`;
         outputs.progress_bar.classList.remove('is-normal', 'is-warning', 'is-danger');
-        if (totaalIngezetBedrag > brutoBronHuidig) outputs.progress_bar.classList.add('is-danger');
-        else if (progressPercentage > 80) outputs.progress_bar.classList.add('is-warning');
-        else outputs.progress_bar.classList.add('is-normal');
+        if (totaalIngezetBedrag > brutoBronHuidig) {
+            outputs.progress_bar.classList.add('is-danger');
+        } else if (progressPercentage > 80) {
+            outputs.progress_bar.classList.add('is-warning');
+        } else {
+            outputs.progress_bar.classList.add('is-normal');
+        }
+    }
+
+    function initializeTool() {
+        translatePage(currentLang); 
+
+        document.querySelectorAll('#max_vakantiegeld, #max_eindejaarsuitkering, #reisdagen_gedeclareerd, #km_fiscaal').forEach(input => {
+            input.addEventListener('input', updateCalculations);
+        });
+        document.querySelectorAll('input[name="travel_exchange_type"]').forEach(radio => {
+            radio.addEventListener('change', updateCalculations);
+        });
+        sourceSelector.addEventListener('change', handleSourceSelection);
+        
+        document.querySelectorAll('.toggle-details-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const detailsContainer = this.parentElement.querySelector('.calculation-details');
+                const isVisible = detailsContainer.classList.toggle('is-visible');
+                this.textContent = isVisible ? translations[currentLang].hideDetails : translations[currentLang].showDetails;
+            });
+        });
+
+        openInfoModalLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            infoModal.classList.add('is-active');
+        });
+
+        const closeModal = () => infoModal.classList.remove('is-active');
+        closeModalBtn.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', closeModal);
+
+        translateBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'nl' ? 'en' : 'nl';
+            translatePage(currentLang);
+            updateCalculations();
+        });
+
+        handleSourceSelection();
     }
 
     initializeTool();

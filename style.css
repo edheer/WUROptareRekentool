@@ -11,7 +11,8 @@ body {
     min-height: 100vh; padding: 2rem; box-sizing: border-box;
 }
 .container { max-width: 1000px; width: 100%; position: relative; }
-.header { text-align: center; margin-bottom: 2rem; padding-top: 2rem; }
+
+.header { text-align: center; margin-bottom: 2rem; padding-top: 0; }
 .header h1 { font-size: 2.2rem; color: var(--wur-blauw); margin: 0; }
 
 .language-switcher {
@@ -34,11 +35,10 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* --- Stijl voor bronnen dropdown --- */
 .source-selector-container {
     text-align: center;
-    margin-bottom: 2.5rem; /* Meer ruimte voor de content */
-    margin-top: -1rem; /* Iets dichter bij de titel */
+    margin-bottom: 1.5rem;
+    margin-top: 0;
 }
 #source-selector-label {
     display: block;
@@ -66,6 +66,28 @@ body {
     box-shadow: 0 0 0 3px rgba(60, 138, 73, 0.1), 0 2px 5px rgba(0,0,0,0.05);
 }
 
+/* --- GEWIJZIGD: Stijl voor de radiobuttons (subtieler gemaakt) --- */
+.top-level-options-container {
+    /* Verwijder de kaart-stijl: geen achtergrond, geen padding, geen schaduw */
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+.top-level-options-container .radio-group-container {
+    /* De daadwerkelijke grid met knoppen */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: left;
+    max-width: 720px; /* Geef het een maximale breedte */
+    margin-left: auto;  /* Centreer de grid */
+    margin-right: auto;
+}
+/* --- EINDE WIJZIGING --- */
+
 .main-grid { display: grid; grid-template-columns: 1.3fr 1.1fr; gap: 2.5rem; align-items: start; }
 .card { 
     background-color: white; border-radius: 12px; 
@@ -77,9 +99,65 @@ body {
 
 .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
 .input-group { margin-bottom: 0.5rem; }
-.input-group label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; font-weight: 600; color: var(--tekst-grijs); min-height: 2.4em; }
-.input-group input, .input-group select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-kleur); background-color: #fdfdfd; box-sizing: border-box; font-size: 1rem; }
+.radio-options-group > label {
+    display: block;
+    margin-bottom: 1.5rem; /* Meer ruimte onder de titel */
+    font-size: 1.1rem; /* Iets groter */
+    font-weight: 600;
+    color: var(--tekst-grijs);
+}
+.input-group label:not(.radio-options-group label) {
+    display: block; margin-bottom: 0.3rem; font-size: 0.9rem; font-weight: 600; color: var(--tekst-grijs); min-height: 2.4em;
+}
+.input-group input:not([type="radio"]), .input-group select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-kleur); background-color: #fdfdfd; box-sizing: border-box; font-size: 1rem; }
 .input-group input:focus { outline: none; border-color: var(--wur-groen-primair); box-shadow: 0 0 0 3px rgba(60, 138, 73, 0.1); }
+
+.radio-group-container {
+    margin-top: 0;
+}
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: #fff; /* Witte achtergrond voor de pil */
+    border: 1px solid var(--border-kleur);
+    border-radius: 8px;
+    padding: 12px 16px; /* Iets meer padding */
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+}
+.radio-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border-color: #c0c9d1;
+}
+.radio-option input[type="radio"] {
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    width: 20px; height: 20px; border: 2px solid var(--wur-blauw);
+    border-radius: 50%; display: grid; place-content: center;
+    transition: all 0.2s ease; flex-shrink: 0; margin: 0;
+}
+.radio-option input[type="radio"]::before {
+    content: ''; width: 10px; height: 10px; border-radius: 50%;
+    transform: scale(0); transition: transform 0.2s ease; background-color: var(--wur-blauw);
+}
+.radio-option input[type="radio"]:checked {
+    border-color: var(--wur-groen-primair);
+}
+.radio-option input[type="radio"]:checked::before {
+    transform: scale(1);
+    background-color: var(--wur-groen-primair);
+}
+.radio-option.is-selected { /* Klasse voor geselecteerde optie */
+    border-color: var(--wur-groen-primair);
+    background-color: #f1f8f2;
+}
+.radio-option label {
+    flex-grow: 1; cursor: pointer; font-weight: 500;
+    color: var(--tekst-donker); font-size: 0.95rem;
+    margin-bottom: 0; min-height: auto;
+}
 
 .budget-info .row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
 .budget-info .label { color: var(--tekst-grijs); }
@@ -128,20 +206,17 @@ body {
 .modal-content { position: relative; z-index: 1001; background: white; border-radius: 12px; padding: 2.5rem; max-width: 750px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
 .modal-close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 2rem; color: var(--tekst-grijs); cursor: pointer; line-height: 1; }
 .modal-close-btn:hover { color: var(--tekst-donker); }
-.modal-content h2 { color: var(--wur-blauw); margin-top: 0; }
-.modal-content h3 { color: var(--wur-blauw); border-bottom: 1px solid var(--border-kleur); padding-bottom: 0.5rem; margin-top: 1.5rem; }
-.modal-content ul { list-style-type: disc; padding-left: 2rem; }
-.modal-content li { margin-bottom: 0.75rem; }
-.modal-content ul.checkmark-list { list-style-type: '✔  '; padding-left: 1.5rem; }
-.modal-content strong { color: var(--wur-groen-primair); }
-.modal-content .calculation-example { background: #f8f9fa; border: 1px solid var(--border-kleur); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
 
 #qr-code-container {
-    position: absolute; /* Changed from fixed to stay with the page content */
-    top: 20px; left: 20px; width: 105px; height: 105px; z-index: 1002;
+    position: absolute; top: 20px; left: 20px; width: 105px; height: 105px; z-index: 1002;
     padding: 8px; background-color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     border-radius: 12px; box-sizing: border-box;
 }
 #qr-code-container img { width: 100%; height: 100%; display: block; }
 
 @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) {
+    .top-level-options-container .radio-group-container {
+        grid-template-columns: 1fr;
+    }
+}

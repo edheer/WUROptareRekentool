@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-translate-key="pageTitle">WUR Berekeningsmodel Uitruil</title>
-    <!-- Link naar het externe CSS-bestand -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,23 +14,54 @@
     </a>
 </div>
 <div class="container">
-    <div class="language-switcher">
-        <button id="translate-btn" title="Switch language"></button>
-    </div>
-    <header class="header"><h1 data-translate-key="headerTitle">Simulatietool Optare</h1></header>
-
-    <!-- Bronnen selectie dropdown -->
     <div class="source-selector-container">
         <label for="source-selector" id="source-selector-label" data-translate-key="sourceSelectorLabel">Kies uw berekening</label>
         <select id="source-selector">
-            <option value="reiskosten" selected data-translate-key="sourceTravel">Reiskosten</option>
+            <option value="reiskosten" selected data-translate-key="sourceTravel">Extra Reiskosten</option>
             <option value="fiets" data-translate-key="sourceBike">Fiets</option>
             <option value="extra_verlof" data-translate-key="sourceLeave">Extra verlof</option>
             <option value="vakbond" data-translate-key="sourceUnion">Vakbondcontributie</option>
         </select>
     </div>
 
+    <div id="travel-exchange-options-container" class="top-level-options-container">
+        <div id="travel-exchange-options" class="radio-options-group">
+            <label data-translate-key="labelExchangeType">Kies de soort uitruil:</label>
+            <div class="radio-group-container">
+                <div class="radio-option">
+                    <input type="radio" id="eju_zv_mv" name="travel_exchange_type" value="eju_zonder_verlof_met_vakantiegeld" checked>
+                    <label for="eju_zv_mv" data-translate-key="optTravelEJUWithoutLeaveWithHolidayPay">EJU zonder verlof met vakantiegeld</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="eju_zv" name="travel_exchange_type" value="eju_zonder_verlof">
+                    <label for="eju_zv" data-translate-key="optTravelEJUWithoutLeave">EJU zonder verlof</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="eju_mv_mv" name="travel_exchange_type" value="eju_met_verlof_met_vakantiegeld">
+                    <label for="eju_mv_mv" data-translate-key="optTravelEJUMetLeaveWithHolidayPay">EJU met verlof met vakantiegeld</label>
+                </div>
+                <div class="radio-option">
+                    <input type="radio" id="eju_mv" name="travel_exchange_type" value="eju_met_verlof">
+                    <label for="eju_mv" data-translate-key="optTravelEJUMetLeave">EJU met verlof</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="language-switcher">
+        <button id="translate-btn" title="Switch language"></button>
+    </div>
+    <header class="header"><h1 data-translate-key="headerTitle">Simulatietool Optare</h1></header>
+
     <p class="footer-disclaimer" data-translate-key="disclaimer">* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.</p>
+    
+    <div id="other-calculation-types" style="display: none;">
+        <div class="card">
+            <h2 data-translate-key="notImplemented">Deze berekening is nog niet geïmplementeerd.</h2>
+            <p data-translate-key="contactHR">Neem contact op met HR voor meer informatie.</p>
+        </div>
+    </div>
+    
     <div class="main-grid">
         <!-- LINKER KOLOM: INPUTS -->
         <div class="input-column">
@@ -43,25 +73,24 @@
                 </div>
                 <div class="progress-bar"><div class="progress-bar-inner" id="progress_bar"></div></div>
             </div>
-            <div class="card">
+            
+            <div class="card" id="travel-cost-card">
                 <h2 data-translate-key="travelCostExchange">Uitruil reiskosten</h2>
-                <div class="input-grid">
-                    <div class="input-group"><label for="max_vakantiegeld" data-translate-key="labelHolidayPay">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="0" min="0"></div>
-                    <div class="input-group"><label for="max_eindejaarsuitkering" data-translate-key="labelYearEndBonus">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="0" min="0"></div>
-                    <div class="input-group"><label for="reisdagen_gedeclareerd" data-translate-key="labelTravelDays">Gedeclareerde reisdagen</label><input type="number" id="reisdagen_gedeclareerd" value="0" min="0"></div>
-                    <div class="input-group"><label for="km_fiscaal" data-translate-key="labelDistance">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="0" min="0"></div>
-                    <div class="input-group">
-                        <label for="keuze_inzet" data-translate-key="labelSourceToUse">Welke bron wil je inzetten?</label>
-                        <select id="keuze_inzet">
-                            <option value="eindejaarsuitkering" data-translate-key="optionYearEndBonus">Eindejaarsuitkering</option>
-                            <option value="beide" data-translate-key="optionBoth">Vakantiegeld & Eindejaarsuitkering</option>
-                        </select>
+                
+                <div id="travel-inputs-section">
+                    <div class="input-grid">
+                        <div class="input-group"><label for="max_vakantiegeld" data-translate-key="labelHolidayPay">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="0" min="0"></div>
+                        <div class="input-group"><label for="max_eindejaarsuitkering" data-translate-key="labelYearEndBonus">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="0" min="0"></div>
+                        <div class="input-group"><label for="reisdagen_gedeclareerd" data-translate-key="labelTravelDays">Gedeclareerde reisdagen</label><input type="number" id="reisdagen_gedeclareerd" value="0" min="0"></div>
+                        <div class="input-group"><label for="km_fiscaal" data-translate-key="labelDistance">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="0" min="0"></div>
+                    </div>
+                    
+                    <div class="action-container">
+                        <a id="open-info-modal-link" class="info-link" data-translate-key="explanationLink">Uitleg van berekening</a>
                     </div>
                 </div>
-                <div class="action-container">
-                    <a id="open-info-modal-link" class="info-link" data-translate-key="explanationLink">Uitleg van berekening</a>
-                </div>
             </div>
+
         </div>
         <!-- RECHTER KOLOM: RESULTATEN -->
         <div class="results-column">
@@ -103,7 +132,6 @@
     </div>
 </div>
 
-<!-- MODAL HTML -->
 <div id="info-modal" class="modal-container">
     <div class="modal-overlay"></div>
     <div class="modal-content">
@@ -160,9 +188,6 @@
     </div>
 </div>
 
-<!-- Link naar het externe JavaScript-bestand -->
-<!-- 'defer' zorgt ervoor dat het script pas wordt uitgevoerd nadat de HTML volledig is geladen -->
 <script src="script.js" defer></script>
-
 </body>
 </html>
