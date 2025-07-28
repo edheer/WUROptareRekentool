@@ -18,8 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
         updateReiskosten(currentLang, translations);
     }
 
-    // … rest van je eventlisteners
-});
+    // Luister naar input
+    document.body.addEventListener('input', () => {
+        const selected = document.getElementById('source-selector').value;
+        if (selected === 'reiskosten') {
+            updateReiskosten(currentLang, translations);
+        }
+    });
 
     // Taalknop
     document.getElementById('translate-btn').addEventListener('click', () => {
@@ -44,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedSection) {
             selectedSection.style.display = 'block';
 
-            // init of update geselecteerde tool
             if (selected === 'reiskosten') {
                 initReiskostenTool(currentLang, translations);
                 updateReiskosten(currentLang, translations);
