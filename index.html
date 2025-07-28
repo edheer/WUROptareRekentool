@@ -1,207 +1,93 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
     <title data-translate-key="pageTitle">WUR Berekeningsmodel Uitruil</title>
-    <style>
-        :root {
-            --wur-groen-primair: #3c8a49; --wur-blauw: #00546d;
-            --kleur-oranje: #f0ad4e; --kleur-rood: #c94c4c; 
-            --licht-grijs: #f8f9fa; --tekst-donker: #343a40; --tekst-grijs: #6c757d; 
-            --border-kleur: #dee2e6;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--licht-grijs);
-            color: var(--tekst-donker); display: flex; justify-content: center; align-items: flex-start;
-            min-height: 100vh; padding: 2rem; box-sizing: border-box;
-        }
-        .container { max-width: 1000px; width: 100%; position: relative; }
-        .header { text-align: center; margin-bottom: 2rem; padding-top: 2rem; }
-        .header h1 { font-size: 2.2rem; color: var(--wur-blauw); margin: 0; }
-        
-        .language-switcher {
-            position: absolute; top: 0px; right: 0px;
-        }
-        #translate-btn {
-            background-color: #fff;
-            border: 1px solid var(--border-kleur);
-            color: var(--wur-blauw);
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-        #translate-btn:hover {
-            background-color: #f8f9fa;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        /* --- NIEUW: Stijl voor bronnen dropdown --- */
-        .source-selector-container {
-            text-align: center;
-            margin-bottom: 2.5rem; /* Meer ruimte voor de content */
-            margin-top: -1rem; /* Iets dichter bij de titel */
-        }
-        #source-selector-label {
-            display: block;
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--wur-blauw);
-        }
-        #source-selector {
-            padding: 12px 20px;
-            border: 1px solid var(--border-kleur);
-            border-radius: 8px;
-            background-color: #fff;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--wur-blauw);
-            min-width: 350px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        #source-selector:focus {
-            outline: none;
-            border-color: var(--wur-groen-primair);
-            box-shadow: 0 0 0 3px rgba(60, 138, 73, 0.1), 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .main-grid { display: grid; grid-template-columns: 1.3fr 1.1fr; gap: 2.5rem; align-items: start; }
-        .card { 
-            background-color: white; border-radius: 12px; 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.07); 
-            padding: 2rem; margin-bottom: 2rem; 
-        }
-        .card:last-child { margin-bottom: 0; }
-        .card h2 { font-size: 1.5rem; color: var(--wur-blauw); margin-top: 0; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-kleur); }
-        
-        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
-        .input-group { margin-bottom: 0.5rem; }
-        .input-group label { display: block; margin-bottom: 0.3rem; font-size: 0.9rem; font-weight: 600; color: var(--tekst-grijs); min-height: 2.4em; }
-        .input-group input, .input-group select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-kleur); background-color: #fdfdfd; box-sizing: border-box; font-size: 1rem; }
-        .input-group input:focus { outline: none; border-color: var(--wur-groen-primair); box-shadow: 0 0 0 3px rgba(60, 138, 73, 0.1); }
-        
-        .budget-info .row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-        .budget-info .label { color: var(--tekst-grijs); }
-        .budget-info .value { font-weight: 600; }
-        .progress-bar { height: 20px; background-color: #e9ecef; border-radius: 10px; overflow: hidden; margin-top: 1rem; }
-        .progress-bar-inner { height: 100%; width: 0%; border-radius: 10px; transition: width 0.4s ease, background-color 0.4s ease; }
-        .progress-bar-inner.is-normal { background-color: var(--wur-groen-primair); }
-        .progress-bar-inner.is-warning { background-color: var(--kleur-oranje); }
-        .progress-bar-inner.is-danger { background-color: var(--kleur-rood); }
-        
-        .hero-result { text-align: center; padding: 1.5rem; background-color: #eaf3eb; border-radius: 8px; }
-        .hero-result .label { font-size: 1.2rem; color: var(--wur-groen-primair); font-weight: 600; }
-        .hero-result .value { font-size: 3rem; font-weight: 700; color: var(--wur-blauw); margin: 0.5rem 0; display: block; }
-        
-        .details-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-        .result-box h3 { font-size: 1.2rem; font-weight: 700; color: var(--tekst-donker); text-align: center; margin-bottom: 1.5rem; }
-        .calculation-item { display: flex; justify-content: space-between; align-items: flex-start; background-color: #fbfcfb; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #f1f3f5;}
-        .item-label .main-label { font-weight: 600; }
-        .item-label .sub-label { font-size: 0.85rem; color: var(--tekst-grijs); }
-        .item-value { text-align: right; }
-        .item-value .amount { font-size: 1.1rem; font-weight: 700; display: block; }
-        .item-value.text-positive .amount { color: var(--wur-groen-primair); }
-        .item-value.text-negative .amount { color: var(--kleur-rood); }
-        .calculation-item.is-total { background: none; border: none; border-top: 3px solid var(--wur-blauw); border-radius: 0; padding-top: 1rem; margin-top: 1rem; }
-        .is-total .main-label, .is-total .amount { font-size: 1.2rem; font-weight: 700; }
-        
-        .calculation-details { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
-        .calculation-details.is-visible { max-height: 300px; }
-        .toggle-details-btn { display: block; text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--wur-blauw); text-decoration: none; font-weight: 600; cursor: pointer; }
-        .toggle-details-btn:hover { text-decoration: underline; }
-
-        .footer-disclaimer { text-align: center; margin-top: 1rem; color: var(--tekst-grijs); font-size: 0.85rem; }
-        
-        .action-container { margin-top: 1.5rem; text-align: center; }
-        .info-link { color: var(--wur-blauw); text-decoration: none; font-weight: 600; font-size: 0.95rem; cursor: pointer;}
-        .info-link:hover { text-decoration: underline; }
-        .cta-button {
-            display: inline-block; background-color: var(--wur-groen-primair); color: white; padding: 12px 24px; border-radius: 8px;
-            text-decoration: none; font-weight: 700; transition: background-color 0.3s ease;
-        }
-        .cta-button:hover { background-color: #2e6b37; }
-
-        .modal-container { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; align-items: center; justify-content: center; }
-        .modal-container.is-active { display: flex; }
-        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); cursor: pointer; }
-        .modal-content { position: relative; z-index: 1001; background: white; border-radius: 12px; padding: 2.5rem; max-width: 750px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .modal-close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 2rem; color: var(--tekst-grijs); cursor: pointer; line-height: 1; }
-        .modal-close-btn:hover { color: var(--tekst-donker); }
-        .modal-content h2 { color: var(--wur-blauw); margin-top: 0; }
-        .modal-content h3 { color: var(--wur-blauw); border-bottom: 1px solid var(--border-kleur); padding-bottom: 0.5rem; margin-top: 1.5rem; }
-        .modal-content ul { list-style-type: disc; padding-left: 2rem; }
-        .modal-content li { margin-bottom: 0.75rem; }
-        .modal-content ul.checkmark-list { list-style-type: '✔  '; padding-left: 1.5rem; }
-        .modal-content strong { color: var(--wur-groen-primair); }
-        .modal-content .calculation-example { background: #f8f9fa; border: 1px solid var(--border-kleur); padding: 1rem; border-radius: 8px; margin-top: 1rem; }
-        
-        #qr-code-container {
-            top: 20px; left: 20px; width: 105px; height: 105px; z-index: 1002;
-            padding: 8px; background-color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-radius: 12px; box-sizing: border-box;
-        }
-        #qr-code-container img { width: 100%; height: 100%; display: block; }
-        
-        @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
-    </style>
+    <link rel="stylesheet" href="style.css" >
 </head>
 <body>
-<!-- QR CODE IN DE LINKER BOVENHOEK -->
-<div id="qr-code-container">
-    <a href="https://wuroptarerekentool.netlify.app/" target="_blank" title="Open de tool in een nieuw tabblad">
-        <img src="images/qr-code.png" alt="QR Code naar WUR Optare Rekentool">
-    </a>
-</div>
-<div class="container">
-    <div class="language-switcher">
-        <button id="translate-btn" title="Switch language"></button>
+    <!-- QR CODE IN DE LINKER BOVENHOEK -->
+    <div id="qr-code-container">
+        <a href="https://wuroptarerekentool.netlify.app/" target="_blank" title="Open de tool in een nieuw tabblad">
+            <img src="images/qr-code.png" alt="QR Code naar WUR Optare Rekentool" >
+        </a>
     </div>
-    <header class="header"><h1 data-translate-key="headerTitle">Simulatietool Optare</h1></header>
 
-    <!-- NIEUW: Bronnen selectie dropdown -->
-    <div class="source-selector-container">
-        <label for="source-selector" id="source-selector-label" data-translate-key="sourceSelectorLabel">Kies uw berekening</label>
-        <select id="source-selector">
-            <option value="reiskosten" selected data-translate-key="sourceTravel">Reiskosten</option>
-            <option value="fiets" data-translate-key="sourceBike">Fiets</option>
-            <option value="extra_verlof" data-translate-key="sourceLeave">Extra verlof</option>
-            <option value="vakbond" data-translate-key="sourceUnion">Vakbondcontributie</option>
-        </select>
-    </div>
-    <!-- EINDE NIEUW -->
+    <div class="container">
+        <!-- Taalwisselknop -->
+        <div class="language-switcher">
+            <button id="translate-btn" type="button" title="Switch language">...</button>
+        </div>
 
-    <p class="footer-disclaimer" data-translate-key="disclaimer">* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.</p>
+        <header class="header">
+            <h1 data-translate-key="headerTitle">Simulatietool Optare</h1>
+        </header>
+
+        <!-- Dropdown om tool te kiezen -->
+        <div class="source-selector-container">
+            <label for="source-selector" id="source-selector-label" data-translate-key="sourceSelectorLabel">Kies uw berekening</label>
+            <select id="source-selector">
+                <option value="reiskosten" selected data-translate-key="sourceTravel">Reiskosten</option>
+                <option value="fiets" data-translate-key="sourceBike">Fiets</option>
+                <option value="extra_verlof" data-translate-key="sourceLeave">Extra verlof</option>
+                <option value="vakbond" data-translate-key="sourceUnion">Vakbondcontributie</option>
+            </select>
+        </div>
+
+        <p class="footer-disclaimer" data-translate-key="disclaimer">
+            * Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.
+        </p>
+
+        <!-- Container voor tools (elk in eigen sectie) -->
+       <section id="tool-reiskosten" class="tool-section">
     <div class="main-grid">
         <!-- LINKER KOLOM: INPUTS -->
         <div class="input-column">
-             <div class="card">
+            <div class="card">
                 <h2 data-translate-key="yourBudget">Jouw budget</h2>
                 <div class="budget-info">
-                    <div class="row"><span class="label"><span data-translate-key="availableSource">Beschikbare bron</span> (<span id="budget_bron_naam"></span>)</span><span class="value" id="budget_bron_totaal"></span></div>
-                    <div class="row"><span class="label" data-translate-key="totalUsedAmount">Totaal ingezet bedrag</span><span class="value" id="budget_inzet"></span></div>
+                    <div class="row">
+                        <span class="label">
+                            <span data-translate-key="availableSource">Beschikbare bron</span>
+                            (<span id="budget_bron_naam"></span>)
+                        </span>
+                        <span class="value" id="budget_bron_totaal"></span>
+                    </div>
+                    <div class="row">
+                        <span class="label" data-translate-key="totalUsedAmount">Totaal ingezet bedrag</span>
+                        <span class="value" id="budget_inzet"></span>
+                    </div>
                 </div>
-                <div class="progress-bar"><div class="progress-bar-inner" id="progress_bar"></div></div>
+                <div class="progress-bar">
+                    <div class="progress-bar-inner" id="progress_bar"></div>
+                </div>
             </div>
+
             <div class="card">
                 <h2 data-translate-key="travelCostExchange">Uitruil reiskosten</h2>
                 <div class="input-grid">
-                    <div class="input-group"><label for="max_vakantiegeld" data-translate-key="labelHolidayPay">Max. inzet vakantiegeld</label><input type="number" id="max_vakantiegeld" value="0" min="0"></div>
-                    <div class="input-group"><label for="max_eindejaarsuitkering" data-translate-key="labelYearEndBonus">Max. inzet eindejaarsuitkering</label><input type="number" id="max_eindejaarsuitkering" value="0" min="0"></div>
-                    <div class="input-group"><label for="reisdagen_gedeclareerd" data-translate-key="labelTravelDays">Gedeclareerde reisdagen</label><input type="number" id="reisdagen_gedeclareerd" value="0" min="0"></div>
-                    <div class="input-group"><label for="km_fiscaal" data-translate-key="labelDistance">Enkele reisafstand</label><input type="number" id="km_fiscaal" value="0" min="0"></div>
+                    <div class="input-group">
+                        <label for="max_vakantiegeld" data-translate-key="labelHolidayPay">Max. inzet vakantiegeld</label>
+                        <input type="number" id="max_vakantiegeld" value="0" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="max_eindejaarsuitkering" data-translate-key="labelYearEndBonus">Max. inzet eindejaarsuitkering</label>
+                        <input type="number" id="max_eindejaarsuitkering" value="0" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="reisdagen_gedeclareerd" data-translate-key="labelTravelDays">Gedeclareerde reisdagen</label>
+                        <input type="number" id="reisdagen_gedeclareerd" value="0" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="km_fiscaal" data-translate-key="labelDistance">Enkele reisafstand</label>
+                        <input type="number" id="km_fiscaal" value="0" min="0">
+                    </div>
                     <div class="input-group">
                         <label for="keuze_inzet" data-translate-key="labelSourceToUse">Welke bron wil je inzetten?</label>
                         <select id="keuze_inzet">
                             <option value="eindejaarsuitkering" data-translate-key="optionYearEndBonus">Eindejaarsuitkering</option>
-                            <option value="beide" data-translate-key="optionBoth">Vakantiegeld & Eindejaarsuitkering</option>
+                            <option value="beide" data-translate-key="optionBoth">Vakantiegeld &amp; Eindejaarsuitkering</option>
                         </select>
                     </div>
                 </div>
@@ -210,418 +96,125 @@
                 </div>
             </div>
         </div>
+
         <!-- RECHTER KOLOM: RESULTATEN -->
         <div class="results-column">
-             <div class="card">
+            <div class="card">
                 <h2 data-translate-key="yourNetBenefit">Jouw netto voordeel</h2>
                 <div class="hero-result">
                     <div class="label" data-translate-key="netBenefitLabel">Je houdt netto méér over op jaarbasis:</div>
                     <span class="value" id="verschil_netto"></span>
                 </div>
                 <div class="action-container">
-                    <a href="https://workforce.nl.adp.com/PV_Web/composer/workspace.jsp?mode=medewerker&action=screen&service=flex_cockpit" target="_blank" class="cta-button" data-translate-key="applyButton">Direct aanvragen in Optare</a>
+                    <a href="https://workforce.nl.adp.com/PV_Web/composer/workspace.jsp?mode=medewerker&action=screen&service=flex_cockpit"
+                       target="_blank"
+                       class="cta-button"
+                       data-translate-key="applyButton">
+                        Direct aanvragen in Optare
+                    </a>
                 </div>
             </div>
+
             <div class="card">
                 <h2 data-translate-key="calculationDetails">De details van de berekening</h2>
                 <div class="details-grid">
                     <div class="result-box">
                         <h3 data-translate-key="currentSituation">Huidige situatie</h3>
                         <div class="calculation-details">
-                            <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="gross">Bruto </span><span class="sub-label bron_naam"></span></div><div class="item-value"><span class="amount" id="huidig_bruto"></span></div></div>
-                            <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span></div><div class="item-value text-negative"><span class="amount" id="huidig_belasting"></span></div></div>
+                            <div class="calculation-item">
+                                <div class="item-label">
+                                    <span class="main-label" data-translate-key="gross">Bruto </span>
+                                    <span class="sub-label bron_naam"></span>
+                                </div>
+                                <div class="item-value">
+                                    <span class="amount" id="huidig_bruto"></span>
+                                </div>
+                            </div>
+                            <div class="calculation-item">
+                                <div class="item-label">
+                                    <span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span>
+                                </div>
+                                <div class="item-value text-negative">
+                                    <span class="amount" id="huidig_belasting"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="calculation-item is-total"><div class="item-label"><span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span></div><div class="item-value"><span class="amount" id="huidig_netto"></span></div></div>
+                        <div class="calculation-item is-total">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span>
+                            </div>
+                            <div class="item-value">
+                                <span class="amount" id="huidig_netto"></span>
+                            </div>
+                        </div>
                         <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
                     </div>
+
                     <div class="result-box">
                         <h3 data-translate-key="situationAfterExchange">Situatie na uitruil</h3>
-                         <div class="calculation-details">
-                            <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="gross">Bruto </span><span class="sub-label bron_naam"></span></div><div class="item-value"><span class="amount" id="nieuw_bruto"></span></div></div>
-                            <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span></div><div class="item-value text-negative"><span class="amount" id="nieuw_belasting"></span></div></div>
-                            <div class="calculation-item"><div class="item-label"><span class="main-label" data-translate-key="taxFreeExchange">+ Belastingvrije uitruil</span></div><div class="item-value text-positive"><span class="amount" id="nieuw_uitruil"></span></div></div>
+                        <div class="calculation-details">
+                            <div class="calculation-item">
+                                <div class="item-label">
+                                    <span class="main-label" data-translate-key="gross">Bruto </span>
+                                    <span class="sub-label bron_naam"></span>
+                                </div>
+                                <div class="item-value">
+                                    <span class="amount" id="nieuw_bruto"></span>
+                                </div>
+                            </div>
+                            <div class="calculation-item">
+                                <div class="item-label">
+                                    <span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span>
+                                </div>
+                                <div class="item-value text-negative">
+                                    <span class="amount" id="nieuw_belasting"></span>
+                                </div>
+                            </div>
+                            <div class="calculation-item">
+                                <div class="item-label">
+                                    <span class="main-label" data-translate-key="taxFreeExchange">+ Belastingvrije uitruil</span>
+                                </div>
+                                <div class="item-value text-positive">
+                                    <span class="amount" id="nieuw_uitruil"></span>
+                                </div>
+                            </div>
                         </div>
-                         <div class="calculation-item is-total"><div class="item-label"><span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span></div><div class="item-value"><span class="amount" id="nieuw_netto"></span></div></div>
-                         <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
+                        <div class="calculation-item is-total">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span>
+                            </div>
+                            <div class="item-value">
+                                <span class="amount" id="nieuw_netto"></span>
+                            </div>
+                        </div>
+                        <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- MODAL HTML -->
-<div id="info-modal" class="modal-container">
-    <div class="modal-overlay"></div>
-    <div class="modal-content">
-        <button id="close-modal-btn" class="modal-close-btn">×</button>
-        <h2 data-translate-key="modalTitle1">Reiskosten, vakantie-uitkering en eindejaarsuitkering zonder verlof</h2>
-        <h3 data-translate-key="modalTitle2">Korte uitleg van de regeling</h3>
-        <p data-translate-key="modalP1">Met deze regeling kun je extra reiskostenvergoeding ontvangen door je eindejaarsuitkering (EJU) en/of vakantie-uitkering in te ruilen. Je ontvangt:</p>
-        <ul>
-            <li data-translate-key="modalLi1"><strong>€ 0,23</strong> per kilometer in plaats van € 0,14 (voor de eerste 60km per dag).</li>
-            <li data-translate-key="modalLi2"><strong>€ 0,23</strong> voor alle kilometers boven de 60km enkele reis.</li>
-            <li data-translate-key="modalLi3">De uitbetaling is twee keer per jaar, in mei en november.</li>
-        </ul>
-        <p data-translate-key="modalP2">Let op: je moet je reisdagen maandelijks blijven registreren in MyHR.</p>
-        <h3 data-translate-key="modalTitle3">Voor wie is deze regeling interessant?</h3>
-        <ul class="checkmark-list">
-            <li data-translate-key="modalLi4">Je reist met eigen vervoer.</li>
-            <li data-translate-key="modalLi5">Je werkt regelmatig op locatie.</li>
-            <li data-translate-key="modalLi6">Je hebt voldoende reisdagen dit jaar.</li>
-            <li data-translate-key="modalLi7">Je wilt fiscaal voordeel over je EJU of vakantie-uitkering.</li>
-            <li data-translate-key="modalLi8">Je wilt geen verlof inzetten als ruilmiddel.</li>
-        </ul>
-        <h3 data-translate-key="modalTitle4">Voor wie is deze regeling minder interessant?</h3>
-        <ul>
-            <li data-translate-key="modalLi9">Je reist met het openbaar vervoer en ontvangt daarvoor een vergoeding.</li>
-            <li data-translate-key="modalLi10">Je bent niet consequent in het registreren van je reisdagen in MyHR.</li>
-            <li data-translate-key="modalLi11">Je hebt een korte afstand en weinig reisdagen (dan is het voordeel relatief klein, maar nog steeds een voordeel).</li>
-        </ul>
-        <h3 data-translate-key="modalTitle5">Wat zijn de voorwaarden / consequenties?</h3>
-        <p><strong data-translate-key="modalStrong1">Voorwaarden:</strong></p>
-        <ul>
-            <li data-translate-key="modalLi12">Je reist met eigen vervoer.</li>
-            <li data-translate-key="modalLi13">Je declareert je reisdagen maandelijks in MyHR.</li>
-            <li data-translate-key="modalLi14">Je doet één aanvraag per jaar via de Keuzetool.</li>
-            <li data-translate-key="modalLi15">Je ruilt (deels) je bruto vakantie-uitkering en/of eindejaarsuitkering in.</li>
-            <li data-translate-key="modalLi16">Als je bronnen niet voldoende zijn, wordt het resterende bedrag ingehouden op je bruto salaris van mei of november.</li>
-        </ul>
-        <p><strong data-translate-key="modalStrong2">Consequenties:</strong></p>
-        <ul>
-            <li data-translate-key="modalLi17">Je ontvangt de extra reiskostenvergoeding in mei en in november.</li>
-            <li data-translate-key="modalLi18">Je brutoloon in die maanden kan lager zijn als je bronnen niet toereikend zijn.</li>
-            <li data-translate-key="modalLi19">Geen declaraties = geen extra vergoeding, ook niet als je wél een aanvraag hebt gedaan.</li>
-        </ul>
-        <h3 data-translate-key="modalTitle6">Voorbeeldsituatie</h3>
-        <p data-translate-key="modalP3"><strong>Scenario:</strong> Thomas reist 50 km enkele reis en werkt 3 dagen per week op locatie. Hij verwacht 150 reisdagen te declareren. Zijn vakantie-uitkering is € 2.500 en zijn eindejaarsuitkering is € 2.400.</p>
-        <div class="calculation-example">
-            <p><strong data-translate-key="modalStrong3">Berekening extra vergoeding:</strong></p>
-            <ul>
-                <li data-translate-key="modalLi20">Over de eerste 60 km (heen en terug) krijgt Thomas € 0,09 extra: <br>150 dagen × 60 km × € 0,09 = <strong>€ 810</strong></li>
-                <li data-translate-key="modalLi21">Over de resterende 40 km (100 km - 60 km) krijgt hij € 0,23: <br>150 dagen × 40 km × € 0,23 = <strong>€ 1.380</strong></li>
-                <li data-translate-key="modalLi22">Totaal extra te ontvangen: <strong>€ 2.190</strong> (belastingvrij)</li>
-            </ul>
-             <p data-translate-key="modalP4">Thomas ruilt dit bedrag in tegen zijn bruto vakantie-uitkering en eindejaarsuitkering. Dit levert hem een netto voordeel op van circa 50% van € 2.190, dus <strong>€ 1.095</strong>.</p>
+        <section id="tool-fiets" class="tool-section" style="display: none;"></section>
+        <section id="tool-extra_verlof" class="tool-section" style="display: none;"></section>
+        <section id="tool-vakbond" class="tool-section" style="display: none;"></section>
+    </div>
+
+    <!-- Modal voor uitleg of info -->
+    <div id="info-modal" class="modal-container" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button id="close-modal-btn" class="modal-close-btn" type="button">&times;</button>
+            <div id="modal-content-body"></div>
         </div>
     </div>
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // --- GEWIJZIGD: Vertalingen object uitgebreid met de nieuwe dropdown teksten ---
-    const translations = {
-        nl: {
-            // Bestaande vertalingen
-            translateBtnText: "EN",
-            pageTitle: "WUR Berekeningsmodel Uitruil",
-            headerTitle: "Simulatietool Optare",
-            disclaimer: "* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.",
-            yourBudget: "Jouw budget",
-            availableSource: "Beschikbare bron",
-            totalUsedAmount: "Totaal ingezet bedrag",
-            travelCostExchange: "Uitruil reiskosten",
-            labelHolidayPay: "Max. inzet vakantiegeld",
-            labelYearEndBonus: "Max. inzet eindejaarsuitkering",
-            labelTravelDays: "Gedeclareerde reisdagen",
-            labelDistance: "Enkele reisafstand",
-            labelSourceToUse: "Welke bron wil je inzetten?",
-            optionYearEndBonus: "Eindejaarsuitkering",
-            optionBoth: "Vakantiegeld & Eindejaarsuitkering",
-            explanationLink: "Uitleg van berekening",
-            yourNetBenefit: "Jouw netto voordeel",
-            netBenefitLabel: "Je houdt netto méér over op jaarbasis:",
-            applyButton: "Direct aanvragen in Optare",
-            calculationDetails: "De details van de berekening",
-            currentSituation: "Huidige situatie",
-            situationAfterExchange: "Situatie na uitruil",
-            gross: "Bruto ",
-            tax: "Belasting (ca. 50%)",
-            netPaid: "Netto uitbetaald",
-            taxFreeExchange: "+ Belastingvrije uitruil",
-            showDetails: "Toon details",
-            hideDetails: "Verberg details",
-            sourceYearEndBonus: "Eindejaarsuitkering",
-            sourceBoth: "Vakantiegeld & Eindejaarsuitkering",
-            
-            // Nieuwe vertalingen voor dropdown
-            sourceSelectorLabel: "Kies uw berekening",
-            sourceTravel: "Reiskosten",
-            sourceBike: "Fiets",
-            sourceLeave: "Extra verlof",
-            sourceUnion: "Vakbondcontributie",
-            
-            // Bestaande modal vertalingen...
-            modalTitle1: "Reiskosten, vakantie-uitkering en eindejaarsuitkering zonder verlof",
-            modalTitle2: "Korte uitleg van de regeling",
-            modalP1: "Met deze regeling kun je extra reiskostenvergoeding ontvangen door je eindejaarsuitkering (EJU) en/of vakantie-uitkering in te ruilen. Je ontvangt:",
-            modalLi1: "<strong>€ 0,23</strong> per kilometer in plaats van € 0,14 (voor de eerste 60km per dag).",
-            modalLi2: "<strong>€ 0,23</strong> voor alle kilometers boven de 60km enkele reis.",
-            modalLi3: "De uitbetaling is twee keer per jaar, in mei en november.",
-            modalP2: "Let op: je moet je reisdagen maandelijks blijven registreren in MyHR.",
-            modalTitle3: "Voor wie is deze regeling interessant?",
-            modalLi4: "Je reist met eigen vervoer.",
-            modalLi5: "Je werkt regelmatig op locatie.",
-            modalLi6: "Je hebt voldoende reisdagen dit jaar.",
-            modalLi7: "Je wilt fiscaal voordeel over je EJU of vakantie-uitkering.",
-            modalLi8: "Je wilt geen verlof inzetten als ruilmiddel.",
-            modalTitle4: "Voor wie is deze regeling minder interessant?",
-            modalLi9: "Je reist met het openbaar vervoer en ontvangt daarvoor een vergoeding.",
-            modalLi10: "Je bent niet consequent in het registreren van je reisdagen in MyHR.",
-            modalLi11: "Je hebt een korte afstand en weinig reisdagen (dan is het voordeel relatief klein, maar nog steeds een voordeel).",
-            modalTitle5: "Wat zijn de voorwaarden / consequenties?",
-            modalStrong1: "Voorwaarden:",
-            modalLi12: "Je reist met eigen vervoer.",
-            modalLi13: "Je declareert je reisdagen maandelijks in MyHR.",
-            modalLi14: "Je doet één aanvraag per jaar via de Keuzetool.",
-            modalLi15: "Je ruilt (deels) je bruto vakantie-uitkering en/of eindejaarsuitkering in.",
-            modalLi16: "Als je bronnen niet voldoende zijn, wordt het resterende bedrag ingehouden op je bruto salaris van mei of november.",
-            modalStrong2: "Consequenties:",
-            modalLi17: "Je ontvangt de extra reiskostenvergoeding in mei en in november.",
-            modalLi18: "Je brutoloon in die maanden kan lager zijn als je bronnen niet toereikend zijn.",
-            modalLi19: "Geen declaraties = geen extra vergoeding, ook niet als je wél een aanvraag hebt gedaan.",
-            modalTitle6: "Voorbeeldsituatie",
-            modalP3: "<strong>Scenario:</strong> Thomas reist 50 km enkele reis en werkt 3 dagen per week op locatie. Hij verwacht 150 reisdagen te declareren. Zijn vakantie-uitkering is € 2.500 en zijn eindejaarsuitkering is € 2.400.",
-            modalStrong3: "Berekening extra vergoeding:",
-            modalLi20: "Over de eerste 60 km (heen en terug) krijgt Thomas € 0,09 extra: <br>150 dagen × 60 km × € 0,09 = <strong>€ 810</strong>",
-            modalLi21: "Over de resterende 40 km (100 km - 60 km) krijgt hij € 0,23: <br>150 dagen × 40 km × € 0,23 = <strong>€ 1.380</strong>",
-            modalLi22: "Totaal extra te ontvangen: <strong>€ 2.190</strong> (belastingvrij)",
-            modalP4: "Thomas ruilt dit bedrag in tegen zijn bruto vakantie-uitkering en eindejaarsuitkering. Dit levert hem een netto voordeel op van circa 50% van € 2.190, dus <strong>€ 1.095</strong>."
-        },
-        en: {
-            // Bestaande vertalingen
-            translateBtnText: "NL",
-            pageTitle: "WUR Exchange Calculation Model",
-            headerTitle: "Simulation tool Optare",
-            disclaimer: "* Please note: this is an indicative calculation. No rights can be derived from the results.",
-            yourBudget: "Your budget",
-            availableSource: "Available source",
-            totalUsedAmount: "Total amount used",
-            travelCostExchange: "Travel Cost Exchange",
-            labelHolidayPay: "Max. holiday allowance to use",
-            labelYearEndBonus: "Max. year-end bonus to use",
-            labelTravelDays: "Declared travel days",
-            labelDistance: "One-way travel distance",
-            labelSourceToUse: "Which source do you want to use?",
-            optionYearEndBonus: "Year-end bonus",
-            optionBoth: "Holiday allowance & Year-end bonus",
-            explanationLink: "Explanation of calculation",
-            yourNetBenefit: "Your net benefit",
-            netBenefitLabel: "Your net annual benefit is:",
-            applyButton: "Apply directly in Optare",
-            calculationDetails: "Calculation details",
-            currentSituation: "Current situation",
-            situationAfterExchange: "Situation after exchange",
-            gross: "Gross ",
-            tax: "Tax (approx. 50%)",
-            netPaid: "Net Paid",
-            taxFreeExchange: "+ Tax-free exchange",
-            showDetails: "Show details",
-            hideDetails: "Hide details",
-            sourceYearEndBonus: "Year-end bonus",
-            sourceBoth: "Holiday allowance & Year-end bonus",
-
-            // Nieuwe vertalingen voor dropdown
-            sourceSelectorLabel: "Choose your calculation",
-            sourceTravel: "Travel costs",
-            sourceBike: "Bicycle",
-            sourceLeave: "Extra leave",
-            sourceUnion: "Union dues",
-            
-            // Bestaande modal vertalingen...
-            modalTitle1: "Travel costs, holiday allowance, and year-end bonus without leave",
-            modalTitle2: "Brief explanation of the scheme",
-            modalP1: "With this scheme, you can receive extra travel allowance by exchanging your year-end bonus (YEB) and/or holiday allowance. You receive:",
-            modalLi1: "<strong>€0.23</strong> per kilometer instead of €0.14 (for the first 60km per day).",
-            modalLi2: "<strong>€0.23</strong> for all kilometers beyond a 60km one-way trip.",
-            modalLi3: "Payment is twice a year, in May and November.",
-            modalP2: "Please note: you must continue to register your travel days monthly in MyHR.",
-            modalTitle3: "Who is this scheme for?",
-            modalLi4: "You travel with your own transport.",
-            modalLi5: "You regularly work on location.",
-            modalLi6: "You have enough travel days this year.",
-            modalLi7: "You want a tax benefit on your YEB or holiday allowance.",
-            modalLi8: "You do not want to use leave as a means of exchange.",
-            modalTitle4: "Who is this scheme less suitable for?",
-            modalLi9: "You travel by public transport and receive compensation for it.",
-            modalLi10: "You are not consistent in registering your travel days in MyHR.",
-            modalLi11: "You have a short distance and few travel days (the benefit is relatively small, but still a benefit).",
-            modalTitle5: "What are the conditions / consequences?",
-            modalStrong1: "Conditions:",
-            modalLi12: "You travel with your own transport.",
-            modalLi13: "You declare your travel days monthly in MyHR.",
-            modalLi14: "You make one request per year via the Choice Tool.",
-            modalLi15: "You (partially) exchange your gross holiday allowance and/or year-end bonus.",
-            modalLi16: "If your sources are insufficient, the remaining amount will be deducted from your gross salary in May or November.",
-            modalStrong2: "Consequences:",
-            modalLi17: "You will receive the extra travel allowance in May and November.",
-            modalLi18: "Your gross salary in those months may be lower if your sources are not sufficient.",
-            modalLi19: "No declarations = no extra compensation, even if you have made a request.",
-            modalTitle6: "Example Situation",
-            modalP3: "<strong>Scenario:</strong> Thomas travels 50 km one-way and works 3 days a week on location. He expects to declare 150 travel days. His holiday allowance is €2,500 and his year-end bonus is €2,400.",
-            modalStrong3: "Extra allowance calculation:",
-            modalLi20: "For the first 60 km (round trip), Thomas gets an extra €0.09: <br>150 days × 60 km × €0.09 = <strong>€810</strong>",
-            modalLi21: "For the remaining 40 km (100 km - 60 km), he gets €0.23: <br>150 days × 40 km × €0.23 = <strong>€1,380</strong>",
-            modalLi22: "Total extra to receive: <strong>€2,190</strong> (tax-free)",
-            modalP4: "Thomas exchanges this amount against his gross holiday allowance and year-end bonus. This gives him a net benefit of approximately 50% of €2,190, so <strong>€1,095</strong>."
-        }
-    };
-
-    let currentLang = 'nl';
-
-    // VASTE PARAMETERS
-    const BELASTING_PERCENTAGE = 0.50;
-    const KM_VERGOEDING_STANDAARD = 0.14;
-    const KM_VERGOEDING_FISCAAL = 0.23;
-
-    const inputs = {
-        max_vakantiegeld: document.getElementById('max_vakantiegeld'),
-        max_eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering'),
-        reisdagen_gedeclareerd: document.getElementById('reisdagen_gedeclareerd'),
-        km_fiscaal: document.getElementById('km_fiscaal'),
-        keuze_inzet: document.getElementById('keuze_inzet')
-    };
-
-    const outputs = {
-        budget_bron_naam: document.getElementById('budget_bron_naam'),
-        budget_bron_totaal: document.getElementById('budget_bron_totaal'),
-        budget_inzet: document.getElementById('budget_inzet'),
-        progress_bar: document.getElementById('progress_bar'),
-        bron_namen: document.querySelectorAll('.sub-label.bron_naam'),
-        huidig_bruto: document.getElementById('huidig_bruto'),
-        huidig_belasting: document.getElementById('huidig_belasting'),
-        huidig_netto: document.getElementById('huidig_netto'),
-        nieuw_bruto: document.getElementById('nieuw_bruto'),
-        nieuw_belasting: document.getElementById('nieuw_belasting'),
-        nieuw_uitruil: document.getElementById('nieuw_uitruil'),
-        nieuw_netto: document.getElementById('nieuw_netto'),
-        verschil_netto: document.getElementById('verschil_netto')
-    };
-
-    const openInfoModalLink = document.getElementById('open-info-modal-link');
-    const infoModal = document.getElementById('info-modal');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const modalOverlay = infoModal.querySelector('.modal-overlay');
-    const translateBtn = document.getElementById('translate-btn');
-
-    const formatCurrency = (value) => `€ ${value.toFixed(2).replace('.', ',')}`;
-
-    function translatePage(lang) {
-        document.querySelectorAll('[data-translate-key]').forEach(el => {
-            const key = el.dataset.translateKey;
-            if (translations[lang][key]) {
-                el.innerHTML = translations[lang][key];
-            }
-        });
-        document.documentElement.lang = lang;
-        translateBtn.textContent = translations[lang].translateBtnText;
-    }
-
-    function initializeTool() {
-        translatePage(currentLang); 
-
-        document.body.addEventListener('input', updateCalculations);
-        
-        document.querySelectorAll('.toggle-details-btn').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const detailsContainer = this.parentElement.querySelector('.calculation-details');
-                const isVisible = detailsContainer.classList.toggle('is-visible');
-                this.textContent = isVisible ? translations[currentLang].hideDetails : translations[currentLang].showDetails;
-            });
-        });
-
-        openInfoModalLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            infoModal.classList.add('is-active');
-        });
-
-        const closeModal = () => infoModal.classList.remove('is-active');
-        closeModalBtn.addEventListener('click', closeModal);
-        modalOverlay.addEventListener('click', closeModal);
-
-        translateBtn.addEventListener('click', () => {
-            currentLang = currentLang === 'nl' ? 'en' : 'nl';
-            translatePage(currentLang);
-            updateCalculations();
-        });
-
-        updateCalculations();
-    }
-    
-    function updateCalculations() {
-        // De rest van de berekeningslogica blijft hetzelfde
-        // Deze wordt niet beïnvloed door de nieuwe dropdown, aangezien de dropdown
-        // in de toekomst zal bepalen welke *gehele* tool wordt getoond.
-        // Voor nu blijft de reiskostenberekening actief.
-        const v = {
-            max_vakantiegeld: parseFloat(inputs.max_vakantiegeld.value) || 0,
-            max_eindejaarsuitkering: parseFloat(inputs.max_eindejaarsuitkering.value) || 0,
-            reisdagen_gedeclareerd: parseFloat(inputs.reisdagen_gedeclareerd.value) || 0,
-            km_fiscaal: parseFloat(inputs.km_fiscaal.value) || 0,
-            keuze_inzet: inputs.keuze_inzet.value
-        };
-
-        const km_afgetopt = Math.min(v.km_fiscaal, 60);
-        const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
-        const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
-        const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
-        
-        const totaalIngezetBedrag = Math.max(0, teBenuttenReiskosten);
-
-        let brutoBronHuidig;
-        let bronNaamKey;
-
-        switch (v.keuze_inzet) {
-            case 'beide':
-                brutoBronHuidig = v.max_vakantiegeld + v.max_eindejaarsuitkering;
-                bronNaamKey = 'sourceBoth';
-                break;
-            case 'eindejaarsuitkering':
-            default:
-                brutoBronHuidig = v.max_eindejaarsuitkering;
-                bronNaamKey = 'sourceYearEndBonus';
-                break;
-        }
-        
-        const belastingHuidig = brutoBronHuidig * BELASTING_PERCENTAGE;
-        const nettoHuidig = brutoBronHuidig - belastingHuidig;
-        
-        const brutoBronNieuw = brutoBronHuidig - totaalIngezetBedrag;
-        const belastingNieuw = brutoBronNieuw * BELASTING_PERCENTAGE;
-        const nettoNieuw = brutoBronNieuw - belastingNieuw + totaalIngezetBedrag;
-        
-        const verschilNetto = nettoNieuw - nettoHuidig;
-        
-        const bronNaam = translations[currentLang][bronNaamKey];
-        outputs.bron_namen.forEach(el => el.textContent = bronNaam);
-        outputs.budget_bron_naam.textContent = bronNaam;
-
-        outputs.budget_bron_totaal.textContent = formatCurrency(brutoBronHuidig);
-        outputs.budget_inzet.textContent = formatCurrency(totaalIngezetBedrag);
-        
-        outputs.huidig_bruto.textContent = formatCurrency(brutoBronHuidig);
-        outputs.huidig_belasting.textContent = formatCurrency(-belastingHuidig);
-        outputs.huidig_netto.textContent = formatCurrency(nettoHuidig);
-        
-        outputs.nieuw_bruto.textContent = formatCurrency(brutoBronNieuw);
-        outputs.nieuw_belasting.textContent = formatCurrency(-belastingNieuw);
-        outputs.nieuw_uitruil.textContent = formatCurrency(totaalIngezetBedrag);
-        outputs.nieuw_netto.textContent = formatCurrency(nettoNieuw);
-        
-        outputs.verschil_netto.textContent = formatCurrency(verschilNetto);
-        
-        let progressPercentage = brutoBronHuidig > 0 ? (totaalIngezetBedrag / brutoBronHuidig) * 100 : 0;
-        outputs.progress_bar.style.width = `${Math.min(progressPercentage, 100)}%`;
-        outputs.progress_bar.classList.remove('is-normal', 'is-warning', 'is-danger');
-        if (totaalIngezetBedrag > brutoBronHuidig) outputs.progress_bar.classList.add('is-danger');
-        else if (progressPercentage > 80) outputs.progress_bar.classList.add('is-warning');
-        else outputs.progress_bar.classList.add('is-normal');
-    }
-
-    initializeTool();
-});
-</script>
-
+    <!-- JavaScript bestanden -->
+    <script src="scripts/vertaalsysteem.js"></script>
+    <script src="scripts/reiskosten.js"></script>
+    <script src="scripts/fiets.js"></script>
+    <script src="scripts/verlof.js"></script>
+    <script src="scripts/vakbond.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 </html>
