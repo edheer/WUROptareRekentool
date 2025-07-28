@@ -7,22 +7,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Init vertaling
     translatePage(currentLang);
 
-    // Init dropdown + secties
+    // Toon alleen de juiste sectie bij start
+    const selected = document.getElementById('source-selector').value;
     document.querySelectorAll('.tool-section').forEach(div => div.style.display = 'none');
-    document.getElementById('tool-reiskosten').style.display = 'block';
+    document.getElementById(`tool-${selected}`).style.display = 'block';
 
-    // Init tool
-    initReiskostenTool(currentLang, translations);
-    updateReiskosten(currentLang, translations);
+    // Init bijbehorende tool
+    if (selected === 'reiskosten') {
+        initReiskostenTool(currentLang, translations);
+        updateReiskosten(currentLang, translations);
+    }
 
-    // Luister naar input
-    document.body.addEventListener('input', () => {
-        const selected = document.getElementById('source-selector').value;
-        if (selected === 'reiskosten') {
-            updateReiskosten(currentLang, translations);
-        }
-        // andere tools in toekomst hier toevoegen
-    });
+    // … rest van je eventlisteners
+});
 
     // Taalknop
     document.getElementById('translate-btn').addEventListener('click', () => {
