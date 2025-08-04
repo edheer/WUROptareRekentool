@@ -124,6 +124,8 @@
 
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
 
+/* --- Gecorrigeerde Modal Styles --- */
+
 .modal-container {
     position: fixed;
     top: 0;
@@ -131,29 +133,33 @@
     z-index: 9999;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
-    display: none;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6); /* Donkerdere overlay, zoals de oude versie */
+    display: none; /* Standaard verborgen */
+    
+    /* Belangrijk voor centreren! */
+    align-items: center;
+    justify-content: center;
+    padding: 1rem; /* Voegt wat ademruimte toe op kleine schermen */
+    box-sizing: border-box;
 }
 
+/* Deze klasse wordt door JavaScript toegevoegd om de modal te tonen */
 .modal-container.is-active {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 3rem 1rem;
+    display: flex; 
 }
 
 .modal-content {
     background: #fff;
-    border-radius: 10px;
-    max-width: 720px;
+    border-radius: 12px; /* Rondere hoeken */
+    max-width: 750px; /* Oude, ruimere breedte */
     width: 100%;
-    padding: 2rem;
+    max-height: 90vh; /* Iets meer hoogte, voorkomt scrollbar op de body */
+    overflow-y: auto; /* Maakt scrollen binnen de modal mogelijk */
+    padding: 2.5rem; /* Oude, ruimere padding */
     position: relative;
-    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
-    font-family: sans-serif;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Oude, subtielere schaduw */
+    color: var(--tekst-donker); /* Gebruik je CSS variabele */
     line-height: 1.6;
-    color: #1f2937;
 }
 
 .modal-content h2,
@@ -161,6 +167,10 @@
     font-weight: 700;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
+    color: var(--wur-blauw); /* Kleur van de titels */
+}
+.modal-content h2:first-child {
+    margin-top: 0;
 }
 
 .modal-content ul {
@@ -173,19 +183,56 @@
     margin-bottom: 0.5rem;
 }
 
-.modal-close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #333;
+/* --- NIEUW: Groene accenten voor de Modal --- */
+
+/* Stijl voor de lijst met vinkjes */
+.modal-content .checkmark-list {
+    list-style-type: none; /* Verwijder de standaard bolletjes */
+    padding-left: 5px;     /* Haal de standaard inspringing weg */
 }
 
-@media (max-width: 768px) {
-    .modal-content {
-        padding: 1.5rem;
-    }
+.modal-content .checkmark-list li {
+    padding-left: 1.8em;   /* Ruimte voor het vinkje */
+    position: relative;
+}
+
+.modal-content .checkmark-list li::before {
+    content: '✔'; /* Het vinkje-symbool */
+    position: absolute;
+    left: 0;
+    top: 1px;
+    color: var(--wur-groen-primair); /* De mooie groene kleur! */
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+/* Stijl voor het voorbeeld-rekenblok */
+.modal-content .calculation-example {
+    background-color: #eaf3eb; /* Zelfde lichte groen als .hero-result */
+    border-left: 4px solid var(--wur-groen-primair); /* Groene accentrand */
+    padding: 1rem 1.5rem;
+    margin-top: 1.5rem;
+    border-radius: 8px;
+}
+
+.modal-content .calculation-example strong {
+    color: var(--wur-blauw);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px; /* Oude positie */
+    right: 20px; /* Oude positie */
+    background: none;
+    border: none;
+    font-size: 2rem; /* Oude, grotere maat */
+    cursor: pointer;
+    color: var(--tekst-grijs); /* Gebruik je CSS variabele voor de kleur! */
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+    color: var(--tekst-donker); /* Gebruik je CSS variabele */
 }

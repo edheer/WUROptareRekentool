@@ -61,85 +61,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
-// Modal openen/sluiten via event delegation
+ // --- Gecorrigeerde Modal Logica ---
+
 document.body.addEventListener('click', (e) => {
     const modal = document.getElementById('info-modal');
-    const modalBody = document.getElementById('modal-content-body');
 
     // OPENEN MODAL
-    if (e.target && e.target.id === 'open-info-modal-link') {
+    // Controleer of de geklikte link (of een parent) de juiste ID heeft
+    if (e.target.closest('#open-info-modal-link')) {
         e.preventDefault();
+        const modalBody = document.getElementById('modal-content-body');
+        
         if (modal && modalBody) {
-            const t = translations[currentLang]; // huidige taal
+            const currentLang = document.documentElement.lang || 'nl'; // Haal taal op
+            const t = translations[currentLang]; // Huidige taalvertalingen
 
+            // Vul de modal content (jouw code was al prima!)
             modalBody.innerHTML = `
                 <h2>${t.modalTitle1}</h2>
                 <h3>${t.modalTitle2}</h3>
                 <p>${t.modalP1}</p>
-                <ul>
-                    <li>${t.modalLi1}</li>
-                    <li>${t.modalLi2}</li>
-                    <li>${t.modalLi3}</li>
-                </ul>
+                <ul><li>${t.modalLi1}</li><li>${t.modalLi2}</li><li>${t.modalLi3}</li></ul>
                 <p>${t.modalP2}</p>
-
                 <h3>${t.modalTitle3}</h3>
-                <ul>
+                  <ul class="checkmark-list">  <!-- HIER IS DE WIJZIGING -->
                     <li>${t.modalLi4}</li>
                     <li>${t.modalLi5}</li>
                     <li>${t.modalLi6}</li>
                     <li>${t.modalLi7}</li>
                     <li>${t.modalLi8}</li>
                 </ul>
-
                 <h3>${t.modalTitle4}</h3>
-                <ul>
-                    <li>${t.modalLi9}</li>
-                    <li>${t.modalLi10}</li>
-                    <li>${t.modalLi11}</li>
-                </ul>
-
+                <ul><li>${t.modalLi9}</li><li>${t.modalLi10}</li><li>${t.modalLi11}</li></ul>
                 <h3>${t.modalTitle5}</h3>
                 <p><strong>${t.modalStrong1}</strong></p>
-                <ul>
-                    <li>${t.modalLi12}</li>
-                    <li>${t.modalLi13}</li>
-                    <li>${t.modalLi14}</li>
-                    <li>${t.modalLi15}</li>
-                    <li>${t.modalLi16}</li>
-                </ul>
+                <ul><li>${t.modalLi12}</li><li>${t.modalLi13}</li><li>${t.modalLi14}</li><li>${t.modalLi15}</li><li>${t.modalLi16}</li></ul>
                 <p><strong>${t.modalStrong2}</strong></p>
-                <ul>
-                    <li>${t.modalLi17}</li>
-                    <li>${t.modalLi18}</li>
-                    <li>${t.modalLi19}</li>
-                </ul>
-
+                <ul><li>${t.modalLi17}</li><li>${t.modalLi18}</li><li>${t.modalLi19}</li></ul>
                 <h3>${t.modalTitle6}</h3>
                 <p>${t.modalP3}</p>
-                <p><strong>${t.modalStrong3}</strong></p>
-                <ul>
-                    <li>${t.modalLi20}</li>
-                    <li>${t.modalLi21}</li>
-                    <li>${t.modalLi22}</li>
-                </ul>
-                <p>${t.modalP4}</p>
+                <div class="calculation-example">
+                    <p><strong>${t.modalStrong3}</strong></p>
+                    <ul><li>${t.modalLi20}</li><li>${t.modalLi21}</li><li>${t.modalLi22}</li></ul>
+                    <p>${t.modalP4}</p>
+                </div>
             `;
 
+            // Toon de modal door de class toe te voegen
             modal.classList.add('is-active');
-            modal.style.display = 'block';
         }
     }
 
     // SLUITEN MODAL
-    if (
-        e.target.id === 'close-modal-btn' ||
-        e.target.classList.contains('modal-overlay')
-    ) {
+    // 1. Klik op sluitknop
+    // 2. Klik op de achtergrond (de container zelf)
+    if (e.target.id === 'close-modal-btn' || e.target.id === 'info-modal') {
         if (modal) {
+            // Verberg de modal door de class te verwijderen
             modal.classList.remove('is-active');
-            modal.style.display = 'none';
+        }
+    }
+});
+
+// (Optioneel maar aan te raden) Sluit de modal ook met de Escape-toets
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('info-modal');
+        if (modal && modal.classList.contains('is-active')) {
+            modal.classList.remove('is-active');
         }
     }
 });
