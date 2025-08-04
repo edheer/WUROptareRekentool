@@ -133,4 +133,22 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+ const numberInputs = document.querySelectorAll('#tool-reiskosten .input-grid input[type="number"]');
+
+    numberInputs.forEach(input => {
+        // Als je in het veld klikt/focust
+        input.addEventListener('focus', () => {
+            if (input.value === '0') {
+                input.value = ''; // Maak het veld leeg
+            }
+        });
+
+        // Als je het veld weer verlaat
+        input.addEventListener('blur', () => {
+            if (input.value === '') {
+                input.value = '0'; // Zet de '0' terug als het leeg is
+            }
+        });
+    });
+
 });
