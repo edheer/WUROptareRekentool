@@ -61,6 +61,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const toggleBtn = e.target.closest('.toggle-details-btn');
+
+    if (toggleBtn) {
+        e.preventDefault(); // Voorkom ongewenst gedrag van de <a> tag
+
+        // 1. Vind de bovenliggende 'result-box'
+        const resultBox = toggleBtn.closest('.result-box');
+        if (!resultBox) return; // Stop als we de box niet kunnen vinden
+
+        // 2. Vind de 'calculation-details' div binnen die specifieke box
+        const detailsDiv = resultBox.querySelector('.calculation-details');
+        if (!detailsDiv) return; // Stop als we de details niet kunnen vinden
+
+        // 3. Wissel de 'is-visible' class om de sectie te tonen/verbergen
+        detailsDiv.classList.toggle('is-visible');
+
+        // 4. Pas de tekst van de knop aan op basis van de nieuwe status
+        const isVisible = detailsDiv.classList.contains('is-visible');
+        const currentLang = document.documentElement.lang || 'nl';
+        
+        if (isVisible) {
+            // De details zijn nu zichtbaar, dus toon "Verberg details"
+            toggleBtn.textContent = translations[currentLang].hideDetails;
+            toggleBtn.setAttribute('data-translate-key', 'hideDetails');
+        } else {
+            // De details zijn nu verborgen, dus toon "Toon details"
+            toggleBtn.textContent = translations[currentLang].showDetails;
+            toggleBtn.setAttribute('data-translate-key', 'showDetails');
+        }
+    }
+
  // --- Gecorrigeerde Modal Logica ---
 
 document.body.addEventListener('click', (e) => {
