@@ -1,25 +1,31 @@
 import { initReiskostenTool, updateReiskosten } from './reiskosten.js';
 import { translations, translatePage } from './vertaalsysteem.js';
-const modalContentBody = document.getElementById('modal-content-body');
 
 document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'nl';
 
-    // Init vertaling
-    translatePage(currentLang);
+    // Functie om de juiste tool te initialiseren en te tonen
+    function initializeTool() {
+        const selected = document.getElementById('source-selector').value;
+        document.querySelectorAll('.tool-section').forEach(div => div.style.display = 'none');
+        
+        const selectedSection = document.getElementById(`tool-${selected}`);
+        if (selectedSection) {
+            selectedSection.style.display = 'block';
 
-    // Toon alleen de juiste sectie bij start
-    const selected = document.getElementById('source-selector').value;
-    document.querySelectorAll('.tool-section').forEach(div => div.style.display = 'none');
-    document.getElementById(`tool-${selected}`).style.display = 'block';
-
-    // Init bijbehorende tool
-    if (selected === 'reiskosten') {
-        initReiskostenTool(currentLang, translations);
-        updateReiskosten(currentLang, translations);
+            if (selected === 'reiskosten') {
+                initReiskostenTool(currentLang, translations);
+                updateReiskosten(currentLang, translations);
+            }
+            // Hier kun je in de toekomst initialisatie voor andere tools toevoegen
+        }
     }
 
-    // Luister naar input
+    // Init vertaling en de eerste tool
+    translatePage(currentLang);
+    initializeTool();
+
+    // Luister naar input voor updates
     document.body.addEventListener('input', () => {
         const selected = document.getElementById('source-selector').value;
         if (selected === 'reiskosten') {
@@ -33,153 +39,120 @@ document.addEventListener('DOMContentLoaded', () => {
         translateBtn.addEventListener('click', () => {
             currentLang = currentLang === 'nl' ? 'en' : 'nl';
             translatePage(currentLang);
-
-            const selected = document.getElementById('source-selector').value;
-            if (selected === 'reiskosten') {
-                updateReiskosten(currentLang, translations);
-            }
+            // Update de berekening na taalwissel zodat teksten (zoals bronnaam) meeveranderen
+            updateReiskosten(currentLang, translations);
         });
     }
 
     // Tool selectie via dropdown
     const sourceSelector = document.getElementById('source-selector');
     if (sourceSelector) {
-        sourceSelector.addEventListener('change', (e) => {
-            const selected = e.target.value;
-
-            document.querySelectorAll('.tool-section').forEach(div => div.style.display = 'none');
-
-            const selectedSection = document.getElementById(`tool-${selected}`);
-            if (selectedSection) {
-                selectedSection.style.display = 'block';
-
-                if (selected === 'reiskosten') {
-                    initReiskostenTool(currentLang, translations);
-                    updateReiskosten(currentLang, translations);
-                }
-            }
-        });
+        sourceSelector.addEventListener('change', initializeTool);
     }
 
-    const toggleBtn = e.target.closest('.toggle-details-btn');
-
-    if (toggleBtn) {
-        e.preventDefault(); // Voorkom ongewenst gedrag van de <a> tag
-
-        // 1. Vind de bovenliggende 'result-box'
-        const resultBox = toggleBtn.closest('.result-box');
-        if (!resultBox) return; // Stop als we de box niet kunnen vinden
-
-        // 2. Vind de 'calculation-details' div binnen die specifieke box
-        const detailsDiv = resultBox.querySelector('.calculation-details');
-        if (!detailsDiv) return; // Stop als we de details niet kunnen vinden
-
-        // 3. Wissel de 'is-visible' class om de sectie te tonen/verbergen
-        detailsDiv.classList.toggle('is-visible');
-
-        // 4. Pas de tekst van de knop aan op basis van de nieuwe status
-        const isVisible = detailsDiv.classList.contains('is-visible');
-        const currentLang = document.documentElement.lang || 'nl';
-        
-        if (isVisible) {
-            // De details zijn nu zichtbaar, dus toon "Verberg details"
-            toggleBtn.textContent = translations[currentLang].hideDetails;
-            toggleBtn.setAttribute('data-translate-key', 'hideDetails');
-        } else {
-            // De details zijn nu verborgen, dus toon "Toon details"
-            toggleBtn.textContent = translations[currentLang].showDetails;
-            toggleBtn.setAttribute('data-translate-key', 'showDetails');
-        }
-    }
-
- // --- Gecorrigeerde Modal Logica ---
-
-document.body.addEventListener('click', (e) => {
-    const modal = document.getElementById('info-modal');
-
-    // OPENEN MODAL
-    // Controleer of de geklikte link (of een parent) de juiste ID heeft
-    if (e.target.closest('#open-info-modal-link')) {
-        e.preventDefault();
-        const modalBody = document.getElementById('modal-content-body');
-        
-        if (modal && modalBody) {
-            const currentLang = document.documentElement.lang || 'nl'; // Haal taal op
-            const t = translations[currentLang]; // Huidige taalvertalingen
-
-            // Vul de modal content (jouw code was al prima!)
-            modalBody.innerHTML = `
-                <h2>${t.modalTitle1}</h2>
-                <h3>${t.modalTitle2}</h3>
-                <p>${t.modalP1}</p>
-                <ul><li>${t.modalLi1}</li><li>${t.modalLi2}</li><li>${t.modalLi3}</li></ul>
-                <p>${t.modalP2}</p>
-                <h3>${t.modalTitle3}</h3>
-                  <ul class="checkmark-list">  <!-- HIER IS DE WIJZIGING -->
-                    <li>${t.modalLi4}</li>
-                    <li>${t.modalLi5}</li>
-                    <li>${t.modalLi6}</li>
-                    <li>${t.modalLi7}</li>
-                    <li>${t.modalLi8}</li>
-                </ul>
-                <h3>${t.modalTitle4}</h3>
-                <ul><li>${t.modalLi9}</li><li>${t.modalLi10}</li><li>${t.modalLi11}</li></ul>
-                <h3>${t.modalTitle5}</h3>
-                <p><strong>${t.modalStrong1}</strong></p>
-                <ul><li>${t.modalLi12}</li><li>${t.modalLi13}</li><li>${t.modalLi14}</li><li>${t.modalLi15}</li><li>${t.modalLi16}</li></ul>
-                <p><strong>${t.modalStrong2}</strong></p>
-                <ul><li>${t.modalLi17}</li><li>${t.modalLi18}</li><li>${t.modalLi19}</li></ul>
-                <h3>${t.modalTitle6}</h3>
-                <p>${t.modalP3}</p>
-                <div class="calculation-example">
-                    <p><strong>${t.modalStrong3}</strong></p>
-                    <ul><li>${t.modalLi20}</li><li>${t.modalLi21}</li><li>${t.modalLi22}</li></ul>
-                    <p>${t.modalP4}</p>
-                </div>
-            `;
-
-            // Toon de modal door de class toe te voegen
-            modal.classList.add('is-active');
-        }
-    }
-
-    // SLUITEN MODAL
-    // 1. Klik op sluitknop
-    // 2. Klik op de achtergrond (de container zelf)
-    if (e.target.id === 'close-modal-btn' || e.target.id === 'info-modal') {
-        if (modal) {
-            // Verberg de modal door de class te verwijderen
-            modal.classList.remove('is-active');
-        }
-    }
-});
-
-// (Optioneel maar aan te raden) Sluit de modal ook met de Escape-toets
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
+    // --- CENTRALE EVENT LISTENER VOOR ALLE KLIK-ACTIES ---
+    document.body.addEventListener('click', (e) => {
         const modal = document.getElementById('info-modal');
-        if (modal && modal.classList.contains('is-active')) {
-            modal.classList.remove('is-active');
+
+        // --- 1. LOGICA VOOR "TOON/VERBERG DETAILS" KNOP ---
+        const toggleBtn = e.target.closest('.toggle-details-btn');
+        if (toggleBtn) {
+            e.preventDefault(); // Voorkom dat de pagina naar boven springt
+
+            const resultBox = toggleBtn.closest('.result-box');
+            if (!resultBox) return;
+
+            const detailsDiv = resultBox.querySelector('.calculation-details');
+            if (!detailsDiv) return;
+
+            detailsDiv.classList.toggle('is-visible');
+
+            const isVisible = detailsDiv.classList.contains('is-visible');
+            const lang = document.documentElement.lang || 'nl';
+            
+            if (isVisible) {
+                toggleBtn.textContent = translations[lang].hideDetails;
+                toggleBtn.setAttribute('data-translate-key', 'hideDetails');
+            } else {
+                toggleBtn.textContent = translations[lang].showDetails;
+                toggleBtn.setAttribute('data-translate-key', 'showDetails');
+            }
+            return; // Stop verdere uitvoering, de klik is afgehandeld
         }
-    }
-});
 
- const numberInputs = document.querySelectorAll('#tool-reiskosten .input-grid input[type="number"]');
+        // --- 2. LOGICA VOOR HET OPENEN VAN DE INFO MODAL ---
+        if (e.target.closest('#open-info-modal-link')) {
+            e.preventDefault();
+            const modalBody = document.getElementById('modal-content-body');
+            
+            if (modal && modalBody) {
+                const lang = document.documentElement.lang || 'nl';
+                const t = translations[lang];
 
+                modalBody.innerHTML = `
+                    <h2>${t.modalTitle1}</h2>
+                    <h3>${t.modalTitle2}</h3>
+                    <p>${t.modalP1}</p>
+                    <ul><li>${t.modalLi1}</li><li>${t.modalLi2}</li><li>${t.modalLi3}</li></ul>
+                    <p>${t.modalP2}</p>
+                    <h3>${t.modalTitle3}</h3>
+                    <ul class="checkmark-list">
+                        <li>${t.modalLi4}</li>
+                        <li>${t.modalLi5}</li>
+                        <li>${t.modalLi6}</li>
+                        <li>${t.modalLi7}</li>
+                        <li>${t.modalLi8}</li>
+                    </ul>
+                    <h3>${t.modalTitle4}</h3>
+                    <ul><li>${t.modalLi9}</li><li>${t.modalLi10}</li><li>${t.modalLi11}</li></ul>
+                    <h3>${t.modalTitle5}</h3>
+                    <p><strong>${t.modalStrong1}</strong></p>
+                    <ul><li>${t.modalLi12}</li><li>${t.modalLi13}</li><li>${t.modalLi14}</li><li>${t.modalLi15}</li><li>${t.modalLi16}</li></ul>
+                    <p><strong>${t.modalStrong2}</strong></p>
+                    <ul><li>${t.modalLi17}</li><li>${t.modalLi18}</li><li>${t.modalLi19}</li></ul>
+                    <h3>${t.modalTitle6}</h3>
+                    <p>${t.modalP3}</p>
+                    <div class="calculation-example">
+                        <p><strong>${t.modalStrong3}</strong></p>
+                        <ul><li>${t.modalLi20}</li><li>${t.modalLi21}</li><li>${t.modalLi22}</li></ul>
+                        <p>${t.modalP4}</p>
+                    </div>
+                `;
+                modal.classList.add('is-active');
+            }
+            return; // Stop verdere uitvoering
+        }
+        
+        // --- 3. LOGICA VOOR HET SLUITEN VAN DE MODAL ---
+        if (e.target.id === 'close-modal-btn' || e.target.id === 'info-modal') {
+            if (modal) {
+                modal.classList.remove('is-active');
+            }
+        }
+    });
+
+    // Sluit de modal met de Escape-toets
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('info-modal');
+            if (modal && modal.classList.contains('is-active')) {
+                modal.classList.remove('is-active');
+            }
+        }
+    });
+    
+    // Logica om de '0' in input velden leeg te maken bij focus
+    const numberInputs = document.querySelectorAll('#tool-reiskosten .input-grid input[type="number"]');
     numberInputs.forEach(input => {
-        // Als je in het veld klikt/focust
         input.addEventListener('focus', () => {
             if (input.value === '0') {
-                input.value = ''; // Maak het veld leeg
+                input.value = '';
             }
         });
-
-        // Als je het veld weer verlaat
         input.addEventListener('blur', () => {
             if (input.value === '') {
-                input.value = '0'; // Zet de '0' terug als het leeg is
+                input.value = '0';
             }
         });
     });
-
 });

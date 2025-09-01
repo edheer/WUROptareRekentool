@@ -34,15 +34,6 @@ export function initReiskostenTool(currentLang, translations) {
         nieuw_netto: document.getElementById('nieuw_netto'),
         verschil_netto: document.getElementById('verschil_netto')
     };
-
-    document.querySelectorAll('.toggle-details-btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-            const detailsContainer = this.parentElement.querySelector('.calculation-details');
-            const isVisible = detailsContainer.classList.toggle('is-visible');
-            this.textContent = translations[currentLang][isVisible ? 'hideDetails' : 'showDetails'];
-        });
-    });
 }
 
 export function updateReiskosten(currentLang, translations) {

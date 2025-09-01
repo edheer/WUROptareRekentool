@@ -110,79 +110,81 @@
 
             <div class="card">
                 <h2 data-translate-key="calculationDetails">De details van de berekening</h2>
-                <div class="details-grid">
-                    <div class="result-box">
-                        <h3 data-translate-key="currentSituation">Huidige situatie</h3>
-                        <div class="calculation-details">
-                            <div class="calculation-item">
-                                <div class="item-label">
-                                    <span class="main-label" data-translate-key="gross">Bruto </span>
-                                    <span class="sub-label bron_naam"></span>
-                                </div>
-                                <div class="item-value">
-                                    <span class="amount" id="huidig_bruto"></span>
-                                </div>
-                            </div>
-                            <div class="calculation-item">
-                                <div class="item-label">
-                                    <span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span>
-                                </div>
-                                <div class="item-value text-negative">
-                                    <span class="amount" id="huidig_belasting"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="calculation-item is-total">
-                            <div class="item-label">
-                                <span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span>
-                            </div>
-                            <div class="item-value">
-                                <span class="amount" id="huidig_netto"></span>
-                            </div>
-                        </div>
-                        <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
-                    </div>
 
-                    <div class="result-box">
-                        <h3 data-translate-key="situationAfterExchange">Situatie na uitruil</h3>
-                        <div class="calculation-details">
-                            <div class="calculation-item">
-                                <div class="item-label">
-                                    <span class="main-label" data-translate-key="gross">Bruto </span>
-                                    <span class="sub-label bron_naam"></span>
-                                </div>
-                                <div class="item-value">
-                                    <span class="amount" id="nieuw_bruto"></span>
-                                </div>
-                            </div>
-                            <div class="calculation-item">
-                                <div class="item-label">
-                                    <span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span>
-                                </div>
-                                <div class="item-value text-negative">
-                                    <span class="amount" id="nieuw_belasting"></span>
-                                </div>
-                            </div>
-                            <div class="calculation-item">
-                                <div class="item-label">
-                                    <span class="main-label" data-translate-key="taxFreeExchange">+ Belastingvrije uitruil</span>
-                                </div>
-                                <div class="item-value text-positive">
-                                    <span class="amount" id="nieuw_uitruil"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="calculation-item is-total">
+                <!-- De result-boxen staan nu direct in de card -->
+                <div class="result-box">
+                    <h3 data-translate-key="currentSituation">Huidige situatie</h3>
+                    <div class="calculation-details">
+                        <div class="calculation-item">
                             <div class="item-label">
-                                <span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span>
+                                <span class="main-label" data-translate-key="gross">Bruto </span>
+                                <span class="sub-label bron_naam"></span>
                             </div>
                             <div class="item-value">
-                                <span class="amount" id="nieuw_netto"></span>
+                                <span class="amount" id="huidig_bruto"></span>
                             </div>
                         </div>
-                        <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
+                        <div class="calculation-item">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span>
+                            </div>
+                            <div class="item-value text-negative">
+                                <span class="amount" id="huidig_belasting"></span>
+                            </div>
+                        </div>
                     </div>
+                    <div class="calculation-item is-total">
+                        <div class="item-label">
+                            <span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span>
+                        </div>
+                        <div class="item-value">
+                            <span class="amount" id="huidig_netto"></span>
+                        </div>
+                    </div>
+                    <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
                 </div>
+
+                <div class="result-box">
+                    <h3 data-translate-key="situationAfterExchange">Situatie na uitruil</h3>
+                    <div class="calculation-details">
+                        <div class="calculation-item">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="gross">Bruto </span>
+                                <span class="sub-label bron_naam"></span>
+                            </div>
+                            <div class="item-value">
+                                <span class="amount" id="nieuw_bruto"></span>
+                            </div>
+                        </div>
+                        <div class="calculation-item">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span>
+                            </div>
+                            <div class="item-value text-negative">
+                                <span class="amount" id="nieuw_belasting"></span>
+                            </div>
+                        </div>
+                        <div class="calculation-item">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="taxFreeExchange">+ Belastingvrije uitruil</span>
+                            </div>
+                            <div class="item-value text-positive">
+                                <span class="amount" id="nieuw_uitruil"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="calculation-item is-total">
+                        <div class="item-label">
+                            <span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span>
+                        </div>
+                        <div class="item-value">
+                            <span class="amount" id="nieuw_netto"></span>
+                        </div>
+                    </div>
+                    <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
+                </div>
+                
+            </div>
             </div>
         </div>
     </div>

@@ -93,8 +93,12 @@
         .hero-result { text-align: center; padding: 1.5rem; background-color: #eaf3eb; border-radius: 8px; }
         .hero-result .label { font-size: 1.2rem; color: var(--wur-groen-primair); font-weight: 600; }
         .hero-result .value { font-size: 3rem; font-weight: 700; color: var(--wur-blauw); margin: 0.5rem 0; display: block; }
-        
-        .details-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .result-box {
+    margin-bottom: 2rem; /* Ruimte tussen de 'huidige' en 'nieuwe' situatie box */
+}
+.result-box:last-of-type {
+    margin-bottom: 0; /* Geen extra ruimte na de laatste box */
+}
         .result-box h3 { font-size: 1.2rem; font-weight: 700; color: var(--tekst-donker); text-align: center; margin-bottom: 1.5rem; }
         .calculation-item { display: flex; justify-content: space-between; align-items: flex-start; background-color: #fbfcfb; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #f1f3f5;}
         .item-label .main-label { font-weight: 600; }
@@ -105,9 +109,6 @@
         .item-value.text-negative .amount { color: var(--kleur-rood); }
         .calculation-item.is-total { background: none; border: none; border-top: 3px solid var(--wur-blauw); border-radius: 0; padding-top: 1rem; margin-top: 1rem; }
         .is-total .main-label, .is-total .amount { font-size: 1.2rem; font-weight: 700; }
-        
-        .calculation-details { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; }
-        .calculation-details.is-visible { max-height: 300px; }
         .toggle-details-btn { display: block; text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--wur-blauw); text-decoration: none; font-weight: 600; cursor: pointer; }
         .toggle-details-btn:hover { text-decoration: underline; }
 
@@ -235,4 +236,32 @@
 
 .modal-close-btn:hover {
     color: var(--tekst-donker); /* Gebruik je CSS variabele */
+}
+/* --- Stijlen voor de "Toon/Verberg Details" functionaliteit --- */
+
+/* Standaard zijn de details verborgen */
+.calculation-details {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top: none;
+}
+
+/* Wanneer de 'is-visible' class wordt toegevoegd, toon de details */
+.calculation-details.is-visible {
+  max-height: 500px; /* Ruime waarde die hoger is dan de content ooit zal zijn */
+  opacity: 1;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: 1px solid #e0e0e0; /* Optioneel: een scheidingslijn */
+}
+
+/* Zorg ervoor dat de totaalregel altijd zichtbaar is */
+.result-box .calculation-item.is-total {
+    margin-top: auto; /* Druk dit naar de onderkant */
 }
