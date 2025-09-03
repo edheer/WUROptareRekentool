@@ -45,16 +45,11 @@ export function updateReiskosten(currentLang, translations) {
         keuze_inzet: inputs.keuze_inzet.value
     };
 
-    const km_afgetopt = Math.min(v.km_fiscaal, 60);
-    const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
-    const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
-    const teBenuttenReiskosten = totaalMogelijkFiscaal - standaardVergoeding;
-
-    const totaalIngezetBedrag = Math.max(0, teBenuttenReiskosten);
-
+    // --- BEREKENING ---
+    
+    // 1. Bepaal eerst de beschikbare bron (het budget)
     let brutoBronHuidig;
     let bronNaamKey;
-
     switch (v.keuze_inzet) {
         case 'beide':
             brutoBronHuidig = v.max_vakantiegeld + v.max_eindejaarsuitkering;
@@ -67,14 +62,29 @@ export function updateReiskosten(currentLang, translations) {
             break;
     }
 
+    // 2. Bereken de potentiële fiscale ruimte voor uitruil
+    const km_afgetopt = Math.min(v.km_fiscaal, 60);
+    const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
+    const standaardVergoeding = km_afgetopt * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
+    const potentieleInzet = Math.max(0, totaalMogelijkFiscaal - standaardVergoeding);
+
+    // 3. Bepaal het daadwerkelijk ingezette bedrag: top dit af op het beschikbare budget
+    const totaalIngezetBedrag = Math.min(potentieleInzet, brutoBronHuidig);
+
+    // 4. Bereken de 'huidige' situatie
     const belastingHuidig = brutoBronHuidig * BELASTING_PERCENTAGE;
     const nettoHuidig = brutoBronHuidig - belastingHuidig;
 
+    // 5. Bereken de 'nieuwe' situatie
     const brutoBronNieuw = brutoBronHuidig - totaalIngezetBedrag;
     const belastingNieuw = brutoBronNieuw * BELASTING_PERCENTAGE;
     const nettoNieuw = brutoBronNieuw - belastingNieuw + totaalIngezetBedrag;
 
+    // 6. Bereken het verschil
     const verschilNetto = nettoNieuw - nettoHuidig;
+
+
+    // --- UPDATE VAN DE INTERFACE ---
 
     const bronNaam = translations[currentLang][bronNaamKey];
     outputs.bron_namen.forEach(el => el.textContent = bronNaam);
@@ -94,10 +104,17 @@ export function updateReiskosten(currentLang, translations) {
 
     outputs.verschil_netto.textContent = formatCurrency(verschilNetto);
 
-    let progressPercentage = brutoBronHuidig > 0 ? (totaalIngezetBedrag / brutoBronHuidig) * 100 : 0;
+    // De progress bar toont nog steeds de verhouding t.o.v. de *potentiele* inzet,
+    // zodat de gebruiker ziet of zijn budget toereikend is.
+    let progressPercentage = brutoBronHuidig > 0 ? (potentieleInzet / brutoBronHuidig) * 100 : 0;
     outputs.progress_bar.style.width = `${Math.min(progressPercentage, 100)}%`;
     outputs.progress_bar.classList.remove('is-normal', 'is-warning', 'is-danger');
-    if (totaalIngezetBedrag > brutoBronHuidig) outputs.progress_bar.classList.add('is-danger');
-    else if (progressPercentage > 80) outputs.progress_bar.classList.add('is-warning');
-    else outputs.progress_bar.classList.add('is-normal');
+    
+    if (potentieleInzet > brutoBronHuidig) {
+        outputs.progress_bar.classList.add('is-danger');
+    } else if (progressPercentage > 80) {
+        outputs.progress_bar.classList.add('is-warning');
+    } else {
+        outputs.progress_bar.classList.add('is-normal');
+    }
 }

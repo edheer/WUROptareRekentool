@@ -1,3 +1,5 @@
+// main.js
+
 import { initReiskostenTool, updateReiskosten } from './reiskosten.js';
 import { translations, translatePage } from './vertaalsysteem.js';
 
