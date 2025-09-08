@@ -186,21 +186,21 @@
             </div>
         </section>
 
-        <section id="tool-fiets" class="tool-section" style="display:none;">
+<section id="tool-fiets" class="tool-section" style="display:none;">
   <div class="main-grid">
     <!-- LINKER KOLOM: INPUTS -->
     <div class="input-column">
       <div class="card">
-        <h2>Jouw budget</h2>
+        <h2 data-translate-key="yourBudget">Jouw budget</h2>
         <div class="budget-info">
           <div class="row">
             <span class="label">
-              Beschikbare bron (<span id="budget_bron_naam_fiets"></span>)
+              <span data-translate-key="availableSource">Beschikbare bron</span> (<span id="budget_bron_naam_fiets"></span>)
             </span>
             <span class="value" id="budget_bron_totaal_fiets">€ 0,00</span>
           </div>
           <div class="row">
-            <span class="label">Totaal ingezet bedrag</span>
+            <span class="label" data-translate-key="totalUsedAmount">Totaal ingezet bedrag</span>
             <span class="value" id="budget_inzet_fiets">€ 0,00</span>
           </div>
         </div>
@@ -210,34 +210,31 @@
       </div>
 
       <div class="card">
-        <h2>Uitruil (elektrische) fiets/scooter</h2>
+        <h2 data-translate-key="bikeRegulationTitle">Uitruil (elektrische) fiets/scooter</h2>
         <div class="input-grid">
           <div class="input-group">
-    <label for="fiets_aankoopbedrag">Aankoopbedrag (incl. accessoires/verzekering)</label>
-    <input type="number" id="fiets_aankoopbedrag" placeholder="max. € 2.500" min="0" max="2500">
-</div>
-
+            <label for="fiets_aankoopbedrag" data-translate-key="labelBikePurchaseAmountFull">Aankoopbedrag (incl. accessoires/verzekering)</label>
+            <input type="number" id="fiets_aankoopbedrag" placeholder="max. € 2.500" min="0" max="2500">
+          </div>
           <div class="input-group">
-            <label for="max_vakantiegeld_fiets">Max. inzet vakantiegeld</label>
+            <label for="max_vakantiegeld_fiets" data-translate-key="labelHolidayPay">Max. inzet vakantiegeld</label>
             <input type="number" id="max_vakantiegeld_fiets" value="0" min="0">
           </div>
-
           <div class="input-group">
-            <label for="max_eindejaarsuitkering_fiets">Max. inzet eindejaarsuitkering</label>
+            <label for="max_eindejaarsuitkering_fiets" data-translate-key="labelYearEndBonus">Max. inzet eindejaarsuitkering</label>
             <input type="number" id="max_eindejaarsuitkering_fiets" value="0" min="0">
           </div>
-
           <div class="input-group">
-            <label for="keuze_inzet_fiets">Welke bron wil je inzetten?</label>
+            <label for="keuze_inzet_fiets" data-translate-key="labelSourceToUse">Welke bron wil je inzetten?</label>
             <select id="keuze_inzet_fiets">
-              <option value="eindejaarsuitkering">Eindejaarsuitkering</option>
-              <option value="beide">Vakantiegeld &amp; Eindejaarsuitkering</option>
+              <option value="eindejaarsuitkering" data-translate-key="optionYearEndBonus">Eindejaarsuitkering</option>
+              <option value="vakantiegeld" data-translate-key="optionHolidayPay">Vakantiegeld</option>
+              <option value="beide" data-translate-key="optionBoth">Vakantiegeld &amp; Eindejaarsuitkering</option>
             </select>
           </div>
         </div>
-
         <div class="action-container">
-          <a id="open-info-modal-link-fiets" class="info-link">Uitleg & voorwaarden</a>
+          <a id="open-info-modal-link-fiets" class="info-link" data-translate-key="explanationLinkBike">Uitleg & voorwaarden</a>
         </div>
       </div>
     </div>
@@ -245,66 +242,65 @@
     <!-- RECHTER KOLOM: RESULTATEN -->
     <div class="results-column">
       <div class="card">
-        <h2>Jouw netto voordeel</h2>
+        <h2 data-translate-key="yourNetBenefit">Jouw netto voordeel</h2>
         <div class="hero-result">
-          <div class="label">Je houdt netto méér over door belastingvoordeel:</div>
+          <div class="label" data-translate-key="netBenefitBikeLabel">Je houdt netto méér over door belastingvoordeel:</div>
           <span class="value" id="fiets_verschil_netto">€ 0,00</span>
         </div>
         <div class="action-container">
           <a href="https://workforce.nl.adp.com/PV_Web/composer/workspace.jsp?mode=medewerker&action=screen&service=flex_cockpit"
-             target="_blank" class="cta-button">Direct aanvragen in Optare</a>
+             target="_blank" class="cta-button" data-translate-key="applyButton">Direct aanvragen in Optare</a>
         </div>
       </div>
 
       <div class="card">
-        <h2>De details van de berekening</h2>
-
+        <h2 data-translate-key="calculationDetails">De details van de berekening</h2>
         <div class="result-box">
-          <h3>Huidige situatie</h3>
+          <h3 data-translate-key="currentSituation">Huidige situatie</h3>
           <div class="calculation-details">
             <div class="calculation-item">
               <div class="item-label">
-                <span class="main-label">Bruto </span>
-                <span class="sub-label" id="bron_naam_sub_fiets"></span>
+                <span class="main-label" data-translate-key="gross">Bruto </span>
+                <span class="sub-label bron_naam_fiets"></span> <!-- GEBRUIK EEN CLASS -->
               </div>
               <div class="item-value"><span class="amount" id="fiets_huidig_bruto">€ 0,00</span></div>
             </div>
             <div class="calculation-item">
-              <div class="item-label"><span class="main-label">Belasting (ca. 50%)</span></div>
+              <div class="item-label"><span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span></div>
               <div class="item-value text-negative"><span class="amount" id="fiets_huidig_belasting">€ 0,00</span></div>
             </div>
           </div>
           <div class="calculation-item is-total">
-            <div class="item-label"><span class="main-label">Netto uitbetaald</span></div>
+            <div class="item-label"><span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span></div>
             <div class="item-value"><span class="amount" id="fiets_huidig_netto">€ 0,00</span></div>
           </div>
-          <a class="toggle-details-btn">Toon details</a>
+          <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
         </div>
 
         <div class="result-box">
-          <h3>Situatie na uitruil</h3>
+          <h3 data-translate-key="situationAfterExchange">Situatie na uitruil</h3>
           <div class="calculation-details">
             <div class="calculation-item">
               <div class="item-label">
-                <span class="main-label">Bruto </span>
-                <span class="sub-label" id="bron_naam_sub2_fiets"></span>
+                <span class="main-label" data-translate-key="gross">Bruto </span>
+                <span class="sub-label bron_naam_fiets"></span> <!-- GEBRUIK EEN CLASS -->
               </div>
               <div class="item-value"><span class="amount" id="fiets_nieuw_bruto">€ 0,00</span></div>
             </div>
             <div class="calculation-item">
-              <div class="item-label"><span class="main-label">Belasting (ca. 50%)</span></div>
+              <div class="item-label"><span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span></div>
               <div class="item-value text-negative"><span class="amount" id="fiets_nieuw_belasting">€ 0,00</span></div>
             </div>
             <div class="calculation-item">
-              <div class="item-label"><span class="main-label">+ Belastingvrije uitruil</span></div>
+              <div class="item-label"><span class="main-label" data-translate-key="taxFreeExchange">+ Belastingvrije uitruil</span></div>
               <div class="item-value text-positive"><span class="amount" id="fiets_nieuw_uitruil">€ 0,00</span></div>
             </div>
           </div>
           <div class="calculation-item is-total">
-            <div class="item-label"><span class="main-label">Netto uitbetaald</span></div>
+            <div class="item-label"><span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span></div>
             <div class="item-value"><span class="amount" id="fiets_nieuw_netto">€ 0,00</span></div>
           </div>
-          <a class="toggle-details-btn">Toon details</a>
+          <a class="toggle-details-btn" data-translate-key="showDetails">Toon details</a>
         </div>
       </div>
     </div>

@@ -58,7 +58,10 @@ export const translations = {
         netBenefitBikeLabel: "Je houdt netto méér over dankzij belastingvoordeel:",
         grossAmountUsed: "Bruto ingezet bedrag",
         netCostForYou: "Netto kosten voor jou",
-        
+        bikeRegulationTitle: "Uitruil (elektrische) fiets/scooter",
+        labelBikePurchaseAmountFull: "Aankoopbedrag (incl. accessoires/verzekering)",
+        explanationLinkBike: "Uitleg & voorwaarden",
+        netBenefitBikeLabel: "Je houdt netto méér over door belastingvoordeel:",
         // Modal teksten (voorbeeld, pas aan naar jouw exacte keys)
         modalTitle1: "Titel 1", modalTitle2: "Titel 2", modalP1: "Paragraaf 1",
         // ... voeg hier al jouw modal keys toe zoals in jouw main.js
@@ -146,7 +149,11 @@ export const translations = {
         netBenefitBikeLabel: "You retain more net income due to tax benefit:",
         grossAmountUsed: "Gross amount used",
         netCostForYou: "Net cost for you",
-
+        bikeRegulationTitle: "Exchange (electric) bicycle/scooter",
+        labelBikePurchaseAmountFull: "Purchase amount (incl. accessories/insurance)",
+        explanationLinkBike: "Explanation & conditions",
+        netBenefitBikeLabel: "You retain more net income due to tax benefit:",
+        
         // Modal teksten (voorbeeld)
         modalTitle1: "Title 1", modalTitle2: "Title 2", modalP1: "Paragraph 1",
         // ... voeg hier al jouw modal keys toe zoals in jouw main.js
