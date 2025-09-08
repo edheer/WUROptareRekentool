@@ -4,13 +4,14 @@ import { formatCurrency } from './utils.js';
 import { translations } from './vertaalsysteem.js';
 
 const BELASTING_PERCENTAGE = 0.50;
+
 const REGELS = {
     wu: { maxUren: 38, percentage: 0.00704 },
     wr: { maxUren: 36, percentage: 0.00717 }
 };
 
 let inputs, outputs;
-let isInitialized = false; // Vlag om te controleren of init is uitgevoerd
+let isInitialized = false;
 
 function safeUpdate(element, value) {
     if (element) {
@@ -38,7 +39,6 @@ export function initVerlofTool(openModalFunction, currentLang) {
         nettoDetail: document.getElementById('verlof_netto_uitbetaald_detail')
     };
 
-    // Voeg listeners alleen toe als de elementen bestaan
     if (inputs.userType) {
         inputs.userType.forEach(radio => radio.addEventListener('change', () => updateVerlofTool(currentLang)));
     }
@@ -46,6 +46,7 @@ export function initVerlofTool(openModalFunction, currentLang) {
     [inputs.maandsalaris, inputs.uren].forEach(input => {
         if (input) {
             input.addEventListener('focus', () => {
+                // Verwijder '0' bij focus, behalve als het de placeholder tekst is
                 if (input.value === '0' || (input.id === 'verlof_maandsalaris' && input.value === '3000')) {
                     input.value = '';
                 }
@@ -88,12 +89,20 @@ export function updateVerlofTool(currentLang) {
     const userType = userTypeElement.value;
     const maandsalaris = parseFloat(inputs.maandsalaris.value) || 0;
     const uren = parseFloat(inputs.uren.value) || 0;
+    
     const regel = REGELS[userType];
 
-    // Update max uren in UI
+    // --- WIJZIGING HIER ---
+    // Update de UI-elementen die afhankelijk zijn van het type medewerker
     if (outputs.maxUrenLabel) {
+        // 1. Update de tekst in de <label>
         outputs.maxUrenLabel.textContent = `max ${regel.maxUren}`;
+        
+        // 2. Update het 'max' attribuut van de <input> voor validatie
         inputs.uren.setAttribute('max', regel.maxUren);
+        
+        // 3. Update de placeholder van de <input> // <<<<<<< NIEUW
+        inputs.uren.setAttribute('placeholder', `max ${regel.maxUren}`);
     }
     
     const afgetopteUren = Math.min(uren, regel.maxUren);
@@ -101,13 +110,11 @@ export function updateVerlofTool(currentLang) {
         inputs.uren.value = regel.maxUren;
     }
 
-    // Berekeningen
     const waardePerUur = maandsalaris * regel.percentage;
     const brutoOpbrengst = afgetopteUren * waardePerUur;
     const belasting = brutoOpbrengst * BELASTING_PERCENTAGE;
     const nettoOpbrengst = brutoOpbrengst - belasting;
 
-    // Veilige update van de UI
     safeUpdate(outputs.nettoOpbrengst, formatCurrency(nettoOpbrengst, currentLang));
     safeUpdate(outputs.waardePerUur, formatCurrency(waardePerUur, currentLang));
     safeUpdate(outputs.brutoOpbrengst, formatCurrency(brutoOpbrengst, currentLang));
