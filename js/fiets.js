@@ -1,44 +1,51 @@
-// fiets.js
-const BELASTING_PERCENTAGE = 0.50;
-const MAX_AANKOOPBEDRAG = 2500;
+// js/fiets.js (Voorbeeld, pas aan naar jouw exacte code)
 
-let inputs, outputs;
+import { translations } from './vertaalsysteem.js';
+import { formatCurrency } from './utils.js'; // << NIEUW: Importeer formatCurrency
 
-function formatCurrency(value) {
-    return `€ ${value.toFixed(2).replace('.', ',')}`;
-}
+let inputsFiets, outputsFiets; // Globale variabelen voor deze module
 
-export function initFietsTool() {
-    inputs = {
+export function initFietsTool() { // Pas dit aan als je de openModal functie nodig hebt
+    inputsFiets = {
         aankoopbedrag: document.getElementById('fiets_aankoopbedrag'),
-        brutoBron: document.getElementById('fiets_bruto_bron')
+        bruto_bron: document.getElementById('fiets_bruto_bron')
     };
-
-    outputs = {
+    outputsFiets = {
+        voordeel: document.getElementById('fiets_voordeel'),
         brutoIngezet: document.getElementById('fiets_brutoIngezet'),
-        nettoKosten: document.getElementById('fiets_nettoKosten'),
-        nettoVoordeel: document.getElementById('fiets_voordeel')
+        nettoKosten: document.getElementById('fiets_nettoKosten')
     };
+
+    // Logica om de '0' in input velden leeg te maken bij focus
+    Object.values(inputsFiets).forEach(input => {
+        if (input && input.type === 'number') {
+            input.addEventListener('focus', () => {
+                if (input.value === '0') {
+                    input.value = '';
+                }
+            });
+            input.addEventListener('blur', () => {
+                if (input.value === '') {
+                    input.value = '0';
+                }
+            });
+        }
+    });
 }
 
-export function updateFietsTool() {
-    const brutoBron = parseFloat(inputs.brutoBron.value) || 0;
-    const aankoopbedrag = parseFloat(inputs.aankoopbedrag.value) || 0;
+export function updateFietsTool(currentLang, translations) { // Neem currentLang, translations mee
+    if (!inputsFiets || !outputsFiets) {
+        initFietsTool();
+    }
 
-    const result = berekenFietsVoordeel(brutoBron, aankoopbedrag);
+    const aankoopbedrag = parseFloat(inputsFiets.aankoopbedrag.value) || 0;
+    const brutoBron = parseFloat(inputsFiets.bruto_bron.value) || 0;
 
-    outputs.brutoIngezet.textContent = formatCurrency(result.brutoIngezet);
-    outputs.nettoVoordeel.textContent = formatCurrency(result.nettoVoordeel);
-    outputs.nettoKosten.textContent = formatCurrency(result.nettoKosten);
-}
-
-function berekenFietsVoordeel(brutoBron, aankoopbedrag) {
-    const bedrag = Math.min(aankoopbedrag, MAX_AANKOOPBEDRAG, brutoBron);
-    const belastingVoordeel = bedrag * BELASTING_PERCENTAGE;
-
-    return {
-        brutoIngezet: bedrag,
-        nettoVoordeel: belastingVoordeel,
-        nettoKosten: bedrag - belastingVoordeel
-    };
+    const ingezetBruto = Math.min(aankoopbedrag, brutoBron);
+    const nettoVoordeel = ingezetBruto * 0.50; // Aanname: 50% belastingvoordeel
+    const nettoKosten = aankoopbedrag - nettoVoordeel;
+    
+    outputsFiets.voordeel.textContent = formatCurrency(nettoVoordeel, currentLang);
+    outputsFiets.brutoIngezet.textContent = formatCurrency(ingezetBruto, currentLang);
+    outputsFiets.nettoKosten.textContent = formatCurrency(nettoKosten, currentLang);
 }

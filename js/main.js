@@ -2,45 +2,61 @@
 
 import { initReiskostenTool, updateReiskosten } from './reiskosten.js';
 import { translations, translatePage } from './vertaalsysteem.js';
-import { initFietsTool, updateFietsTool } from './fiets.js';
+import { initFietsTool, updateFietsTool } from './fiets.js'; // Aangepaste import
+import { initVakbondTool, updateVakbond } from './vakbond.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    let currentLang = 'nl';
+    let currentLang = 'nl'; // Dit wordt nu de globale taal in main.js
 
-    // Functie om de juiste tool te initialiseren en te tonen
+    // Hulpfunctie voor het openen van de modal (deze blijft in main.js)
+    const infoModal = document.getElementById('info-modal');
+    const modalContentBody = document.getElementById('modal-content-body');
+    const openModal = (contentHtml) => {
+        modalContentBody.innerHTML = contentHtml;
+        infoModal.classList.add('is-active');
+    };
+
     function initializeTool() {
         const selected = document.getElementById('source-selector').value;
+        // DEZE REGEL IS CRUCIAAL: Alle secties moeten EERST verborgen worden
         document.querySelectorAll('.tool-section').forEach(div => div.style.display = 'none');
         
         const selectedSection = document.getElementById(`tool-${selected}`);
         if (selectedSection) {
-            selectedSection.style.display = 'block';
+            selectedSection.style.display = 'block'; 
 
-if (selected === 'reiskosten') {
-    initReiskostenTool(currentLang, translations);
-    updateReiskosten(currentLang, translations);
-} else if (selected === 'fiets') {
-    initFietsTool();
-    updateFietsTool();
-}
+            // Initialiseer ALLE tools (zorgt dat inputs en outputs zijn ingesteld)
+            // Daarna update je de GESELECTEERDE tool
+            initReiskostenTool(); // Roep init op
+            initFietsTool();      // Roep init op
+            initVakbondTool(currentLang, openModal); // Roep init op, geef openModal mee
 
-            // Hier kun je in de toekomst initialisatie voor andere tools toevoegen
+            // Update de berekening van de geselecteerde tool
+            if (selected === 'reiskosten') {
+                updateReiskosten(currentLang, translations);
+            } else if (selected === 'fiets') {
+                updateFietsTool(currentLang, translations);
+            } else if (selected === 'vakbond') {
+                updateVakbond(currentLang);
+            }
         }
     }
 
     // Init vertaling en de eerste tool
     translatePage(currentLang);
-    initializeTool();
+    initializeTool(); // Roept nu ook initVakbondTool aan indien geselecteerd
 
     // Luister naar input voor updates
+    // Deze luistert naar ELKE input in de body, en roept dan de update functie van de actieve tool aan
     document.body.addEventListener('input', () => {
         const selected = document.getElementById('source-selector').value;
-if (selected === 'reiskosten') {
-    updateReiskosten(currentLang, translations);
-} else if (selected === 'fiets') {
-    updateFietsTool();
-}
-
+        if (selected === 'reiskosten') {
+            updateReiskosten(currentLang, translations);
+        } else if (selected === 'fiets') {
+            updateFietsTool(currentLang, translations);
+        } else if (selected === 'vakbond') {
+            updateVakbond(currentLang);
+        }
     });
 
     // Taalknop
@@ -50,7 +66,14 @@ if (selected === 'reiskosten') {
             currentLang = currentLang === 'nl' ? 'en' : 'nl';
             translatePage(currentLang);
             // Update de berekening na taalwissel zodat teksten (zoals bronnaam) meeveranderen
-            updateReiskosten(currentLang, translations);
+            const selected = document.getElementById('source-selector').value;
+            if (selected === 'reiskosten') {
+                updateReiskosten(currentLang, translations);
+            } else if (selected === 'fiets') {
+                updateFietsTool(currentLang, translations);
+            } else if (selected === 'vakbond') {
+                updateVakbond(currentLang);
+            }
         });
     }
 
@@ -67,7 +90,7 @@ if (selected === 'reiskosten') {
         // --- 1. LOGICA VOOR "TOON/VERBERG DETAILS" KNOP ---
         const toggleBtn = e.target.closest('.toggle-details-btn');
         if (toggleBtn) {
-            e.preventDefault(); // Voorkom dat de pagina naar boven springt
+            e.preventDefault();
 
             const resultBox = toggleBtn.closest('.result-box');
             if (!resultBox) return;
@@ -78,7 +101,7 @@ if (selected === 'reiskosten') {
             detailsDiv.classList.toggle('is-visible');
 
             const isVisible = detailsDiv.classList.contains('is-visible');
-            const lang = document.documentElement.lang || 'nl';
+            const lang = currentLang; // Gebruik currentLang uit main.js
             
             if (isVisible) {
                 toggleBtn.textContent = translations[lang].hideDetails;
@@ -87,57 +110,16 @@ if (selected === 'reiskosten') {
                 toggleBtn.textContent = translations[lang].showDetails;
                 toggleBtn.setAttribute('data-translate-key', 'showDetails');
             }
-            return; // Stop verdere uitvoering, de klik is afgehandeld
-        }
-
-        // --- 2. LOGICA VOOR HET OPENEN VAN DE INFO MODAL ---
-        if (e.target.closest('#open-info-modal-link')) {
-            e.preventDefault();
-            const modalBody = document.getElementById('modal-content-body');
-            
-            if (modal && modalBody) {
-                const lang = document.documentElement.lang || 'nl';
-                const t = translations[lang];
-
-                modalBody.innerHTML = `
-                    <h2>${t.modalTitle1}</h2>
-                    <h3>${t.modalTitle2}</h3>
-                    <p>${t.modalP1}</p>
-                    <ul><li>${t.modalLi1}</li><li>${t.modalLi2}</li><li>${t.modalLi3}</li></ul>
-                    <p>${t.modalP2}</p>
-                    <h3>${t.modalTitle3}</h3>
-                    <ul class="checkmark-list">
-                        <li>${t.modalLi4}</li>
-                        <li>${t.modalLi5}</li>
-                        <li>${t.modalLi6}</li>
-                        <li>${t.modalLi7}</li>
-                        <li>${t.modalLi8}</li>
-                    </ul>
-                    <h3>${t.modalTitle4}</h3>
-                    <ul><li>${t.modalLi9}</li><li>${t.modalLi10}</li><li>${t.modalLi11}</li></ul>
-                    <h3>${t.modalTitle5}</h3>
-                    <p><strong>${t.modalStrong1}</strong></p>
-                    <ul><li>${t.modalLi12}</li><li>${t.modalLi13}</li><li>${t.modalLi14}</li><li>${t.modalLi15}</li><li>${t.modalLi16}</li></ul>
-                    <p><strong>${t.modalStrong2}</strong></p>
-                    <ul><li>${t.modalLi17}</li><li>${t.modalLi18}</li><li>${t.modalLi19}</li></ul>
-                    <h3>${t.modalTitle6}</h3>
-                    <p>${t.modalP3}</p>
-                    <div class="calculation-example">
-                        <p><strong>${t.modalStrong3}</strong></p>
-                        <ul><li>${t.modalLi20}</li><li>${t.modalLi21}</li><li>${t.modalLi22}</li></ul>
-                        <p>${t.modalP4}</p>
-                    </div>
-                `;
-                modal.classList.add('is-active');
-            }
-            return; // Stop verdere uitvoering
+            return;
         }
         
         // --- 3. LOGICA VOOR HET SLUITEN VAN DE MODAL ---
-        if (e.target.id === 'close-modal-btn' || e.target.id === 'info-modal') {
+        // Deze luistert naar kliks op de sluitknop of de modal-overlay
+        if (e.target.id === 'close-modal-btn' || (e.target.id === 'info-modal' && modal.classList.contains('is-active'))) {
             if (modal) {
                 modal.classList.remove('is-active');
             }
+            return;
         }
     });
 
@@ -151,18 +133,19 @@ if (selected === 'reiskosten') {
         }
     });
     
-    // Logica om de '0' in input velden leeg te maken bij focus
-    const numberInputs = document.querySelectorAll('#tool-reiskosten .input-grid input[type="number"]');
-    numberInputs.forEach(input => {
-        input.addEventListener('focus', () => {
-            if (input.value === '0') {
-                input.value = '';
-            }
-        });
-        input.addEventListener('blur', () => {
-            if (input.value === '') {
-                input.value = '0';
-            }
-        });
-    });
+    // De globale focus/blur logica is niet meer nodig hier als elke tool dit zelf afhandelt.
+    // Verwijder dit als je het in initReiskostenTool(), initFietsTool(), initVakbondTool() hebt geplaatst.
+    // const numberInputs = document.querySelectorAll('.input-grid input[type="number"]');
+    // numberInputs.forEach(input => {
+    //     input.addEventListener('focus', () => {
+    //         if (input.value === '0') {
+    //             input.value = '';
+    //         }
+    //     });
+    //     input.addEventListener('blur', () => {
+    //         if (input.value === '') {
+    //             input.value = '0';
+    //         }
+    //     });
+    // });
 });

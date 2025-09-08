@@ -67,6 +67,11 @@
         }
 
         .main-grid { display: grid; grid-template-columns: 1.3fr 1.1fr; gap: 2.5rem; align-items: start; }
+        @media (max-width: 800px) {
+    .main-grid {
+        grid-template-columns: 1fr; /* Maakt er één kolom van op kleine schermen */
+    }
+}
         .card { 
             background-color: white; border-radius: 12px; 
             box-shadow: 0 5px 20px rgba(0,0,0,0.07); 

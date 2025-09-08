@@ -1,172 +1,212 @@
+// js/vertaalsysteem.js
+// Dit is een voorbeeld. Zorg dat jouw bestand de 'translations' exporteert en de 'hideDetails' key bevat.
+
 export const translations = {
-  nl: {
-translateBtnText: "EN",
-            pageTitle: "WUR Berekeningsmodel Uitruil",
-            headerTitle: "Simulatietool Optare",
-            disclaimer: "* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.",
-            yourBudget: "Jouw budget",
-            availableSource: "Beschikbare bron",
-            totalUsedAmount: "Totaal ingezet bedrag",
-            travelCostExchange: "Uitruil reiskosten",
-            labelHolidayPay: "Max. inzet vakantiegeld",
-            labelYearEndBonus: "Max. inzet eindejaarsuitkering",
-            labelTravelDays: "Gedeclareerde reisdagen",
-            labelDistance: "Enkele reisafstand",
-            labelSourceToUse: "Welke bron wil je inzetten?",
-            optionYearEndBonus: "Eindejaarsuitkering",
-            optionBoth: "Vakantiegeld & Eindejaarsuitkering",
-            explanationLink: "Uitleg van berekening",
-            yourNetBenefit: "Jouw netto voordeel",
-            netBenefitLabel: "Je houdt netto méér over op jaarbasis:",
-            applyButton: "Direct aanvragen in Optare",
-            calculationDetails: "De details van de berekening",
-            currentSituation: "Huidige situatie",
-            situationAfterExchange: "Situatie na uitruil",
-            gross: "Bruto ",
-            tax: "Belasting (ca. 50%)",
-            netPaid: "Netto uitbetaald",
-            taxFreeExchange: "+ Belastingvrije uitruil",
-            showDetails: "Toon details",
-            hideDetails: "Verberg details",
-            sourceYearEndBonus: "Eindejaarsuitkering",
-            sourceBoth: "Vakantiegeld & Eindejaarsuitkering",
-            
-            // Nieuwe vertalingen voor dropdown
-            sourceSelectorLabel: "Kies uw berekening",
-            sourceTravel: "Reiskosten",
-            sourceBike: "Fiets",
-            sourceLeave: "Extra verlof",
-            sourceUnion: "Vakbondcontributie",
-            
-            // Bestaande modal vertalingen...
-            modalTitle1: "Reiskosten, vakantie-uitkering en eindejaarsuitkering zonder verlof",
-            modalTitle2: "Korte uitleg van de regeling",
-            modalP1: "Met deze regeling kun je extra reiskostenvergoeding ontvangen door je eindejaarsuitkering (EJU) en/of vakantie-uitkering in te ruilen. Je ontvangt:",
-            modalLi1: "<strong>€ 0,23</strong> per kilometer in plaats van € 0,14 (voor de eerste 60km per dag).",
-            modalLi2: "<strong>€ 0,23</strong> voor alle kilometers boven de 60km enkele reis.",
-            modalLi3: "De uitbetaling is twee keer per jaar, in mei en november.",
-            modalP2: "Let op: je moet je reisdagen maandelijks blijven registreren in MyHR.",
-            modalTitle3: "Voor wie is deze regeling interessant?",
-            modalLi4: "Je reist met eigen vervoer.",
-            modalLi5: "Je werkt regelmatig op locatie.",
-            modalLi6: "Je hebt voldoende reisdagen dit jaar.",
-            modalLi7: "Je wilt fiscaal voordeel over je EJU of vakantie-uitkering.",
-            modalLi8: "Je wilt geen verlof inzetten als ruilmiddel.",
-            modalTitle4: "Voor wie is deze regeling minder interessant?",
-            modalLi9: "Je reist met het openbaar vervoer en ontvangt daarvoor een vergoeding.",
-            modalLi10: "Je bent niet consequent in het registreren van je reisdagen in MyHR.",
-            modalLi11: "Je hebt een korte afstand en weinig reisdagen (dan is het voordeel relatief klein, maar nog steeds een voordeel).",
-            modalTitle5: "Wat zijn de voorwaarden / consequenties?",
-            modalStrong1: "Voorwaarden:",
-            modalLi12: "Je reist met eigen vervoer.",
-            modalLi13: "Je declareert je reisdagen maandelijks in MyHR.",
-            modalLi14: "Je doet één aanvraag per jaar via de Keuzetool.",
-            modalLi15: "Je ruilt (deels) je bruto vakantie-uitkering en/of eindejaarsuitkering in.",
-            modalLi16: "Als je bronnen niet voldoende zijn, wordt het resterende bedrag ingehouden op je bruto salaris van mei of november.",
-            modalStrong2: "Consequenties:",
-            modalLi17: "Je ontvangt de extra reiskostenvergoeding in mei en in november.",
-            modalLi18: "Je brutoloon in die maanden kan lager zijn als je bronnen niet toereikend zijn.",
-            modalLi19: "Geen declaraties = geen extra vergoeding, ook niet als je wél een aanvraag hebt gedaan.",
-            modalTitle6: "Voorbeeldsituatie",
-            modalP3: "<strong>Scenario:</strong> Thomas reist 50 km enkele reis en werkt 3 dagen per week op locatie. Hij verwacht 150 reisdagen te declareren. Zijn vakantie-uitkering is € 2.500 en zijn eindejaarsuitkering is € 2.400.",
-            modalStrong3: "Berekening extra vergoeding:",
-            modalLi20: "Over de eerste 60 km (heen en terug) krijgt Thomas € 0,09 extra: <br>150 dagen × 60 km × € 0,09 = <strong>€ 810</strong>",
-            modalLi21: "Over de resterende 40 km (100 km - 60 km) krijgt hij € 0,23: <br>150 dagen × 40 km × € 0,23 = <strong>€ 1.380</strong>",
-            modalLi22: "Totaal extra te ontvangen: <strong>€ 2.190</strong> (belastingvrij)",
-            modalP4: "Thomas ruilt dit bedrag in tegen zijn bruto vakantie-uitkering en eindejaarsuitkering. Dit levert hem een netto voordeel op van circa 50% van € 2.190, dus <strong>€ 1.095</strong>."
-        },
- en: {
-            // Bestaande vertalingen
-            translateBtnText: "NL",
-            pageTitle: "WUR Exchange Calculation Model",
-            headerTitle: "Simulation tool Optare",
-            disclaimer: "* Please note: this is an indicative calculation. No rights can be derived from the results.",
-            yourBudget: "Your budget",
-            availableSource: "Available source",
-            totalUsedAmount: "Total amount used",
-            travelCostExchange: "Travel Cost Exchange",
-            labelHolidayPay: "Max. holiday allowance to use",
-            labelYearEndBonus: "Max. year-end bonus to use",
-            labelTravelDays: "Declared travel days",
-            labelDistance: "One-way travel distance",
-            labelSourceToUse: "Which source do you want to use?",
-            optionYearEndBonus: "Year-end bonus",
-            optionBoth: "Holiday allowance & Year-end bonus",
-            explanationLink: "Explanation of calculation",
-            yourNetBenefit: "Your net benefit",
-            netBenefitLabel: "Your net annual benefit is:",
-            applyButton: "Apply directly in Optare",
-            calculationDetails: "Calculation details",
-            currentSituation: "Current situation",
-            situationAfterExchange: "Situation after exchange",
-            gross: "Gross ",
-            tax: "Tax (approx. 50%)",
-            netPaid: "Net Paid",
-            taxFreeExchange: "+ Tax-free exchange",
-            showDetails: "Show details",
-            hideDetails: "Hide details",
-            sourceYearEndBonus: "Year-end bonus",
-            sourceBoth: "Holiday allowance & Year-end bonus",
+    nl: {
+        pageTitle: "WUR Berekeningsmodel Uitruil",
+        headerTitle: "Simulatietool Optare",
+        sourceSelectorLabel: "Kies uw berekening",
+        sourceTravel: "Reiskosten",
+        sourceBike: "Fiets",
+        sourceLeave: "Extra verlof",
+        sourceUnion: "Vakbondcontributie",
+        disclaimer: "* Let op: dit is een indicatieve berekening. Aan de resultaten kunnen geen rechten worden ontleend.",
+        yourBudget: "Jouw budget",
+        availableSource: "Beschikbare bron",
+        totalUsedAmount: "Totaal ingezet bedrag",
+        travelCostExchange: "Uitruil reiskosten",
+        labelHolidayPay: "Max. inzet vakantiegeld",
+        labelYearEndBonus: "Max. inzet eindejaarsuitkering",
+        labelTravelDays: "Gedeclareerde reisdagen",
+        labelDistance: "Enkele reisafstand",
+        labelSourceToUse: "Welke bron wil je inzetten?",
+        optionYearEndBonus: "Eindejaarsuitkering",
+        optionHolidayPay: "Vakantiegeld",
+        optionBoth: "Vakantiegeld & Eindejaarsuitkering",
+        explanationLink: "Uitleg van berekening",
+        yourNetBenefit: "Jouw netto voordeel",
+        netBenefitLabel: "Je houdt netto méér over op jaarbasis:",
+        applyButton: "Direct aanvragen in Optare",
+        calculationDetails: "De details van de berekening",
+        currentSituation: "Huidige situatie",
+        gross: "Bruto",
+        tax: "Belasting (ca. 50%)",
+        netPaid: "Netto uitbetaald",
+        situationAfterExchange: "Situatie na uitruil",
+        taxFreeExchange: "+ Belastingvrije uitruil",
+        showDetails: "Toon details",
+        hideDetails: "Verberg details", // << BELANGRIJK: DEZE MOET ERIN STAAN
+        exampleCalculation: "Voorbeeld berekening:",
+        noUploadNeeded: "Voor deze indicatieve berekening hoef je geen documenten te uploaden.",
+        netCost: "Netto kosten",
+        taxReliefNone: "Belastingvoordeel (geen)",
+        taxRelief: "Belastingvoordeel (ca. 50%)",
+        grossUnionFee: "Bruto vakbondscontributie",
+        unionFeeExchange: "Uitruil vakbondscontributie",
+        labelUnionFeeAmount: "Brutobedrag contributie per maand/jaar",
+        labelUnionFeeFrequency: "Frequentie",
+        optionMonthly: "Maand",
+        optionYearly: "Jaar",
 
-            // Nieuwe vertalingen voor dropdown
-            sourceSelectorLabel: "Choose your calculation",
-            sourceTravel: "Travel costs",
-            sourceBike: "Bicycle",
-            sourceLeave: "Extra leave",
-            sourceUnion: "Union dues",
-            
-            // Bestaande modal vertalingen...
-            modalTitle1: "Travel costs, holiday allowance, and year-end bonus without leave",
-            modalTitle2: "Brief explanation of the scheme",
-            modalP1: "With this scheme, you can receive extra travel allowance by exchanging your year-end bonus (YEB) and/or holiday allowance. You receive:",
-            modalLi1: "<strong>€0.23</strong> per kilometer instead of €0.14 (for the first 60km per day).",
-            modalLi2: "<strong>€0.23</strong> for all kilometers beyond a 60km one-way trip.",
-            modalLi3: "Payment is twice a year, in May and November.",
-            modalP2: "Please note: you must continue to register your travel days monthly in MyHR.",
-            modalTitle3: "Who is this scheme for?",
-            modalLi4: "You travel with your own transport.",
-            modalLi5: "You regularly work on location.",
-            modalLi6: "You have enough travel days this year.",
-            modalLi7: "You want a tax benefit on your YEB or holiday allowance.",
-            modalLi8: "You do not want to use leave as a means of exchange.",
-            modalTitle4: "Who is this scheme less suitable for?",
-            modalLi9: "You travel by public transport and receive compensation for it.",
-            modalLi10: "You are not consistent in registering your travel days in MyHR.",
-            modalLi11: "You have a short distance and few travel days (the benefit is relatively small, but still a benefit).",
-            modalTitle5: "What are the conditions / consequences?",
-            modalStrong1: "Conditions:",
-            modalLi12: "You travel with your own transport.",
-            modalLi13: "You declare your travel days monthly in MyHR.",
-            modalLi14: "You make one request per year via the Choice Tool.",
-            modalLi15: "You (partially) exchange your gross holiday allowance and/or year-end bonus.",
-            modalLi16: "If your sources are insufficient, the remaining amount will be deducted from your gross salary in May or November.",
-            modalStrong2: "Consequences:",
-            modalLi17: "You will receive the extra travel allowance in May and November.",
-            modalLi18: "Your gross salary in those months may be lower if your sources are not sufficient.",
-            modalLi19: "No declarations = no extra compensation, even if you have made a request.",
-            modalTitle6: "Example Situation",
-            modalP3: "<strong>Scenario:</strong> Thomas travels 50 km one-way and works 3 days a week on location. He expects to declare 150 travel days. His holiday allowance is €2,500 and his year-end bonus is €2,400.",
-            modalStrong3: "Extra allowance calculation:",
-            modalLi20: "For the first 60 km (round trip), Thomas gets an extra €0.09: <br>150 days × 60 km × €0.09 = <strong>€810</strong>",
-            modalLi21: "For the remaining 40 km (100 km - 60 km), he gets €0.23: <br>150 days × 40 km × €0.23 = <strong>€1,380</strong>",
-            modalLi22: "Total extra to receive: <strong>€2,190</strong> (tax-free)",
-            modalP4: "Thomas exchanges this amount against his gross holiday allowance and year-end bonus. This gives him a net benefit of approximately 50% of €2,190, so <strong>€1,095</strong>."
-        }
-    };
+        // Fietsregeling
+        bikeRegulationTitle: "Fietsregeling",
+        labelBikePurchaseAmount: "Aankoopbedrag fiets (max €2.500)",
+        labelBikeGrossSource: "Beschikbaar bruto bedrag (vakantiegeld/EJU)",
+        netBenefitBikeLabel: "Je houdt netto méér over dankzij belastingvoordeel:",
+        grossAmountUsed: "Bruto ingezet bedrag",
+        netCostForYou: "Netto kosten voor jou",
+        
+        // Modal teksten (voorbeeld, pas aan naar jouw exacte keys)
+        modalTitle1: "Titel 1", modalTitle2: "Titel 2", modalP1: "Paragraaf 1",
+        // ... voeg hier al jouw modal keys toe zoals in jouw main.js
+        modalLi1: "Item 1", modalLi2: "Item 2", modalLi3: "Item 3",
+        // ...
+        modalStrong3: "Voorbeeld:", modalLi20: "Berekening voorbeeld 1",
+        modalP4: "Meer info over de berekening.",
 
+        // Uitlegteksten Reiskosten
+        travelCostExplanationTitle: "Uitleg: Uitruil reiskostenvergoeding",
+        travelCostExplanationP1: "Wanneer je als medewerker van WUR per fiets of openbaar vervoer reist, ontvang je mogelijk al een onbelaste reiskostenvergoeding. Met de Optare-regeling kun je deze vergoeding aanvullen met een belastingvoordeel op basis van je bruto vakantiegeld of eindejaarsuitkering.",
+        travelCostCalculationHeading: "De berekening is als volgt:",
+        travelCostCalculationStep1: "Bepaal de maximaal belastingvrije reiskostenvergoeding op basis van het aantal reisdagen en je enkele reisafstand (volgens WUR-regeling).",
+        travelCostCalculationStep2: "Kies of je vakantiegeld, eindejaarsuitkering, of beide wilt inzetten voor de uitruil.",
+        travelCostCalculationStep3: "De tool berekent welk bedrag je maximaal kunt uitruilen (minimaal van de belastingvrije vergoeding en je beschikbare bronnen).",
+        travelCostCalculationStep4: "Dit uitgeruilde bedrag wordt niet belast, waardoor je direct circa 50% van dit bedrag bespaart op belasting.",
+        travelCostCalculationStep5: "Het netto voordeel is het bedrag dat je meer overhoudt dan wanneer je de bruto vergoeding normaal zou laten uitbetalen en belasten.",
+        travelCostExampleText: "Stel je reist 100 dagen per jaar 20 km enkele reis, en je kiest de eindejaarsuitkering (€1000) als bron. Max. belastingvrij = 100 * 20 * €0.23 = €460. Je ruilt €460 bruto uit, wat je circa €230 netto oplevert.",
+        travelCostExplanationP2: "Je kunt in Optare het bruto bedrag van je vakantiegeld en/of eindejaarsuitkering dat je wilt uitruilen opgeven. Voeg tijdens de aanvraag een recent bankafschrift of ov-historie toe als bewijs van je reiskosten.",
+        travelCostExplanationP3: "De berekening in deze tool geeft een indicatie van het netto voordeel. De exacte hoogte van het voordeel kan afwijken op basis van je persoonlijke fiscale situatie.",
 
+        // Uitlegteksten Vakbondscontributie
+        unionFeeExplanationTitle: "Uitleg: Uitruil vakbondscontributie",
+        unionFeeExplanationP1: "Wanneer je lid bent van een vakbond, kun je via Optare jaarlijks je belastingvoordeel over je vakbondscontributie aanvragen. Doordat je een brutobedrag inlegt en een nettobedrag terugkrijgt, levert dit je een belastingvoordeel op.",
+        unionFeeCalculationHeading: "De berekening is als volgt:",
+        unionFeeCalculationStep1: "Voer je jaarlijkse brutocontributiebedrag in. Als je maandelijks betaalt, wordt dit automatisch omgerekend naar een jaarbedrag.",
+        unionFeeCalculationStep2: "Kies welke bruto bron (vakantiegeld of eindejaarsuitkering) je wilt inzetten om de contributie mee uit te ruilen.",
+        unionFeeCalculationStep3: "Het uit te ruilen bedrag wordt direct verrekend met je gekozen bruto bron, waardoor je over dat bedrag geen belasting betaalt. Dit resulteert in een netto voordeel van circa 50% van het uitgeruilde bedrag.",
+        unionFeeExampleText: "Stel, je betaalt €20 per maand aan contributie (€240 per jaar). Als je dit bedrag uitruilt met je eindejaarsuitkering, bespaar je circa 50% belasting over die €240, wat neerkomt op een netto voordeel van circa €120.",
+        unionFeeExplanationP2: "Voeg tijdens de aanvraag in Optare een bankafschrift toe van een maandelijkse of jaarlijkse betaling van de contributie. Geef in de Optare-aanvraag aan welke bruto bron je hiervoor wilt inzetten.",
+    },
+    en: {
+        pageTitle: "WUR Calculation Model Exchange",
+        headerTitle: "Optare Simulation Tool",
+        sourceSelectorLabel: "Choose your calculation",
+        sourceTravel: "Travel Expenses",
+        sourceBike: "Bicycle",
+        sourceLeave: "Extra Leave",
+        sourceUnion: "Union Fee",
+        disclaimer: "* Please note: this is an indicative calculation. No rights can be derived from the results.",
+        yourBudget: "Your Budget",
+        availableSource: "Available Source",
+        totalUsedAmount: "Total Amount Used",
+        travelCostExchange: "Travel Expenses Exchange",
+        labelHolidayPay: "Max. Holiday Pay Contribution",
+        labelYearEndBonus: "Max. Year-End Bonus Contribution",
+        labelTravelDays: "Declared Travel Days",
+        labelDistance: "One-Way Distance",
+        labelSourceToUse: "Which source do you want to use?",
+        optionYearEndBonus: "Year-End Bonus",
+        optionHolidayPay: "Holiday Pay",
+        optionBoth: "Holiday Pay & Year-End Bonus",
+        explanationLink: "Explanation of calculation",
+        yourNetBenefit: "Your Net Benefit",
+        netBenefitLabel: "You retain more net income annually:",
+        applyButton: "Apply directly in Optare",
+        calculationDetails: "Calculation Details",
+        currentSituation: "Current Situation",
+        gross: "Gross",
+        tax: "Tax (approx. 50%)",
+        netPaid: "Net paid",
+        situationAfterExchange: "Situation after exchange",
+        taxFreeExchange: "+ Tax-Free Exchange",
+        showDetails: "Show details",
+        hideDetails: "Hide details", // << BELANGRIJK: DEZE MOET ERIN STAAN
+        exampleCalculation: "Example calculation:",
+        noUploadNeeded: "For this indicative calculation, you do not need to upload any documents.",
+        netCost: "Net Cost",
+        taxReliefNone: "Tax Relief (none)",
+        taxRelief: "Tax Relief (approx. 50%)",
+        grossUnionFee: "Gross Union Fee",
+        unionFeeExchange: "Union Fee Exchange",
+        labelUnionFeeAmount: "Gross contribution amount per month/year",
+        labelUnionFeeFrequency: "Frequency",
+        optionMonthly: "Month",
+        optionYearly: "Year",
 
-export function translatePage(lang) {
-  document.querySelectorAll('[data-translate-key]').forEach(el => {
-    const key = el.dataset.translateKey;
-    if (translations[lang][key]) {
-      el.innerHTML = translations[lang][key];
+        // Fietsregeling
+        bikeRegulationTitle: "Bicycle Scheme",
+        labelBikePurchaseAmount: "Bicycle purchase amount (max €2,500)",
+        labelBikeGrossSource: "Available gross amount (holiday pay/YEB)",
+        netBenefitBikeLabel: "You retain more net income due to tax benefit:",
+        grossAmountUsed: "Gross amount used",
+        netCostForYou: "Net cost for you",
+
+        // Modal teksten (voorbeeld)
+        modalTitle1: "Title 1", modalTitle2: "Title 2", modalP1: "Paragraph 1",
+        // ... voeg hier al jouw modal keys toe zoals in jouw main.js
+        modalLi1: "Item 1", modalLi2: "Item 2", modalLi3: "Item 3",
+        // ...
+        modalStrong3: "Example:", modalLi20: "Calculation example 1",
+        modalP4: "More info about the calculation.",
+
+        // Explanation Texts Travel Expenses
+        travelCostExplanationTitle: "Explanation: Travel Expense Reimbursement Exchange",
+        travelCostExplanationP1: "If you travel by bicycle or public transport as a WUR employee, you may already receive a tax-free travel expense reimbursement. With the Optare scheme, you can supplement this reimbursement with a tax advantage based on your gross holiday pay or year-end bonus.",
+        travelCostCalculationHeading: "The calculation is as follows:",
+        travelCostCalculationStep1: "Determine the maximum tax-free travel expense reimbursement based on the number of travel days and your one-way distance (according to WUR regulations).",
+        travelCostCalculationStep2: "Choose whether you want to use your holiday pay, year-end bonus, or both for the exchange.",
+        travelCostCalculationStep3: "The tool calculates the maximum amount you can exchange (the minimum of the tax-free reimbursement and your available sources).",
+        travelCostCalculationStep4: "This exchanged amount is not taxed, directly saving you approximately 50% of this amount in tax.",
+        travelCostCalculationStep5: "The net benefit is the amount you retain more than if you were to have the gross reimbursement paid out and taxed normally.",
+        travelCostExampleText: "Suppose you travel 100 days a year, 20 km one-way, and you choose the year-end bonus (€1000) as a source. Max. tax-free = 100 * 20 * €0.23 = €460. You exchange €460 gross, which yields you approximately €230 net.",
+        travelCostExplanationP2: "In Optare, you can specify the gross amount of your holiday pay and/or year-end bonus that you wish to exchange. During the application, attach a recent bank statement or public transport history as proof of your travel expenses.",
+        travelCostExplanationP3: "The calculation in this tool provides an indication of the net benefit. The exact amount of the benefit may vary based on your personal tax situation.",
+
+        // Explanation Texts Union Fee
+        unionFeeExplanationTitle: "Explanation: Union Fee Exchange",
+        unionFeeExplanationP1: "If you are a member of a trade union, you can annually apply for a tax benefit on your trade union contribution through Optare. By contributing a gross amount and receiving a net amount back, this provides a tax advantage.",
+        unionFeeCalculationHeading: "The calculation is as follows:",
+        unionFeeCalculationStep1: "Enter your annual gross contribution amount. If you pay monthly, this will automatically be converted to an annual amount.",
+        unionFeeCalculationStep2: "Choose which gross source (holiday pay or year-end bonus) you want to use to exchange the contribution with.",
+        unionFeeCalculationStep3: "The amount to be exchanged is directly settled with your chosen gross source, meaning you do not pay tax on that amount. This results in a net benefit of approximately 50% of the exchanged amount.",
+        unionFeeExampleText: "For example, if you pay €20 per month in contributions (€240 per year). If you exchange this amount with your year-end bonus, you save approximately 50% tax on that €240, which amounts to a net benefit of approximately €120.",
+        unionFeeExplanationP2: "During the application in Optare, attach a bank statement of a monthly or annual payment of the contribution. Indicate in the Optare application which gross source you wish to use for this.",
     }
-  });
+};
 
-  document.documentElement.lang = lang;
-  const translateBtn = document.getElementById('translate-btn');
-  if (translateBtn) {
-    translateBtn.textContent = translations[lang].translateBtnText;
-  }
+// Deze functie moet waarschijnlijk uitverplaatst worden naar jouw vertaalsysteem.js
+// of je moet de globale `currentLang` gebruiken.
+export function translatePage(lang) {
+    document.documentElement.lang = lang; // Update de lang attribute op de html tag
+    document.querySelectorAll('[data-translate-key]').forEach(element => {
+        const key = element.getAttribute('data-translate-key');
+        if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+        }
+    });
+
+    // Speciale vertaling voor de EN/NL knop zelf
+    const translateBtn = document.getElementById('translate-btn');
+    if (translateBtn) {
+        translateBtn.textContent = lang === 'nl' ? 'EN' : 'NL';
+    }
+
+    // Speciale vertaling voor de dropdown opties
+    const sourceSelector = document.getElementById('source-selector');
+    if (sourceSelector) {
+        sourceSelector.querySelectorAll('option').forEach(option => {
+            const key = option.getAttribute('data-translate-key');
+            if (translations[lang] && translations[lang][key]) {
+                option.textContent = translations[lang][key];
+            }
+        });
+    }
+
+    // Update de text van de toggle buttons
+    document.querySelectorAll('.toggle-details-btn').forEach(button => {
+        const key = button.getAttribute('data-translate-key');
+        if (key && translations[lang] && translations[lang][key]) {
+            button.textContent = translations[lang][key];
+        }
+    });
 }
