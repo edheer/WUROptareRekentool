@@ -62,6 +62,16 @@ export const translations = {
         labelBikePurchaseAmountFull: "Aankoopbedrag (incl. accessoires/verzekering)",
         explanationLinkBike: "Uitleg & voorwaarden",
         netBenefitBikeLabel: "Je houdt netto méér over door belastingvoordeel:",
+        bikeModalTitle: "Uitleg: Uitruil (elektrische) fiets/scooter",
+        bikeModalP1: "Met de fietsregeling kun je een (elektrische) fiets of scooter aanschaffen en profiteren van een belastingvoordeel door een deel van je bruto salaris (vakantiegeld of eindejaarsuitkering) in te ruilen.",
+        bikeModalH3: "Hoe werkt het?",
+        bikeModalLi1: "Kies een fiets of scooter uit.",
+        bikeModalLi2: "Bepaal welk deel van je bruto salaris je wilt inzetten.",
+        bikeModalLi3: "Geniet van je nieuwe fiets en het belastingvoordeel!",
+        bikeModalP2: "De precieze voorwaarden en details vind je op de WUR website.",
+        explanationLinkBike: "Uitleg & voorwaarden",
+        bikeModalP2: "Je kunt een fiets aanschaffen tot een bedrag van €2.500. Het belastingvoordeel is afhankelijk van je persoonlijke situatie.",
+
         // Modal teksten (voorbeeld, pas aan naar jouw exacte keys)
         modalTitle1: "Titel 1", modalTitle2: "Titel 2", modalP1: "Paragraaf 1",
         // ... voeg hier al jouw modal keys toe zoals in jouw main.js
@@ -153,7 +163,15 @@ export const translations = {
         labelBikePurchaseAmountFull: "Purchase amount (incl. accessories/insurance)",
         explanationLinkBike: "Explanation & conditions",
         netBenefitBikeLabel: "You retain more net income due to tax benefit:",
-        
+        bikeModalTitle: "Explanation: Exchange (electric) bicycle/scooter",
+        bikeModalP1: "With the bicycle scheme, you can purchase a (electric) bicycle or scooter and benefit from a tax advantage by exchanging part of your gross salary (holiday pay or year-end bonus).",
+        bikeModalH3: "How does it work?",
+        bikeModalLi1: "Choose a bicycle or scooter.",
+        bikeModalLi2: "Determine which part of your gross salary you want to contribute.",
+        bikeModalLi3: "Enjoy your new bicycle and the tax advantage!",
+        bikeModalP2: "The precise conditions and details can be found on the WUR website.",
+        explanationLinkBike: "Explanation & conditions",
+        bikeModalP2: "You can purchase a bicycle up to an amount of €2,500. The tax advantage depends on your personal situation.",
         // Modal teksten (voorbeeld)
         modalTitle1: "Title 1", modalTitle2: "Title 2", modalP1: "Paragraph 1",
         // ... voeg hier al jouw modal keys toe zoals in jouw main.js

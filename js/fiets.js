@@ -1,5 +1,4 @@
 // js/fiets.js
-
 import { formatCurrency } from './utils.js';
 import { translations } from './vertaalsysteem.js';
 
@@ -7,7 +6,7 @@ const BELASTING_PERCENTAGE = 0.50;
 let inputs, outputs;
 
 // Functie om de DOM-elementen te initialiseren
-export function initFietsTool() {
+export function initFietsTool(openModalFunction, currentLang) { // Pass openModalFunction AND currentLang as parameters
     if (inputs) return; // Voorkom herinitialisatie
 
     inputs = {
@@ -52,6 +51,27 @@ export function initFietsTool() {
             });
         }
     });
+
+    //  Klik-listener voor de modal - MOET currentLang meegeven
+    const infoLink = document.getElementById('open-info-modal-link-fiets');
+    if (infoLink) {
+        infoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const t = translations[currentLang];
+            const content = `
+                <h2>${t.bikeModalTitle}</h2>
+                <p>${t.bikeModalP1}</p>
+                <h3>${t.bikeModalH3}</h3>
+                <ul class="checkmark-list">
+                    <li>${t.bikeModalLi1}</li>
+                    <li>${t.bikeModalLi2}</li>
+                    <li>${t.bikeModalLi3}</li>
+                </ul>
+                <p>${t.bikeModalP2}</p>
+            `;
+            openModalFunction(content);  // << Open de modal met de content
+        });
+    }
 }
 
 // Functie om de berekening te updaten
