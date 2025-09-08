@@ -2,6 +2,7 @@
 
 import { initReiskostenTool, updateReiskosten } from './reiskosten.js';
 import { translations, translatePage } from './vertaalsysteem.js';
+import { initFietsTool, updateFietsTool } from './fiets.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'nl';
@@ -15,10 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedSection) {
             selectedSection.style.display = 'block';
 
-            if (selected === 'reiskosten') {
-                initReiskostenTool(currentLang, translations);
-                updateReiskosten(currentLang, translations);
-            }
+if (selected === 'reiskosten') {
+    initReiskostenTool(currentLang, translations);
+    updateReiskosten(currentLang, translations);
+} else if (selected === 'fiets') {
+    initFietsTool();
+    updateFietsTool();
+}
+
             // Hier kun je in de toekomst initialisatie voor andere tools toevoegen
         }
     }
@@ -30,9 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Luister naar input voor updates
     document.body.addEventListener('input', () => {
         const selected = document.getElementById('source-selector').value;
-        if (selected === 'reiskosten') {
-            updateReiskosten(currentLang, translations);
-        }
+if (selected === 'reiskosten') {
+    updateReiskosten(currentLang, translations);
+} else if (selected === 'fiets') {
+    updateFietsTool();
+}
+
     });
 
     // Taalknop
