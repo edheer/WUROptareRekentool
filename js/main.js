@@ -1,14 +1,11 @@
-// main.js
-
 import { initReiskostenTool, updateReiskosten } from './reiskosten.js';
 import { translations, translatePage } from './vertaalsysteem.js';
-import { initFietsTool, updateFietsTool } from './fiets.js'; // Aangepaste import
+import { initFietsTool, updateFietsTool } from './fiets.js';
 import { initVakbondTool, updateVakbond } from './vakbond.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    let currentLang = 'nl'; // Dit wordt nu de globale taal in main.js
+    let currentLang = 'nl';
 
-    // Hulpfunctie voor het openen van de modal (deze blijft in main.js)
     const infoModal = document.getElementById('info-modal');
     const modalContentBody = document.getElementById('modal-content-body');
     const openModal = (contentHtml) => {
@@ -18,23 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initializeTool() {
         const selected = document.getElementById('source-selector').value;
-        // DEZE REGEL IS CRUCIAAL: Alle secties moeten EERST verborgen worden
         document.querySelectorAll('.tool-section').forEach(div => div.style.display = 'none');
         
         const selectedSection = document.getElementById(`tool-${selected}`);
         if (selectedSection) {
             selectedSection.style.display = 'block'; 
 
-            // Initialiseer ALLE tools (zorgt dat inputs en outputs zijn ingesteld)
-            // Daarna update je de GESELECTEERDE tool
-            initReiskostenTool(); // Roep init op
-            initFietsTool();      // Roep init op
-            initVakbondTool(currentLang, openModal); // Roep init op, geef openModal mee
+            initReiskostenTool();
+            initFietsTool();
+            initVakbondTool(currentLang, openModal);
 
-            // Update de berekening van de geselecteerde tool
             if (selected === 'reiskosten') {
                 updateReiskosten(currentLang, translations);
-            } else if (selected === 'fiets') {
+            } else if (selected === 'fiets') { // << TOEGEVOEGD
                 updateFietsTool(currentLang, translations);
             } else if (selected === 'vakbond') {
                 updateVakbond(currentLang);
@@ -42,34 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Init vertaling en de eerste tool
     translatePage(currentLang);
-    initializeTool(); // Roept nu ook initVakbondTool aan indien geselecteerd
+    initializeTool();
 
-    // Luister naar input voor updates
-    // Deze luistert naar ELKE input in de body, en roept dan de update functie van de actieve tool aan
     document.body.addEventListener('input', () => {
         const selected = document.getElementById('source-selector').value;
         if (selected === 'reiskosten') {
             updateReiskosten(currentLang, translations);
-        } else if (selected === 'fiets') {
+        } else if (selected === 'fiets') { // << TOEGEVOEGD
             updateFietsTool(currentLang, translations);
         } else if (selected === 'vakbond') {
             updateVakbond(currentLang);
         }
     });
 
-    // Taalknop
     const translateBtn = document.getElementById('translate-btn');
     if (translateBtn) {
         translateBtn.addEventListener('click', () => {
             currentLang = currentLang === 'nl' ? 'en' : 'nl';
             translatePage(currentLang);
-            // Update de berekening na taalwissel zodat teksten (zoals bronnaam) meeveranderen
             const selected = document.getElementById('source-selector').value;
             if (selected === 'reiskosten') {
                 updateReiskosten(currentLang, translations);
-            } else if (selected === 'fiets') {
+            } else if (selected === 'fiets') { // << TOEGEVOEGD
                 updateFietsTool(currentLang, translations);
             } else if (selected === 'vakbond') {
                 updateVakbond(currentLang);
@@ -77,11 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Tool selectie via dropdown
     const sourceSelector = document.getElementById('source-selector');
     if (sourceSelector) {
         sourceSelector.addEventListener('change', initializeTool);
     }
+    
+    // De rest van je event listeners voor de modal etc. blijven ongewijzigd
+    // ... (de code hieronder is prima en hoeft niet aangepast)
 
     // --- CENTRALE EVENT LISTENER VOOR ALLE KLIK-ACTIES ---
     document.body.addEventListener('click', (e) => {
@@ -132,20 +122,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    
-    // De globale focus/blur logica is niet meer nodig hier als elke tool dit zelf afhandelt.
-    // Verwijder dit als je het in initReiskostenTool(), initFietsTool(), initVakbondTool() hebt geplaatst.
-    // const numberInputs = document.querySelectorAll('.input-grid input[type="number"]');
-    // numberInputs.forEach(input => {
-    //     input.addEventListener('focus', () => {
-    //         if (input.value === '0') {
-    //             input.value = '';
-    //         }
-    //     });
-    //     input.addEventListener('blur', () => {
-    //         if (input.value === '') {
-    //             input.value = '0';
-    //         }
-    //     });
-    // });
 });

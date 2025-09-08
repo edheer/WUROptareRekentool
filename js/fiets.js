@@ -1,51 +1,62 @@
-// js/fiets.js (Voorbeeld, pas aan naar jouw exacte code)
+// js/fiets.js
 
-import { translations } from './vertaalsysteem.js';
-import { formatCurrency } from './utils.js'; // << NIEUW: Importeer formatCurrency
+import { formatCurrency } from './utils.js';
 
-let inputsFiets, outputsFiets; // Globale variabelen voor deze module
+let inputsFiets, outputsFiets;
 
-export function initFietsTool() { // Pas dit aan als je de openModal functie nodig hebt
+export function initFietsTool() {
+    if (inputsFiets) return;
+
     inputsFiets = {
         aankoopbedrag: document.getElementById('fiets_aankoopbedrag'),
-        bruto_bron: document.getElementById('fiets_bruto_bron')
+        vakantiegeld: document.getElementById('max_vakantiegeld_fiets'),
+        eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering_fiets'),
+        keuzeInzet: document.getElementById('keuze_inzet_fiets')
     };
     outputsFiets = {
-        voordeel: document.getElementById('fiets_voordeel'),
-        brutoIngezet: document.getElementById('fiets_brutoIngezet'),
-        nettoKosten: document.getElementById('fiets_nettoKosten')
+        voordeel: document.getElementById('fiets_verschil_netto'),
+        brutoIngezet: document.getElementById('budget_inzet_fiets'),
+        totaalBudget: document.getElementById('budget_bron_totaal_fiets'),
+        progressBar: document.getElementById('progress_bar_fiets'),
+        // Zorg ervoor dat dit element wordt geselecteerd
+        bronNaam: document.getElementById('budget_bron_naam_fiets') 
     };
-
-    // Logica om de '0' in input velden leeg te maken bij focus
-    Object.values(inputsFiets).forEach(input => {
-        if (input && input.type === 'number') {
-            input.addEventListener('focus', () => {
-                if (input.value === '0') {
-                    input.value = '';
-                }
-            });
-            input.addEventListener('blur', () => {
-                if (input.value === '') {
-                    input.value = '0';
-                }
-            });
-        }
-    });
 }
 
-export function updateFietsTool(currentLang, translations) { // Neem currentLang, translations mee
+export function updateFietsTool(currentLang, translations) {
     if (!inputsFiets || !outputsFiets) {
         initFietsTool();
     }
 
-    const aankoopbedrag = parseFloat(inputsFiets.aankoopbedrag.value) || 0;
-    const brutoBron = parseFloat(inputsFiets.bruto_bron.value) || 0;
+    const aankoopbedrag = Math.min(parseFloat(inputsFiets.aankoopbedrag.value) || 0, 2500);
+    const vakantiegeld = parseFloat(inputsFiets.vakantiegeld.value) || 0;
+    const eindejaarsuitkering = parseFloat(inputsFiets.eindejaarsuitkering.value) || 0;
+    const keuze = inputsFiets.keuzeInzet.value;
+
+    let brutoBron = 0;
+    let bronNaamText = ''; 
+
+    // Hier wordt de naam van de bron bepaald op basis van de vertalingen
+    if (keuze === 'eindejaarsuitkering') {
+        brutoBron = eindejaarsuitkering;
+        bronNaamText = translations[currentLang].sourceYearEndBonus; 
+    } else if (keuze === 'beide') {
+        brutoBron = vakantiegeld + eindejaarsuitkering;
+        bronNaamText = translations[currentLang].sourceBoth;
+    }
+    // Je kunt hier nog een 'vakantiegeld' optie toevoegen
 
     const ingezetBruto = Math.min(aankoopbedrag, brutoBron);
-    const nettoVoordeel = ingezetBruto * 0.50; // Aanname: 50% belastingvoordeel
-    const nettoKosten = aankoopbedrag - nettoVoordeel;
-    
+    const nettoVoordeel = ingezetBruto * 0.50;
+
+    // Update alle outputs
     outputsFiets.voordeel.textContent = formatCurrency(nettoVoordeel, currentLang);
     outputsFiets.brutoIngezet.textContent = formatCurrency(ingezetBruto, currentLang);
-    outputsFiets.nettoKosten.textContent = formatCurrency(nettoKosten, currentLang);
+    outputsFiets.totaalBudget.textContent = formatCurrency(brutoBron, currentLang);
+    
+    // << DIT IS DE CRUCIALE REGEL DIE DE NAAM IN DE LABEL ZET
+    outputsFiets.bronNaam.textContent = bronNaamText; 
+
+    const progressPercentage = brutoBron > 0 ? (ingezetBruto / brutoBron) * 100 : 0;
+    outputsFiets.progressBar.style.width = `${Math.min(progressPercentage, 100)}%`;
 }
