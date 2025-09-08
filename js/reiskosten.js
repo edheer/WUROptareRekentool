@@ -1,15 +1,19 @@
 // js/reiskosten.js
 
 import { translations } from './vertaalsysteem.js';
-import { formatCurrency } from './utils.js'; // << NIEUW: Importeer formatCurrency
+import { formatCurrency } from './utils.js';
 
 const BELASTING_PERCENTAGE = 0.50;
-const KM_VERGOEDING_STANDAARD = 0.14; // Onbelaste vergoeding (WUR spec.)
-const KM_VERGOEDING_FISCAAL = 0.23; // Maximale fiscale vergoeding
+const KM_VERGOEDING_STANDAARD = 0.14;
+const KM_VERGOEDING_FISCAAL = 0.23;
 
-let inputs, outputs; // Globale variabelen voor deze module
+let inputs, outputs;
+let isInitialized = false;
 
-export function initReiskostenTool() { // currentLang, translations zijn hier niet strikt nodig
+// BELANGRIJKE WIJZIGING: Accepteer de parameters van main.js
+export function initReiskostenTool(openModalFunction, currentLang) {
+    if (isInitialized) return;
+
     inputs = {
         max_vakantiegeld: document.getElementById('max_vakantiegeld'),
         max_eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering'),
@@ -23,7 +27,7 @@ export function initReiskostenTool() { // currentLang, translations zijn hier ni
         budget_bron_totaal: document.getElementById('budget_bron_totaal'),
         budget_inzet: document.getElementById('budget_inzet'),
         progress_bar: document.getElementById('progress_bar'),
-        bron_namen: document.querySelectorAll('.sub-label.bron_naam'), // Let op: deze selecteert alle .sub-label.bron_naam in de hele DOM
+        bron_namen: document.querySelectorAll('.sub-label.bron_naam'),
         huidig_bruto: document.getElementById('huidig_bruto'),
         huidig_belasting: document.getElementById('huidig_belasting'),
         huidig_netto: document.getElementById('huidig_netto'),
@@ -34,27 +38,54 @@ export function initReiskostenTool() { // currentLang, translations zijn hier ni
         verschil_netto: document.getElementById('verschil_netto')
     };
     
-    // Logica om de '0' in input velden leeg te maken bij focus
-    // Dit hoort in de init functie van ELKE tool
+    // --- TOEGEVOEGD: Listener voor de uitleg-modal ---
+    const infoLink = document.getElementById('open-info-modal-link');
+    if (infoLink && openModalFunction) {
+        infoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const t = translations[currentLang];
+            // Zorg dat deze translation keys bestaan in je vertaalsysteem.js
+            const content = `
+                <h2>${t.travelCostExplanationTitle}</h2>
+                <p>${t.travelCostExplanationP1}</p>
+                <h3>${t.travelCostCalculationHeading}</h3>
+                <ul class="checkmark-list">
+                    <li>${t.travelCostCalculationStep1}</li>
+                    <li>${t.travelCostCalculationStep2}</li>
+                    <li>${t.travelCostCalculationStep3}</li>
+                    <li>${t.travelCostCalculationStep4}</li>
+                    <li>${t.travelCostCalculationStep5}</li>
+                </ul>
+                <div class="calculation-example">
+                    <strong>${t.exampleCalculation}</strong><br>
+                    ${t.travelCostExampleText}
+                </div>
+                <p>${t.travelCostExplanationP2}</p>
+                <p>${t.travelCostExplanationP3}</p>
+            `;
+            openModalFunction(content);
+        });
+    }
+    
+    // Focus/blur listeners
     Object.values(inputs).forEach(input => {
-        if (input && input.type === 'number') { // Controleer of het een number input is
+        if (input && input.type === 'number') {
             input.addEventListener('focus', () => {
-                if (input.value === '0') {
-                    input.value = '';
-                }
+                if (input.value === '0') input.value = '';
             });
             input.addEventListener('blur', () => {
-                if (input.value === '') {
-                    input.value = '0';
-                }
+                if (input.value === '') input.value = '0';
             });
         }
     });
+
+    isInitialized = true;
 }
 
 export function updateReiskosten(currentLang, translations) {
-    if (!inputs || !outputs) { // Zorg dat de tool geïnitialiseerd is
-        initReiskostenTool();
+    if (!isInitialized || !inputs.max_vakantiegeld) {
+        // Wacht tot de init-functie de 'inputs' heeft ingesteld
+        return;
     }
 
     const v = {
@@ -66,80 +97,58 @@ export function updateReiskosten(currentLang, translations) {
     };
 
     // --- BEREKENING ---
-    
-    // 1. Bepaal eerst de beschikbare bron (het budget)
     let brutoBronHuidig;
     let bronNaamKey;
     switch (v.keuze_inzet) {
         case 'beide':
             brutoBronHuidig = v.max_vakantiegeld + v.max_eindejaarsuitkering;
-            bronNaamKey = 'optionBoth'; // Gebruik de juiste translation key
+            bronNaamKey = 'optionBoth';
             break;
         case 'eindejaarsuitkering':
         default:
             brutoBronHuidig = v.max_eindejaarsuitkering;
-            bronNaamKey = 'optionYearEndBonus'; // Gebruik de juiste translation key
+            bronNaamKey = 'optionYearEndBonus';
             break;
     }
 
-    // 2. Bereken de potentiële fiscale ruimte voor uitruil
-    // Volgens WUR regeling (standaard 0.14 onbelast, dus uitruil over 0.23-0.14 = 0.09)
-    // De maximale fiscale vergoeding is 0.23, WUR betaalt 0.14. Verschil is 0.09 om uit te ruilen.
-    // Echter, jouw oorspronkelijke berekening was: totaalMogelijkFiscaal - standaardVergoeding
-    // Laten we die aanhouden, maar check of deze logisch is met WUR regelingen.
-    const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL; // totaal fiscale ruimte
-    const standaardVergoeding = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD; // totaal onbelast betaald door WUR
-    const potentieleInzet = Math.max(0, totaalMogelijkFiscaal - standaardVergoeding); // het bedrag waarover je belastingvoordeel kunt halen
-
-
-    // 3. Bepaal het daadwerkelijk ingezette bedrag: top dit af op het beschikbare budget
+    const totaalMogelijkFiscaal = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_FISCAAL;
+    const standaardVergoeding = v.km_fiscaal * 2 * v.reisdagen_gedeclareerd * KM_VERGOEDING_STANDAARD;
+    const potentieleInzet = Math.max(0, totaalMogelijkFiscaal - standaardVergoeding);
     const totaalIngezetBedrag = Math.min(potentieleInzet, brutoBronHuidig);
-
-    // 4. Bereken de 'huidige' situatie (wat als we niet uitruilen?)
-    // Het is logischer dat de "huidige situatie" de bron toont zoals die normaal uitbetaald zou worden,
-    // en de "nieuwe situatie" toont hoe deze na uitruil verandert.
     const belastingHuidig = brutoBronHuidig * BELASTING_PERCENTAGE;
     const nettoHuidig = brutoBronHuidig - belastingHuidig;
-
-    // 5. Bereken de 'nieuwe' situatie (na uitruil)
-    const brutoBronNieuw = brutoBronHuidig - totaalIngezetBedrag; // Wat er van de bron overblijft na uitruil
-    const belastingNieuw = brutoBronNieuw * BELASTING_PERCENTAGE; // Belasting over het resterende deel van de bron
-    const nettoNieuw = brutoBronNieuw - belastingNieuw + totaalIngezetBedrag; // Resterende netto + het uitgeruilde bedrag (belastingvrij)
-
-    // 6. Bereken het verschil (netto voordeel)
+    const brutoBronNieuw = brutoBronHuidig - totaalIngezetBedrag;
+    const belastingNieuw = brutoBronNieuw * BELASTING_PERCENTAGE;
+    const nettoNieuw = brutoBronNieuw - belastingNieuw + totaalIngezetBedrag;
     const verschilNetto = nettoNieuw - nettoHuidig;
 
-
     // --- UPDATE VAN DE INTERFACE ---
-
     const bronNaam = translations[currentLang][bronNaamKey];
-    outputs.bron_namen.forEach(el => el.textContent = bronNaam);
-    outputs.budget_bron_naam.textContent = bronNaam;
+    if (outputs.bron_namen) outputs.bron_namen.forEach(el => el.textContent = bronNaam);
+    if (outputs.budget_bron_naam) outputs.budget_bron_naam.textContent = bronNaam;
 
-    outputs.budget_bron_totaal.textContent = formatCurrency(brutoBronHuidig, currentLang);
-    outputs.budget_inzet.textContent = formatCurrency(totaalIngezetBedrag, currentLang);
+    // Veilige updates om fouten te voorkomen als een element niet gevonden wordt
+    if (outputs.budget_bron_totaal) outputs.budget_bron_totaal.textContent = formatCurrency(brutoBronHuidig, currentLang);
+    if (outputs.budget_inzet) outputs.budget_inzet.textContent = formatCurrency(totaalIngezetBedrag, currentLang);
+    if (outputs.huidig_bruto) outputs.huidig_bruto.textContent = formatCurrency(brutoBronHuidig, currentLang);
+    if (outputs.huidig_belasting) outputs.huidig_belasting.textContent = formatCurrency(-belastingHuidig, currentLang);
+    if (outputs.huidig_netto) outputs.huidig_netto.textContent = formatCurrency(nettoHuidig, currentLang);
+    if (outputs.nieuw_bruto) outputs.nieuw_bruto.textContent = formatCurrency(brutoBronNieuw, currentLang);
+    if (outputs.nieuw_belasting) outputs.nieuw_belasting.textContent = formatCurrency(-belastingNieuw, currentLang);
+    if (outputs.nieuw_uitruil) outputs.nieuw_uitruil.textContent = formatCurrency(totaalIngezetBedrag, currentLang);
+    if (outputs.nieuw_netto) outputs.nieuw_netto.textContent = formatCurrency(nettoNieuw, currentLang);
+    if (outputs.verschil_netto) outputs.verschil_netto.textContent = formatCurrency(verschilNetto, currentLang);
 
-    outputs.huidig_bruto.textContent = formatCurrency(brutoBronHuidig, currentLang);
-    outputs.huidig_belasting.textContent = formatCurrency(-belastingHuidig, currentLang); // Negatief voor weergave
-    outputs.huidig_netto.textContent = formatCurrency(nettoHuidig, currentLang);
-
-    outputs.nieuw_bruto.textContent = formatCurrency(brutoBronNieuw, currentLang);
-    outputs.nieuw_belasting.textContent = formatCurrency(-belastingNieuw, currentLang); // Negatief
-    outputs.nieuw_uitruil.textContent = formatCurrency(totaalIngezetBedrag, currentLang);
-    outputs.nieuw_netto.textContent = formatCurrency(nettoNieuw, currentLang);
-
-    outputs.verschil_netto.textContent = formatCurrency(verschilNetto, currentLang);
-
-    // Progress bar update
-    let progressPercentage = brutoBronHuidig > 0 ? (totaalIngezetBedrag / brutoBronHuidig) * 100 : 0; // Gebruik totaalIngezetBedrag
-    outputs.progress_bar.style.width = `${Math.min(progressPercentage, 100)}%`; // Max 100% visueel
-    outputs.progress_bar.classList.remove('is-normal', 'is-warning', 'is-danger');
-    
-    if (totaalIngezetBedrag > brutoBronHuidig) { // Als meer wordt ingezet dan beschikbaar is
-        outputs.progress_bar.classList.add('is-danger');
-    } else if (progressPercentage > 80) {
-        outputs.progress_bar.classList.add('is-warning');
-    } else {
-        outputs.progress_bar.classList.add('is-normal');
+    if (outputs.progress_bar) {
+        let progressPercentage = brutoBronHuidig > 0 ? (totaalIngezetBedrag / brutoBronHuidig) * 100 : 0;
+        outputs.progress_bar.style.width = `${Math.min(progressPercentage, 100)}%`;
+        outputs.progress_bar.classList.remove('is-normal', 'is-warning', 'is-danger');
+        if (totaalIngezetBedrag > brutoBronHuidig) {
+            outputs.progress_bar.classList.add('is-danger');
+        } else if (progressPercentage > 80) {
+            outputs.progress_bar.classList.add('is-warning');
+        } else {
+            outputs.progress_bar.classList.add('is-normal');
+        }
     }
 }

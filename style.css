@@ -256,6 +256,25 @@
   border-top: none;
 }
 
+.input-grid-single {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.radio-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.radio-group input[type="radio"] {
+    width: auto;
+}
+.radio-group label {
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
 /* Wanneer de 'is-visible' class wordt toegevoegd, toon de details */
 .calculation-details.is-visible {
   max-height: 500px; /* Ruime waarde die hoger is dan de content ooit zal zijn */

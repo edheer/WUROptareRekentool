@@ -80,6 +80,29 @@ export const translations = {
         modalStrong3: "Voorbeeld:", modalLi20: "Berekening voorbeeld 1",
         modalP4: "Meer info over de berekening.",
 
+        // Verlofregeling
+        leaveSaleTitle: "Verkopen van bovenwettelijk verlof",
+        labelUserType: "Type medewerker",
+        labelMonthlySalary: "Bruto maandsalaris (o.b.v. fulltime, januari)",
+        labelHoursToSell: "Aantal uren te verkopen",
+        yourNetPayout: "Jouw netto-opbrengst",
+        netPayoutLabel: "Je ontvangt netto (na belasting):",
+        leaveCalculation: "Berekening verlofwaarde",
+        valuePerHour: "Waarde per uur",
+        grossProceeds: "Bruto-opbrengst",
+        explanationLinkLeave: "Uitleg & voorwaarden",
+        // Modal
+        leaveModalTitle: "Uitleg: Verlofuren verkopen",
+        leaveModalP1: "Je kunt alleen bovenwettelijke verlofuren inzetten in Optare. De regels verschillen voor WU- en WR-medewerkers.",
+        leaveModalH3_WU: "Regels WU-medewerkers",
+        leaveModalLi1_WU: "Je mag jaarlijks maximaal 38 bovenwettelijke verlofuren inzetten voor een geldelijke waarde (zoals extra inkomen).",
+        leaveModalLi2_WU: "De waarde van één verlofuur is 0,704% van je bruto maandsalaris (o.b.v. een voltijd dienstverband en het salaris van januari).",
+        leaveModalH3_WR: "Regels WR-medewerkers",
+        leaveModalLi1_WR: "Je mag jaarlijks maximaal 36 bovenwettelijke verlofuren inzetten voor een geldelijke waarde.",
+        leaveModalLi2_WR: "De waarde van één verlofuur is 0,717% van je bruto maandsalaris (o.b.v. een voltijd dienstverband en het salaris van januari).",
+        leaveModalH3_Calc: "Belasting",
+        leaveModalP2: "De bruto-opbrengst van de verkochte uren wordt gezien als extra inkomen en wordt belast tegen het bijzonder tarief (ca. 50%).",
+
         // Uitlegteksten Reiskosten
         travelCostExplanationTitle: "Uitleg: Uitruil reiskostenvergoeding",
         travelCostExplanationP1: "Wanneer je als medewerker van WUR per fiets of openbaar vervoer reist, ontvang je mogelijk al een onbelaste reiskostenvergoeding. Met de Optare-regeling kun je deze vergoeding aanvullen met een belastingvoordeel op basis van je bruto vakantiegeld of eindejaarsuitkering.",
@@ -151,6 +174,30 @@ export const translations = {
         labelUnionFeeFrequency: "Frequency",
         optionMonthly: "Month",
         optionYearly: "Year",
+
+
+        //Verlofregeling
+        leaveSaleTitle: "Selling statutory+ leave hours",
+        labelUserType: "Employee type",
+        labelMonthlySalary: "Gross monthly salary (based on full-time, January)",
+        labelHoursToSell: "Number of hours to sell",
+        yourNetPayout: "Your net proceeds",
+        netPayoutLabel: "You will receive net (after tax):",
+        leaveCalculation: "Leave value calculation",
+        valuePerHour: "Value per hour",
+        grossProceeds: "Gross proceeds",
+        explanationLinkLeave: "Explanation & conditions",
+        // Modal
+        leaveModalTitle: "Explanation: Selling leave hours",
+        leaveModalP1: "You can only use statutory+ leave hours in Optare. The rules differ for WU and WR employees.",
+        leaveModalH3_WU: "Rules for WU employees",
+        leaveModalLi1_WU: "You can use a maximum of 38 statutory+ leave hours annually for a monetary value (like extra income).",
+        leaveModalLi2_WU: "The value of one leave hour is 0.704% of your gross monthly salary (based on a full-time contract and the January salary).",
+        leaveModalH3_WR: "Rules for WR employees",
+        leaveModalLi1_WR: "You can use a maximum of 36 statutory+ leave hours annually for a monetary value.",
+        leaveModalLi2_WR: "The value of one leave hour is 0.717% of your gross monthly salary (based on a full-time contract and the January salary).",
+        leaveModalH3_Calc: "Taxation",
+        leaveModalP2: "The gross proceeds from the sold hours are considered extra income and are taxed at the special rate (approx. 50%).",
 
         // Fietsregeling
         bikeRegulationTitle: "Bicycle Scheme",

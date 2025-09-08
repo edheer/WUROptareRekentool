@@ -307,9 +307,95 @@
   </div>
 </section>
 
-        <section id="tool-extra_verlof" class="tool-section" style="display: none;">
-            <!-- Inhoud voor extra verlof kan hier in de toekomst komen -->
-        </section>
+<section id="tool-extra_verlof" class="tool-section" style="display: none;">
+    <div class="main-grid">
+        <!-- LINKER KOLOM: INPUTS -->
+        <div class="input-column">
+            <div class="card">
+                <h2 data-translate-key="leaveSaleTitle">Verkopen van bovenwettelijk verlof</h2>
+                <div class="input-grid-single">
+                    <div class="input-group">
+                        <label data-translate-key="labelUserType">Type medewerker</label>
+                        <div class="radio-group">
+                            <input type="radio" id="verlof_user_type_wu" name="verlof_user_type" value="wu" checked>
+                            <label for="verlof_user_type_wu">WU-medewerker</label>
+                            <input type="radio" id="verlof_user_type_wr" name="verlof_user_type" value="wr">
+                            <label for="verlof_user_type_wr">WR-medewerker</label>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="verlof_maandsalaris" data-translate-key="labelMonthlySalary">Bruto maandsalaris (o.b.v. fulltime, januari)</label>
+                        <input type="number" id="verlof_maandsalaris" value="3000" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="verlof_uren" data-translate-key="labelHoursToSell">Aantal uren te verkopen (<span id="verlof_max_uren_label">max 38</span>)</label>
+                        <input type="number" id="verlof_uren" value="0" min="0" max="38">
+                    </div>
+                </div>
+                <div class="action-container">
+                    <a id="open-info-modal-link-verlof" class="info-link" data-translate-key="explanationLinkLeave">Uitleg & voorwaarden</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECHTER KOLOM: RESULTATEN -->
+        <div class="results-column">
+            <div class="card">
+                <h2 data-translate-key="yourNetPayout">Jouw netto-opbrengst</h2>
+                <div class="hero-result">
+                    <div class="label" data-translate-key="netPayoutLabel">Je ontvangt netto (na belasting):</div>
+                    <span class="value" id="verlof_netto_opbrengst">€ 0,00</span>
+                </div>
+                 <div class="action-container">
+                    <a href="https://workforce.nl.adp.com/PV_Web/composer/workspace.jsp?mode=medewerker&action=screen&service=flex_cockpit"
+                       target="_blank" class="cta-button" data-translate-key="applyButton">Direct aanvragen in Optare</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 data-translate-key="calculationDetails">De details van de berekening</h2>
+                <div class="result-box">
+                    <h3 data-translate-key="leaveCalculation">Berekening verlofwaarde</h3>
+                    <div class="calculation-details is-visible">
+                        <div class="calculation-item">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="valuePerHour">Waarde per uur</span>
+                            </div>
+                            <div class="item-value">
+                                <span class="amount" id="verlof_waarde_per_uur">€ 0,00</span>
+                            </div>
+                        </div>
+                        <div class="calculation-item">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="grossProceeds">Bruto-opbrengst</span>
+                                <span class="sub-label" id="verlof_bruto_sublabel">0 uren</span>
+                            </div>
+                            <div class="item-value">
+                                <span class="amount" id="verlof_bruto_opbrengst">€ 0,00</span>
+                            </div>
+                        </div>
+                        <div class="calculation-item">
+                            <div class="item-label">
+                                <span class="main-label" data-translate-key="tax">Belasting (ca. 50%)</span>
+                            </div>
+                            <div class="item-value text-negative">
+                                <span class="amount" id="verlof_belasting">€ 0,00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="calculation-item is-total">
+                        <div class="item-label">
+                            <span class="main-label" data-translate-key="netPaid">Netto uitbetaald</span>
+                        </div>
+                        <div class="item-value">
+                            <span class="amount" id="verlof_netto_uitbetaald_detail">€ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <section id="tool-vakbond" class="tool-section" style="display: none;">
             <div class="main-grid">
