@@ -4,10 +4,11 @@ import { translations } from './vertaalsysteem.js';
 
 const BELASTING_PERCENTAGE = 0.50;
 let inputs, outputs;
+let isInitialized = false;
 
 // Functie om de DOM-elementen te initialiseren
-export function initFietsTool(openModalFunction, currentLang) { // Pass openModalFunction AND currentLang as parameters
-    if (inputs) return; // Voorkom herinitialisatie
+export function initFietsTool(openModalFunction, getCurrentLang) { // Pass openModalFunction AND getCurrentLang
+    if (isInitialized) return; 
 
     inputs = {
         aankoopbedrag: document.getElementById('fiets_aankoopbedrag'),
@@ -16,16 +17,11 @@ export function initFietsTool(openModalFunction, currentLang) { // Pass openModa
         keuzeInzet: document.getElementById('keuze_inzet_fiets')
     };
     outputs = {
-        // Budget
         budgetBronNaam: document.getElementById('budget_bron_naam_fiets'),
         budgetTotaal: document.getElementById('budget_bron_totaal_fiets'),
         budgetInzet: document.getElementById('budget_inzet_fiets'),
         progressBar: document.getElementById('progress_bar_fiets'),
-        
-        // Resultaat
         verschilNetto: document.getElementById('fiets_verschil_netto'),
-
-        // Details
         bronNamen: document.querySelectorAll('.sub-label.bron_naam_fiets'),
         huidigBruto: document.getElementById('fiets_huidig_bruto'),
         huidigBelasting: document.getElementById('fiets_huidig_belasting'),
@@ -36,27 +32,19 @@ export function initFietsTool(openModalFunction, currentLang) { // Pass openModa
         nieuwNetto: document.getElementById('fiets_nieuw_netto')
     };
 
-    // Voeg focus/blur events toe voor deze tool
     Object.values(inputs).forEach(input => {
         if (input && input.type === 'number') {
-            input.addEventListener('focus', () => {
-                if (input.value === '0') {
-                    input.value = '';
-                }
-            });
-            input.addEventListener('blur', () => {
-                if (input.value === '') {
-                    input.value = '0';
-                }
-            });
+            input.addEventListener('focus', () => { if (input.value === '0') input.value = ''; });
+            input.addEventListener('blur', () => { if (input.value === '') input.value = '0'; });
         }
     });
 
-    //  Klik-listener voor de modal - MOET currentLang meegeven
     const infoLink = document.getElementById('open-info-modal-link-fiets');
     if (infoLink) {
         infoLink.addEventListener('click', (e) => {
             e.preventDefault();
+            // WIJZIGING: Vraag de actuele taal op *tijdens de klik*.
+            const currentLang = getCurrentLang();
             const t = translations[currentLang];
             const content = `
                 <h2>${t.bikeModalTitle}</h2>
@@ -69,28 +57,25 @@ export function initFietsTool(openModalFunction, currentLang) { // Pass openModa
                 </ul>
                 <p>${t.bikeModalP2}</p>
             `;
-            openModalFunction(content);  // << Open de modal met de content
+            openModalFunction(content);
         });
     }
+    isInitialized = true;
 }
 
 // Functie om de berekening te updaten
 export function updateFietsTool(currentLang) {
     if (!inputs || !outputs) {
-        initFietsTool();
+        console.error("Fiets tool is nog niet geïnitialiseerd.");
+        return;
     }
 
-    // Lees de input waarden
     const aankoopbedrag = Math.min(parseFloat(inputs.aankoopbedrag.value) || 0, 2500);
     const vakantiegeld = parseFloat(inputs.vakantiegeld.value) || 0;
     const eindejaarsuitkering = parseFloat(inputs.eindejaarsuitkering.value) || 0;
     const keuze = inputs.keuzeInzet.value;
 
-    // --- BEREKENING ---
-
-    // 1. Bepaal het beschikbare budget en de naam van de bron
-    let brutoBron;
-    let bronNaamKey;
+    let brutoBron, bronNaamKey;
     switch (keuze) {
         case 'vakantiegeld':
             brutoBron = vakantiegeld;
@@ -107,51 +92,31 @@ export function updateFietsTool(currentLang) {
             break;
     }
 
-    // 2. Bepaal het daadwerkelijk ingezette bedrag (het aankoopbedrag, maar nooit meer dan het budget)
     const ingezetBruto = Math.min(aankoopbedrag, brutoBron);
-
-    // 3. Bereken de situaties en het voordeel
     const belastingHuidig = brutoBron * BELASTING_PERCENTAGE;
     const nettoHuidig = brutoBron - belastingHuidig;
-
     const brutoBronNieuw = brutoBron - ingezetBruto;
     const belastingNieuw = brutoBronNieuw * BELASTING_PERCENTAGE;
     const nettoNieuw = brutoBronNieuw - belastingNieuw + ingezetBruto;
-
     const verschilNetto = nettoNieuw - nettoHuidig;
 
-    // --- UPDATE VAN DE INTERFACE ---
-
-    // Update bronnaam in budget en details
     const bronNaamText = translations[currentLang][bronNaamKey];
     outputs.budgetBronNaam.textContent = bronNaamText;
     outputs.bronNamen.forEach(el => el.textContent = bronNaamText);
-
-    // Update budget sectie
     outputs.budgetTotaal.textContent = formatCurrency(brutoBron, currentLang);
     outputs.budgetInzet.textContent = formatCurrency(ingezetBruto, currentLang);
 
-    // Update progress bar
     const progressPercentage = brutoBron > 0 ? (ingezetBruto / brutoBron) * 100 : 0;
     outputs.progressBar.style.width = `${Math.min(progressPercentage, 100)}%`;
-    outputs.progressBar.classList.remove('is-normal', 'is-warning', 'is-danger');
-    if (ingezetBruto > brutoBron) {
-        outputs.progressBar.classList.add('is-danger');
-    } else if (progressPercentage > 80) {
-        outputs.progressBar.classList.add('is-warning');
-    } else {
-        outputs.progressBar.classList.add('is-normal');
-    }
+    outputs.progressBar.className = 'progress-bar-inner';
+    if (ingezetBruto > brutoBron) outputs.progressBar.classList.add('is-danger');
+    else if (progressPercentage > 80) outputs.progressBar.classList.add('is-warning');
+    else outputs.progressBar.classList.add('is-normal');
 
-    // Update resultaat sectie
     outputs.verschilNetto.textContent = formatCurrency(verschilNetto, currentLang);
-
-    // Update details: Huidige situatie
     outputs.huidigBruto.textContent = formatCurrency(brutoBron, currentLang);
     outputs.huidigBelasting.textContent = formatCurrency(-belastingHuidig, currentLang);
     outputs.huidigNetto.textContent = formatCurrency(nettoHuidig, currentLang);
-
-    // Update details: Nieuwe situatie
     outputs.nieuwBruto.textContent = formatCurrency(brutoBronNieuw, currentLang);
     outputs.nieuwBelasting.textContent = formatCurrency(-belastingNieuw, currentLang);
     outputs.nieuwUitruil.textContent = formatCurrency(ingezetBruto, currentLang);

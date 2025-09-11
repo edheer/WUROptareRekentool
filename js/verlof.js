@@ -21,7 +21,7 @@ function safeUpdate(element, value) {
     }
 }
 
-export function initVerlofTool(openModalFunction, currentLang) {
+export function initVerlofTool(openModalFunction, getCurrentLang) {
     if (isInitialized) return;
 
     inputs = {
@@ -40,13 +40,15 @@ export function initVerlofTool(openModalFunction, currentLang) {
     };
 
     if (inputs.userType) {
-        inputs.userType.forEach(radio => radio.addEventListener('change', () => updateVerlofTool(currentLang)));
+        // De update functie heeft de taal nodig, dus die moet hier ook worden doorgegeven.
+        const handleUpdate = () => updateVerlofTool(getCurrentLang());
+        inputs.userType.forEach(radio => radio.addEventListener('change', handleUpdate));
+        [inputs.maandsalaris, inputs.uren].forEach(input => input?.addEventListener('input', handleUpdate));
     }
     
     [inputs.maandsalaris, inputs.uren].forEach(input => {
         if (input) {
             input.addEventListener('focus', () => {
-                // Verwijder '0' bij focus, behalve als het de placeholder tekst is
                 if (input.value === '0' || (input.id === 'verlof_maandsalaris' && input.value === '3000')) {
                     input.value = '';
                 }
@@ -63,6 +65,8 @@ export function initVerlofTool(openModalFunction, currentLang) {
     if (infoLink && openModalFunction) {
         infoLink.addEventListener('click', (e) => {
             e.preventDefault();
+            // WIJZIGING: Vraag de actuele taal op *tijdens de klik*.
+            const currentLang = getCurrentLang();
             const t = translations[currentLang];
             const content = `
                 <h2>${t.leaveModalTitle}</h2>
@@ -92,16 +96,9 @@ export function updateVerlofTool(currentLang) {
     
     const regel = REGELS[userType];
 
-    // --- WIJZIGING HIER ---
-    // Update de UI-elementen die afhankelijk zijn van het type medewerker
     if (outputs.maxUrenLabel) {
-        // 1. Update de tekst in de <label>
         outputs.maxUrenLabel.textContent = `max ${regel.maxUren}`;
-        
-        // 2. Update het 'max' attribuut van de <input> voor validatie
         inputs.uren.setAttribute('max', regel.maxUren);
-        
-        // 3. Update de placeholder van de <input> // <<<<<<< NIEUW
         inputs.uren.setAttribute('placeholder', `max ${regel.maxUren}`);
     }
     

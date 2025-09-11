@@ -6,7 +6,7 @@ import { translations } from './vertaalsysteem.js';
 let inputs, outputs;
 let isInitialized = false;
 
-export function initVakbondTool(openModalFunction, currentLang) {
+export function initVakbondTool(openModalFunction, getCurrentLang) {
     if (isInitialized) return;
 
     inputs = {
@@ -29,11 +29,12 @@ export function initVakbondTool(openModalFunction, currentLang) {
         nieuwNettoKosten: document.getElementById('vakbond_nieuw_netto_kosten')
     };
 
-    // --- LISTENER VOOR DE UITLEG-MODAL ---
     const infoLink = document.getElementById('open-vakbond-info-modal-link');
     if (infoLink && openModalFunction) {
         infoLink.addEventListener('click', (e) => {
             e.preventDefault();
+            // WIJZIGING: Vraag de actuele taal op *tijdens de klik*.
+            const currentLang = getCurrentLang();
             const t = translations[currentLang];
             const content = `
                 <h2>${t.unionFeeExplanationTitle}</h2>

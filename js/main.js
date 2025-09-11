@@ -22,11 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- INITIALISATIE VAN ALLE TOOLS (GEBEURT EENMALIG) ---
-    // Hier worden de parameters correct doorgegeven aan ALLE modules.
-    initReiskostenTool(openModal, currentLang);
-    initFietsTool(openModal, currentLang);
-    initVakbondTool(openModal, currentLang);
-    initVerlofTool(openModal, currentLang);
+    // HIER IS DE WIJZIGING: We geven een functie mee die de actuele taal ophaalt.
+    const getCurrentLang = () => currentLang;
+    initReiskostenTool(openModal, getCurrentLang);
+    initFietsTool(openModal, getCurrentLang);
+    initVakbondTool(openModal, getCurrentLang);
+    initVerlofTool(openModal, getCurrentLang);
 
     // --- FUNCTIES VOOR HET BEHEREN VAN DE ACTIEVE TOOL ---
     

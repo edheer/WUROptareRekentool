@@ -10,15 +10,15 @@ const KM_VERGOEDING_FISCAAL = 0.23;
 let inputs, outputs;
 let isInitialized = false;
 
-// BELANGRIJKE WIJZIGING: Accepteer de parameters van main.js
-export function initReiskostenTool(openModalFunction, currentLang) {
+// BELANGRIJKE WIJZIGING: Accepteer een functie om de taal op te halen.
+export function initReiskostenTool(openModalFunction, getCurrentLang) {
     if (isInitialized) return;
 
     inputs = {
         max_vakantiegeld: document.getElementById('max_vakantiegeld'),
         max_eindejaarsuitkering: document.getElementById('max_eindejaarsuitkering'),
         reisdagen_gedeclareerd: document.getElementById('reisdagen_gedeclareerd'),
-        km_fiscaal: document.getElementById('km_fiscaal'),
+        km_fiscal: document.getElementById('km_fiscaal'),
         keuze_inzet: document.getElementById('keuze_inzet')
     };
 
@@ -38,13 +38,13 @@ export function initReiskostenTool(openModalFunction, currentLang) {
         verschil_netto: document.getElementById('verschil_netto')
     };
     
-    // --- TOEGEVOEGD: Listener voor de uitleg-modal ---
     const infoLink = document.getElementById('open-info-modal-link');
     if (infoLink && openModalFunction) {
         infoLink.addEventListener('click', (e) => {
             e.preventDefault();
+            // WIJZIGING: Vraag de actuele taal op *tijdens de klik*.
+            const currentLang = getCurrentLang();
             const t = translations[currentLang];
-            // Zorg dat deze translation keys bestaan in je vertaalsysteem.js
             const content = `
                 <h2>${t.travelCostExplanationTitle}</h2>
                 <p>${t.travelCostExplanationP1}</p>
@@ -67,7 +67,6 @@ export function initReiskostenTool(openModalFunction, currentLang) {
         });
     }
     
-    // Focus/blur listeners
     Object.values(inputs).forEach(input => {
         if (input && input.type === 'number') {
             input.addEventListener('focus', () => {
@@ -84,7 +83,6 @@ export function initReiskostenTool(openModalFunction, currentLang) {
 
 export function updateReiskosten(currentLang, translations) {
     if (!isInitialized || !inputs.max_vakantiegeld) {
-        // Wacht tot de init-functie de 'inputs' heeft ingesteld
         return;
     }
 
@@ -92,7 +90,7 @@ export function updateReiskosten(currentLang, translations) {
         max_vakantiegeld: parseFloat(inputs.max_vakantiegeld.value) || 0,
         max_eindejaarsuitkering: parseFloat(inputs.max_eindejaarsuitkering.value) || 0,
         reisdagen_gedeclareerd: parseFloat(inputs.reisdagen_gedeclareerd.value) || 0,
-        km_fiscaal: parseFloat(inputs.km_fiscaal.value) || 0,
+        km_fiscaal: parseFloat(inputs.km_fiscal.value) || 0,
         keuze_inzet: inputs.keuze_inzet.value
     };
 
@@ -127,7 +125,6 @@ export function updateReiskosten(currentLang, translations) {
     if (outputs.bron_namen) outputs.bron_namen.forEach(el => el.textContent = bronNaam);
     if (outputs.budget_bron_naam) outputs.budget_bron_naam.textContent = bronNaam;
 
-    // Veilige updates om fouten te voorkomen als een element niet gevonden wordt
     if (outputs.budget_bron_totaal) outputs.budget_bron_totaal.textContent = formatCurrency(brutoBronHuidig, currentLang);
     if (outputs.budget_inzet) outputs.budget_inzet.textContent = formatCurrency(totaalIngezetBedrag, currentLang);
     if (outputs.huidig_bruto) outputs.huidig_bruto.textContent = formatCurrency(brutoBronHuidig, currentLang);
