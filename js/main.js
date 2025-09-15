@@ -6,6 +6,54 @@ import { initFietsTool, updateFietsTool } from './fiets.js';
 import { initVakbondTool, updateVakbond } from './vakbond.js';
 import { initVerlofTool, updateVerlofTool } from './verlof.js';
 
+    /**
+ * Stelt de logica in voor het uitschakelen van invoervelden op basis van de bronkeuze.
+ * @param {string} selectId - De ID van het <select> element voor de bronkeuze.
+ * @param {string} holidayPayInputId - De ID van het inputveld voor vakantiegeld.
+ * @param {string} yearEndBonusInputId - De ID van het inputveld voor de eindejaarsuitkering.
+ */
+function setupSourceSelectionLogic(selectId, holidayPayInputId, yearEndBonusInputId) {
+    const selectElement = document.getElementById(selectId);
+    const holidayPayInput = document.getElementById(holidayPayInputId);
+    const yearEndBonusInput = document.getElementById(yearEndBonusInputId);
+
+    if (!selectElement || !holidayPayInput || !yearEndBonusInput) {
+        // Voorkom fouten als een element niet gevonden wordt
+        return;
+    }
+
+    const handleSourceChange = () => {
+        const selectedValue = selectElement.value;
+
+        // Bepaal welke velden (in)actief moeten zijn
+        const isHolidayPayDisabled = selectedValue === 'eindejaarsuitkering';
+        const isYearEndBonusDisabled = selectedValue === 'vakantiegeld';
+
+        // Pas de status van het vakantiegeld-veld aan
+        holidayPayInput.disabled = isHolidayPayDisabled;
+        if (isHolidayPayDisabled) {
+            holidayPayInput.value = 0; // Zet waarde op 0 als het veld wordt uitgeschakeld
+        }
+        
+        // Pas de status van het eindejaarsuitkering-veld aan
+        yearEndBonusInput.disabled = isYearEndBonusDisabled;
+        if (isYearEndBonusDisabled) {
+            yearEndBonusInput.value = 0; // Zet waarde op 0 als het veld wordt uitgeschakeld
+        }
+
+        // Trigger een 'input' event om de berekening te updaten
+        holidayPayInput.dispatchEvent(new Event('input', { bubbles: true }));
+        yearEndBonusInput.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+
+    // Koppel de functie aan het 'change' event van de dropdown
+    selectElement.addEventListener('change', handleSourceChange);
+
+    // Voer de functie eenmalig uit bij het laden van de pagina voor de juiste beginstaat
+    handleSourceChange();
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'nl';
 
@@ -21,6 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
+
+// Wacht tot de hele pagina is geladen en roep dan de setup-functie aan voor elke tool
+
+    // Voor de Reiskosten tool
+    setupSourceSelectionLogic('keuze_inzet', 'max_vakantiegeld', 'max_eindejaarsuitkering');
+
+    // Voor de Fiets tool
+    // PS: Je HTML had nog geen optie voor 'alleen vakantiegeld' bij de fiets, die heb ik hier wel alvast meegenomen in de logica.
+    setupSourceSelectionLogic('keuze_inzet_fiets', 'max_vakantiegeld_fiets', 'max_eindejaarsuitkering_fiets');
+
+    // Voor de Vakbond tool
+    setupSourceSelectionLogic('vakbond_keuze_inzet', 'vakbond_max_vakantiegeld', 'vakbond_max_eindejaarsuitkering');
     // --- INITIALISATIE VAN ALLE TOOLS (GEBEURT EENMALIG) ---
     // HIER IS DE WIJZIGING: We geven een functie mee die de actuele taal ophaalt.
     const getCurrentLang = () => currentLang;

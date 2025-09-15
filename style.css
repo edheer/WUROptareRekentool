@@ -94,7 +94,14 @@
         .progress-bar-inner.is-normal { background-color: var(--wur-groen-primair); }
         .progress-bar-inner.is-warning { background-color: var(--kleur-oranje); }
         .progress-bar-inner.is-danger { background-color: var(--kleur-rood); }
-        
+        /* Stijl voor uitgeschakelde (disabled) input velden */
+input:disabled {
+  background-color: #f0f0f0; /* Een lichte, neutrale grijstint */
+  opacity: 0.6;             /* Dit maakt het element semi-transparant ('wazig') */
+  cursor: not-allowed;      /* Verandert de muiscursor in een 'niet-toegestaan' icoon */
+  color: #6c757d;           /* Maakt de tekstkleur ook wat lichter */
+}
+
         .hero-result { text-align: center; padding: 1.5rem; background-color: #eaf3eb; border-radius: 8px; }
         .hero-result .label { font-size: 1.2rem; color: var(--wur-groen-primair); font-weight: 600; }
         .hero-result .value { font-size: 3rem; font-weight: 700; color: var(--wur-blauw); margin: 0.5rem 0; display: block; }
