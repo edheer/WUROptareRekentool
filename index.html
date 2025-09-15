@@ -59,31 +59,51 @@
 
                     <div class="card">
                         <h2 data-translate-key="travelCostExchange">Uitruil reiskosten</h2>
-                        <div class="input-grid">
-                            <div class="input-group">
-                                <label for="max_vakantiegeld" data-translate-key="labelHolidayPay">Max. inzet vakantiegeld</label>
-                                <input type="number" id="max_vakantiegeld" value="0" min="0">
-                            </div>
-                            <div class="input-group">
-                                <label for="max_eindejaarsuitkering" data-translate-key="labelYearEndBonus">Max. inzet eindejaarsuitkering</label>
-                                <input type="number" id="max_eindejaarsuitkering" value="0" min="0">
-                            </div>
-                            <div class="input-group">
-                                <label for="reisdagen_gedeclareerd" data-translate-key="labelTravelDays">Gedeclareerde reisdagen</label>
-                                <input type="number" id="reisdagen_gedeclareerd" value="0" min="0">
-                            </div>
-                            <div class="input-group">
-                                <label for="km_fiscaal" data-translate-key="labelDistance">Enkele reisafstand</label>
-                                <input type="number" id="km_fiscaal" value="0" min="0">
-                            </div>
-                            <div class="input-group">
-                                <label for="keuze_inzet" data-translate-key="labelSourceToUse">Welke bron wil je inzetten?</label>
-                                <select id="keuze_inzet">
-                                    <option value="eindejaarsuitkering" data-translate-key="optionYearEndBonus">Eindejaarsuitkering</option>
-                                    <option value="beide" data-translate-key="optionBoth">Vakantiegeld &amp; Eindejaarsuitkering</option>
-                                </select>
-                            </div>
-                        </div>
+<div class="input-grid">
+    <div class="input-group has-tooltip">
+        <label for="max_vakantiegeld" data-translate-key="labelHolidayPay">
+            Max. inzet vakantiegeld
+            <span class="tooltip-text">
+                Kan je terugvinden via MyHR > menu > mijn aanvragen > optare > optare banner. Let op, in de banner staat dit nu op 0 omdat de uitbetaling al is geweest (mei).
+            </span>
+        </label>
+        <input type="number" id="max_vakantiegeld" value="0" min="0">
+    </div>
+    <div class="input-group has-tooltip">
+        <label for="max_eindejaarsuitkering" data-translate-key="labelYearEndBonus">
+            Max. inzet eindejaarsuitkering
+            <span class="tooltip-text">
+                Kan je terugvinden via MyHR > menu > mijn aanvragen > optare > optare banner.
+            </span>
+        </label>
+        <input type="number" id="max_eindejaarsuitkering" value="0" min="0">
+    </div>
+    <div class="input-group has-tooltip">
+        <label for="reisdagen_gedeclareerd" data-translate-key="labelTravelDays">
+            Gedeclareerde reisdagen
+            <span class="tooltip-text">
+                Je kan alleen zien wat je tot nu toe hebt gedeclareerd. Schat zelf in wat je voor de rest van het jaar verwacht aan reisdagen te maken.
+            </span>
+        </label>
+        <input type="number" id="reisdagen_gedeclareerd" value="0" min="0">
+    </div>
+    <div class="input-group has-tooltip">
+        <label for="km_fiscal" data-translate-key="labelDistance">
+            Enkele reisafstand
+            <span class="tooltip-text">
+                Kan je terugvinden via MyHR > menu > mijn aanvragen > optare > optare banner.
+            </span>
+        </label>
+        <input type="number" id="km_fiscaal" value="0" min="0">
+    </div>
+    <div class="input-group">
+        <label for="keuze_inzet" data-translate-key="labelSourceToUse">Welke bron wil je inzetten?</label>
+        <select id="keuze_inzet">
+            <option value="eindejaarsuitkering" data-translate-key="optionYearEndBonus">Eindejaarsuitkering</option>
+            <option value="beide" data-translate-key="optionBoth">Vakantiegeld &amp; Eindejaarsuitkering</option>
+        </select>
+    </div>
+</div>
                         <div class="action-container">
                             <a id="open-info-modal-link" class="info-link" data-translate-key="explanationLink">Uitleg van berekening</a>
                         </div>

@@ -77,6 +77,14 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.07); 
             padding: 2rem; margin-bottom: 2rem; 
         }
+        /* --- FORCEREN VAN TOOLTIP ZICHTBAARHEID --- */
+/* Deze regel is om te testen waarom de tooltip niet verschijnt. */
+/* Het forceert de kaart om content die 'buiten de randen' valt, toch te tonen. */
+
+.main-grid .card {
+    overflow: visible !important;
+}
+
         .card:last-child { margin-bottom: 0; }
         .card h2 { font-size: 1.5rem; color: var(--wur-blauw); margin-top: 0; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-kleur); }
         
@@ -100,6 +108,11 @@ input:disabled {
   opacity: 0.6;             /* Dit maakt het element semi-transparant ('wazig') */
   cursor: not-allowed;      /* Verandert de muiscursor in een 'niet-toegestaan' icoon */
   color: #6c757d;           /* Maakt de tekstkleur ook wat lichter */
+}
+/* Specifieke fix voor tooltips in input-kaarten */
+.input-column, 
+.input-column .card {
+    overflow: visible;
 }
 
         .hero-result { text-align: center; padding: 1.5rem; background-color: #eaf3eb; border-radius: 8px; }
@@ -137,6 +150,64 @@ input:disabled {
 
         @media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; } }
 
+
+        /* --- Tooltip Stijlen (Verbeterde versie) --- */
+
+/* De container van de tooltip (de hele input groep) */
+.input-group.has-tooltip {
+  position: relative; /* Noodzakelijk om de tooltip correct te positioneren */
+}
+
+/* De label-tekst binnen de tooltip-container krijgt de visuele hint */
+.has-tooltip > label {
+  cursor: help;       /* Verandert de muiscursor in een vraagteken */
+  border-bottom: 1px dotted var(--tekst-grijs); /* Subtiele indicatie dat er meer info is */
+  display: inline-block; /* Zorgt ervoor dat de stippellijn niet de hele breedte pakt */
+}
+
+/* De tooltip tekst zelf (standaard verborgen) */
+.has-tooltip .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  width: 280px;
+  background-color: #333;
+  color: #fff;
+  text-align: left; /* Linksuitlijnen is vaak beter leesbaar voor langere teksten */
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 0.9em;
+  line-height: 1.4;
+  
+  /* Positionering van de tooltip */
+  position: absolute;
+  z-index: 10;
+  bottom: 100%; /* Plaats de tooltip precies boven de input-groep */
+  left: 0;
+  margin-bottom: 8px; /* Een beetje ruimte tussen de tooltip en het veld */
+
+  /* Vloeiende overgang voor het verschijnen */
+  transition: opacity 0.3s ease;
+
+  /* Zorgt ervoor dat de tooltip niet geselecteerd kan worden */
+  pointer-events: none; 
+}
+
+/* Pijltje onderaan de tooltip */
+.has-tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 20px; /* Positioneer het pijltje iets naar links */
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+/* Toon de tooltip bij hover over de HELE groep */
+.input-group.has-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
 /* --- Gecorrigeerde Modal Styles --- */
 
 .modal-container {
