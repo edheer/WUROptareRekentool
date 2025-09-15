@@ -114,6 +114,11 @@ input:disabled {
 .input-column .card {
     overflow: visible;
 }
+/* Stijl voor labels met een title-attribuut */
+label[title] {
+    cursor: help;
+    border-bottom: 1px dotted var(--tekst-grijs);
+}
 
         .hero-result { text-align: center; padding: 1.5rem; background-color: #eaf3eb; border-radius: 8px; }
         .hero-result .label { font-size: 1.2rem; color: var(--wur-groen-primair); font-weight: 600; }
