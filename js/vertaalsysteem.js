@@ -103,18 +103,23 @@ export const translations = {
         leaveModalH3_Calc: "Belasting",
         leaveModalP2: "De bruto-opbrengst van de verkochte uren wordt gezien als extra inkomen en wordt belast tegen het bijzonder tarief (ca. 50%).",
 
-        // Uitlegteksten Reiskosten
+        // --- NIEUWE TEKSTEN REISKOSTEN ---
+        hoverHolidayPay: "Het bedrag kan je terugvinden in de Optare banner via MyHR > Menu > Mijn aanvragen > Optare > Optare banner. Let op: het bedrag in de banner staat nu op €0,00 omdat het vakantiegeld in mei is uitbetaald.",
+        hoverYearEndBonus: "Het bedrag kan je terugvinden in de Optare banner via MyHR > Menu > Mijn aanvragen > Optare > Optare banner.",
+        hoverTravelDays: "Het aantal gedeclareerde reisdagen tot nu toe kan je vinden via MyHR > Menu > Mijn declaraties > Overzichten declaraties > Woon-werk KM en thuiswerken. Maak zelf een schatting wat je voor de rest van het jaar aan reisdagen verwacht.",
+        hoverDistance: "Het aantal kilometers per enkele reis kan je terugvinden in de Optare banner via MyHR > Menu > Mijn aanvragen > Optare > Optare banner.",
+        
         travelCostExplanationTitle: "Uitleg: Uitruil reiskostenvergoeding",
-        travelCostExplanationP1: "Wanneer je als medewerker van WUR per fiets of openbaar vervoer reist, ontvang je mogelijk al een onbelaste reiskostenvergoeding. Met de Optare-regeling kun je deze vergoeding aanvullen met een belastingvoordeel op basis van je bruto vakantiegeld of eindejaarsuitkering.",
+        travelCostExplanationP1: "Wanneer je als medewerker van WUR per fiets of auto naar werk reist, ontvang je mogelijk al een onbelaste reiskostenvergoeding van €0,14 per kilometer met een maximum van 30 kilometer per enkele reis. Met de Optare-regeling kun je deze vergoeding aanvullen tot €0,23 per kilometer. De limiet van 30 kilometer per enkele reis komt hiermee te vervallen. Je ontvangt belastingvoordeel over je bruto vakantiegeld of eindejaarsuitkering als je dit inzet voor extra reiskosten.",
         travelCostCalculationHeading: "De berekening is als volgt:",
-        travelCostCalculationStep1: "Bepaal de maximaal belastingvrije reiskostenvergoeding op basis van het aantal reisdagen en je enkele reisafstand (volgens WUR-regeling).",
+        travelCostCalculationStep1: "Je aantal reisdagen en je enkele reisafstand bepalen de hoogte van de extra reiskosten.",
         travelCostCalculationStep2: "Kies of je vakantiegeld, eindejaarsuitkering, of beide wilt inzetten voor de uitruil.",
-        travelCostCalculationStep3: "De tool berekent welk bedrag je maximaal kunt uitruilen (minimaal van de belastingvrije vergoeding en je beschikbare bronnen).",
-        travelCostCalculationStep4: "Dit uitgeruilde bedrag wordt niet belast, waardoor je direct circa 50% van dit bedrag bespaart op belasting.",
-        travelCostCalculationStep5: "Het netto voordeel is het bedrag dat je meer overhoudt dan wanneer je de bruto vergoeding normaal zou laten uitbetalen en belasten.",
-        travelCostExampleText: "Stel je reist 100 dagen per jaar 20 km enkele reis, en je kiest de eindejaarsuitkering (€1000) als bron. Max. belastingvrij = 100 * 20 * €0.23 = €460. Je ruilt €460 bruto uit, wat je circa €230 netto oplevert.",
-        travelCostExplanationP2: "Je kunt in Optare het bruto bedrag van je vakantiegeld en/of eindejaarsuitkering dat je wilt uitruilen opgeven. Voeg tijdens de aanvraag een recent bankafschrift of ov-historie toe als bewijs van je reiskosten.",
+        travelCostCalculationStep3: "De tool berekent het bruto bedrag van de vakantie- en/of eindejaarsuitkering dat je inzet voor de extra reiskosten.",
+        travelCostCalculationStep4: "Dit uitgeruilde bedrag wordt niet belast, waardoor je circa 50% van dit bedrag netto aan voordeel ontvangt.",
+        travelCostCalculationStep5: "Het netto voordeel is het bedrag dat je meer overhoudt dan wanneer je de bruto vergoeding normaal zou laten uitbetalen.",
+        travelCostExampleText: "Stel dat je 100 dagen per jaar naar werk reist, je enkele reisafstand is 20 kilometer en je kiest de eindejaarsuitkering (€1000) als bron, dan zet je 100 x 20 x 2 x €0,09 = €360 in voor de extra reiskosten. Je ruilt €360 bruto uit, wat je circa €180 netto voordeel oplevert.",
         travelCostExplanationP3: "De berekening in deze tool geeft een indicatie van het netto voordeel. De exacte hoogte van het voordeel kan afwijken op basis van je persoonlijke fiscale situatie.",
+        // --- EINDE NIEUWE TEKSTEN ---
 
         // Uitlegteksten Vakbondscontributie
         unionFeeExplanationTitle: "Uitleg: Uitruil vakbondscontributie",
@@ -163,7 +168,7 @@ export const translations = {
         taxFreeExchange: "+ Tax-Free Exchange",
         showDetails: "Show details",
         hideDetails: "Hide details", // << BELANGRIJK: DEZE MOET ERIN STAAN
-        exampleCalculation: "Example calculation:",
+        exampleCalculation: "Calculation example:",
         noUploadNeeded: "For this indicative calculation, you do not need to upload any documents.",
         netCost: "Net Cost",
         taxReliefNone: "Tax Relief (none)",
@@ -227,18 +232,23 @@ export const translations = {
         modalStrong3: "Example:", modalLi20: "Calculation example 1",
         modalP4: "More info about the calculation.",
 
-        // Explanation Texts Travel Expenses
-        travelCostExplanationTitle: "Explanation: Travel Expense Reimbursement Exchange",
-        travelCostExplanationP1: "If you travel by bicycle or public transport as a WUR employee, you may already receive a tax-free travel expense reimbursement. With the Optare scheme, you can supplement this reimbursement with a tax advantage based on your gross holiday pay or year-end bonus.",
+        // --- NEW TEXTS TRAVEL EXPENSES ---
+        hoverHolidayPay: "You can find the amount in the Optare banner via MyHR > Menu > My requests > Optare > Optare banner. Please note: the amount in the banner is currently €0.00 because the holiday allowance was paid out in May.",
+        hoverYearEndBonus: "You can find the amount in the Optare banner via MyHR > Menu > My requests > Optare > Optare banner.",
+        hoverTravelDays: "You can find the number of travel days declared so far via MyHR > Menu > My expenses > Expense overview > Commuting KM and work-at-home. Make your own estimate of how many commuting days you expect for the rest of the year.",
+        hoverDistance: "The number of kilometres per single journey can be found in the Optare banner via MyHR > Menu > My requests > Optare > Optare banner.",
+
+        travelCostExplanationTitle: "Explanation: Commuting expense exchange",
+        travelCostExplanationP1: "If you are a WUR employee who travels to work by bicycle or car, you may already receive a tax-free travel expense of €0.14 per kilometre, with a maximum of 30 kilometres per single journey. With the Optare scheme, you can supplement this expense up to €0.23 per kilometre. This removes the limit of 30 kilometres per single journey. You will receive a tax benefit on your gross holiday allowance or end-of-year bonus if you use this for extra commuting expenses.",
         travelCostCalculationHeading: "The calculation is as follows:",
-        travelCostCalculationStep1: "Determine the maximum tax-free travel expense reimbursement based on the number of travel days and your one-way distance (according to WUR regulations).",
-        travelCostCalculationStep2: "Choose whether you want to use your holiday pay, year-end bonus, or both for the exchange.",
-        travelCostCalculationStep3: "The tool calculates the maximum amount you can exchange (the minimum of the tax-free reimbursement and your available sources).",
-        travelCostCalculationStep4: "This exchanged amount is not taxed, directly saving you approximately 50% of this amount in tax.",
-        travelCostCalculationStep5: "The net benefit is the amount you retain more than if you were to have the gross reimbursement paid out and taxed normally.",
-        travelCostExampleText: "Suppose you travel 100 days a year, 20 km one-way, and you choose the year-end bonus (€1000) as a source. Max. tax-free = 100 * 20 * €0.23 = €460. You exchange €460 gross, which yields you approximately €230 net.",
-        travelCostExplanationP2: "In Optare, you can specify the gross amount of your holiday pay and/or year-end bonus that you wish to exchange. During the application, attach a recent bank statement or public transport history as proof of your travel expenses.",
-        travelCostExplanationP3: "The calculation in this tool provides an indication of the net benefit. The exact amount of the benefit may vary based on your personal tax situation.",
+        travelCostCalculationStep1: "Your number of travel days and your single journey distance determine the amount of the additional commuting expense.",
+        travelCostCalculationStep2: "Choose whether you want to use your holiday allowance, end-of-year bonus, or both for the exchange.",
+        travelCostCalculationStep3: "The tool calculates the gross amount of the holiday allowance and/or end-of-year bonus that you use for the additional commuting expense.",
+        travelCostCalculationStep4: "This exchanged amount is not taxed, which means you receive approximately 50% of this amount as a net benefit.",
+        travelCostCalculationStep5: "The net benefit is the amount you have left over compared to if you had the gross expense paid out normally.",
+        travelCostExampleText: "Suppose you travel to work 100 days a year, your one-way travel distance is 20 kilometres and you choose the end-of-year bonus (€1,000) as your source, then you enter 100 x 20 x 2 x €0.09 = €360 for the additional commuting expense. You exchange €360 gross, which gives you a net benefit of approximately €180.",
+        travelCostExplanationP3: "The calculation in this tool provides an indication of the net benefit. The exact amount of the benefit may vary depending on your personal tax situation.",
+        // --- END NEW TEXTS ---
 
         // Explanation Texts Union Fee
         unionFeeExplanationTitle: "Explanation: Union Fee Exchange",
@@ -252,14 +262,23 @@ export const translations = {
     }
 };
 
-// Deze functie moet waarschijnlijk uitverplaatst worden naar jouw vertaalsysteem.js
-// of je moet de globale `currentLang` gebruiken.
+// --- AANGEPASTE FUNCTIE ---
 export function translatePage(lang) {
     document.documentElement.lang = lang; // Update de lang attribute op de html tag
+
+    // Vertaal de normale teksten
     document.querySelectorAll('[data-translate-key]').forEach(element => {
         const key = element.getAttribute('data-translate-key');
         if (translations[lang] && translations[lang][key]) {
             element.textContent = translations[lang][key];
+        }
+    });
+
+    // Vertaal de hooverteksten (title attribute)
+    document.querySelectorAll('[data-translate-title-key]').forEach(element => {
+        const key = element.getAttribute('data-translate-title-key');
+        if (translations[lang] && translations[lang][key]) {
+            element.title = translations[lang][key];
         }
     });
 

@@ -33,61 +33,65 @@
         </p>
 
         <!-- Container voor tools (elk in eigen sectie) -->
-       <section id="tool-reiskosten" class="tool-section">
+              <section id="tool-reiskosten" class="tool-section">
             <div class="main-grid">
                 <!-- LINKER KOLOM: INPUTS -->
                 <div class="input-column">
                     <div class="card">
                         <h2 data-translate-key="yourBudget">Jouw budget</h2>
                         <div class="budget-info">
-                            <div class="row">
-                                <span class="label">
-                                    <span data-translate-key="availableSource">Beschikbare bron</span>
-                                    (<span id="budget_bron_naam"></span>)
-                                </span>
-                                <span class="value" id="budget_bron_totaal"></span>
-                            </div>
-                            <div class="row">
-                                <span class="label" data-translate-key="totalUsedAmount">Totaal ingezet bedrag</span>
-                                <span class="value" id="budget_inzet"></span>
-                            </div>
+                        <div class="row">
+                            <span class="label">
+                                <span data-translate-key="availableSource">Beschikbare bron</span>
+                                (<span id="budget_bron_naam"></span>)
+                            </span>
+                            <span class="value" id="budget_bron_totaal"></span>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-bar-inner" id="progress_bar"></div>
+                        <div class="row">
+                            <span class="label" data-translate-key="totalUsedAmount">Totaal ingezet bedrag</span>
+                            <span class="value" id="budget_inzet"></span>
                         </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" id="progress_bar"></div>
+                    </div>
                     </div>
 
                     <div class="card">
                         <h2 data-translate-key="travelCostExchange">Uitruil reiskosten</h2>
                             <div class="input-grid">
                                 <div class="input-group">
+                                    <!-- AANGEPAST: title verwijderd, data-translate-title-key toegevoegd -->
                                     <label for="max_vakantiegeld" 
                                         data-translate-key="labelHolidayPay" 
-                                        title="Kan je terugvinden via MyHR > menu > mijn aanvragen > optare > optare banner. Let op, in de banner staat dit nu op 0 omdat de uitbetaling al is geweest (mei).">
+                                        data-translate-title-key="hoverHolidayPay">
                                         Max. inzet vakantiegeld
                                     </label>
                                     <input type="number" id="max_vakantiegeld" value="0" min="0">
                                 </div>
                                 <div class="input-group">
+                                    <!-- AANGEPAST: title verwijderd, data-translate-title-key toegevoegd -->
                                     <label for="max_eindejaarsuitkering" 
                                         data-translate-key="labelYearEndBonus"
-                                        title="Kan je terugvinden via MyHR > menu > mijn aanvragen > optare > optare banner.">
+                                        data-translate-title-key="hoverYearEndBonus">
                                         Max. inzet eindejaarsuitkering
                                     </label>
                                     <input type="number" id="max_eindejaarsuitkering" value="0" min="0">
                                 </div>
                                 <div class="input-group">
+                                    <!-- AANGEPAST: title verwijderd, data-translate-title-key toegevoegd -->
                                     <label for="reisdagen_gedeclareerd" 
                                         data-translate-key="labelTravelDays"
-                                        title="Je kan alleen zien wat je tot nu toe hebt gedeclareerd. Schat zelf in wat je voor de rest van het jaar verwacht aan reisdagen te maken.">
+                                        data-translate-title-key="hoverTravelDays">
                                         Gedeclareerde reisdagen
                                     </label>
                                     <input type="number" id="reisdagen_gedeclareerd" value="0" min="0">
                                 </div>
                                 <div class="input-group">
+                                    <!-- AANGEPAST: title verwijderd, data-translate-title-key toegevoegd -->
                                     <label for="km_fiscaal" 
                                         data-translate-key="labelDistance"
-                                        title="Kan je terugvinden via MyHR > menu > mijn aanvragen > optare > optare banner.">
+                                        data-translate-title-key="hoverDistance">
                                         Enkele reisafstand
                                     </label>
                                     <input type="number" id="km_fiscaal" value="0" min="0">
@@ -105,7 +109,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- RECHTER KOLOM: RESULTATEN -->
                 <div class="results-column">
                     <div class="card">
