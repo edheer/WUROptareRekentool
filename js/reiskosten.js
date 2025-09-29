@@ -134,7 +134,7 @@ export function updateReiskosten(currentLang, translations) {
     outputs.budget_inzet.textContent = formatCurrency(totaalIngezetBedrag, currentLang);
     
     outputs.huidig_bruto.textContent = formatCurrency(brutoBronHuidig, currentLang);
-    outputs.huidig_belasting.textContent = formatCurrency(-belastingHuidig, currentLang);
+    outputs.huidig_belasting.textContent = formatCurrency(-belastingHuidig, currentLang);  
     outputs.huidig_netto.textContent = formatCurrency(nettoHuidig, currentLang);
     
     outputs.nieuw_bruto.textContent = formatCurrency(brutoBronNieuw, currentLang);
