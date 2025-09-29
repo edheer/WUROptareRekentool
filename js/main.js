@@ -56,6 +56,21 @@ function setupSourceSelectionLogic(selectId, holidayPayInputId, yearEndBonusInpu
 
 document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'nl';
+    (async () => {
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+    const ns = 'wur-optare-tool';
+    const localKey = `counted-${monthKey}`;
+
+    if (!localStorage.getItem(localKey)) {
+        const res = await fetch(`https://api.countapi.xyz/hit/${ns}/${monthKey}`).then(r => r.json());
+        console.log("Nieuwe bezoeker geteld:", res.value); 
+        localStorage.setItem(localKey, "true");
+    } else {
+        console.log("Bezoeker deze maand al geteld, geen nieuwe hit.");
+    }
+    })();
+
 
     // --- CENTRALE MODAL FUNCTIONALITEIT ---
     const infoModal = document.getElementById('info-modal');
