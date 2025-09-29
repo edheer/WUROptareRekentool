@@ -56,24 +56,22 @@ function setupSourceSelectionLogic(selectId, holidayPayInputId, yearEndBonusInpu
 
 document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'nl';
-  // --- CountAPI: ELK paginabezoek tellen ---
+    // --- CountAPI: ELK paginabezoek tellen ---
     (async () => {
-      console.log("CountAPI script gestart (telt elk paginabezoek)");
+    console.log("CountAPI script gestart (telt elk paginabezoek)");
 
-      const now = new Date();
-      // We houden de maandelijkse sleutel om de bezoeken per maand te groeperen
-      const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-      const ns = 'wur-optare-tool';
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const ns = 'wur-optare-tool';
 
-      try {
-        // We roepen de API direct aan, zonder controle in localStorage
+    try {
+        // Zorg ervoor dat deze URL EXACT correct is
         const res = await fetch(`https://api.countapi.xyz/hit/${ns}/${monthKey}`).then(r => r.json());
         console.log(`Paginabezoek geteld. Totaal voor deze maand (${monthKey}):`, res.value);
-      } catch (err) {
+    } catch (err) {
         console.error("CountAPI fout:", err);
-      }
+    }
     })();
-    // --- EINDE WIJZIGING ---
 
 
 
