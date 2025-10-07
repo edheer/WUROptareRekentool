@@ -56,10 +56,9 @@ export const translations = {
         bikeRegulationTitle: "Fietsregeling",
         labelBikePurchaseAmount: "Aankoopbedrag fiets (max €2.500)",
         labelBikeGrossSource: "Beschikbaar bruto bedrag (vakantiegeld/EJU)",
-        netBenefitBikeLabel: "Je houdt netto méér over dankzij belastingvoordeel:",
         grossAmountUsed: "Bruto ingezet bedrag",
         netCostForYou: "Netto kosten voor jou",
-        bikeRegulationTitle: "Uitruil (elektrische) fiets/scooter",
+        bikeExchangeTitle: "Uitruil (elektrische) fiets/scooter",
         labelBikePurchaseAmountFull: "Aankoopbedrag (incl. accessoires/verzekering)",
         explanationLinkBike: "Uitleg & voorwaarden",
         netBenefitBikeLabel: "Je houdt netto méér over door belastingvoordeel:",
@@ -70,14 +69,11 @@ export const translations = {
         bikeModalLi2: "Bepaal welk deel van je bruto salaris je wilt inzetten.",
         bikeModalLi3: "Geniet van je nieuwe fiets en het belastingvoordeel!",
         bikeModalP2: "De precieze voorwaarden en details vind je op de WUR website.",
-        explanationLinkBike: "Uitleg & voorwaarden",
-        bikeModalP2: "Je kunt een fiets aanschaffen tot een bedrag van €2.500. Het belastingvoordeel is afhankelijk van je persoonlijke situatie.",
+        bikeModalP3: "Je kunt een fiets aanschaffen tot een bedrag van €2.500. Het belastingvoordeel is afhankelijk van je persoonlijke situatie.",
 
         // Modal teksten (voorbeeld, pas aan naar jouw exacte keys)
         modalTitle1: "Titel 1", modalTitle2: "Titel 2", modalP1: "Paragraaf 1",
-        // ... voeg hier al jouw modal keys toe zoals in jouw main.js
         modalLi1: "Item 1", modalLi2: "Item 2", modalLi3: "Item 3",
-        // ...
         modalStrong3: "Voorbeeld:", modalLi20: "Berekening voorbeeld 1",
         modalP4: "Meer info over de berekening.",
 
@@ -119,6 +115,7 @@ export const translations = {
         travelCostCalculationStep4: "Dit uitgeruilde bedrag wordt niet belast, waardoor je circa 50% van dit bedrag netto aan voordeel ontvangt.",
         travelCostCalculationStep5: "Het netto voordeel is het bedrag dat je meer overhoudt dan wanneer je de bruto vergoeding normaal zou laten uitbetalen.",
         travelCostExampleText: "Stel dat je 100 dagen per jaar naar werk reist, je enkele reisafstand is 20 kilometer en je kiest de eindejaarsuitkering (€1000) als bron, dan zet je 100 x 20 x 2 x €0,09 = €360 in voor de extra reiskosten. Je ruilt €360 bruto uit, wat je circa €180 netto voordeel oplevert.",
+        travelCostExplanationP2: '', // <<<<<< HIER IS DE FIX
         travelCostExplanationP3: "De berekening in deze tool geeft een indicatie van het netto voordeel. De exacte hoogte van het voordeel kan afwijken op basis van je persoonlijke fiscale situatie.",
         // --- EINDE NIEUWE TEKSTEN ---
 
@@ -182,7 +179,6 @@ export const translations = {
         optionMonthly: "Month",
         optionYearly: "Year",
 
-
         //Verlofregeling
         leaveSaleTitle: "Selling statutory+ leave hours",
         labelUserType: "Employee type",
@@ -210,10 +206,9 @@ export const translations = {
         bikeRegulationTitle: "Bicycle Scheme",
         labelBikePurchaseAmount: "Bicycle purchase amount (max €2,500)",
         labelBikeGrossSource: "Available gross amount (holiday pay/YEB)",
-        netBenefitBikeLabel: "You retain more net income due to tax benefit:",
         grossAmountUsed: "Gross amount used",
         netCostForYou: "Net cost for you",
-        bikeRegulationTitle: "Exchange (electric) bicycle/scooter",
+        bikeExchangeTitle: "Exchange (electric) bicycle/scooter",
         labelBikePurchaseAmountFull: "Purchase amount (incl. accessories/insurance)",
         explanationLinkBike: "Explanation & conditions",
         netBenefitBikeLabel: "You retain more net income due to tax benefit:",
@@ -224,13 +219,11 @@ export const translations = {
         bikeModalLi2: "Determine which part of your gross salary you want to contribute.",
         bikeModalLi3: "Enjoy your new bicycle and the tax advantage!",
         bikeModalP2: "The precise conditions and details can be found on the WUR website.",
-        explanationLinkBike: "Explanation & conditions",
-        bikeModalP2: "You can purchase a bicycle up to an amount of €2,500. The tax advantage depends on your personal situation.",
+        bikeModalP3: "You can purchase a bicycle up to an amount of €2,500. The tax advantage depends on your personal situation.",
+        
         // Modal teksten (voorbeeld)
         modalTitle1: "Title 1", modalTitle2: "Title 2", modalP1: "Paragraph 1",
-        // ... voeg hier al jouw modal keys toe zoals in jouw main.js
         modalLi1: "Item 1", modalLi2: "Item 2", modalLi3: "Item 3",
-        // ...
         modalStrong3: "Example:", modalLi20: "Calculation example 1",
         modalP4: "More info about the calculation.",
 
@@ -249,6 +242,7 @@ export const translations = {
         travelCostCalculationStep4: "This exchanged amount is not taxed, which means you receive approximately 50% of this amount as a net benefit.",
         travelCostCalculationStep5: "The net benefit is the amount you have left over compared to if you had the gross expense paid out normally.",
         travelCostExampleText: "Suppose you travel to work 100 days a year, your one-way travel distance is 20 kilometres and you choose the end-of-year bonus (€1,000) as your source, then you enter 100 x 20 x 2 x €0.09 = €360 for the additional commuting expense. You exchange €360 gross, which gives you a net benefit of approximately €180.",
+        travelCostExplanationP2: '', // <<<<<< HERE IS THE FIX
         travelCostExplanationP3: "The calculation in this tool provides an indication of the net benefit. The exact amount of the benefit may vary depending on your personal tax situation.",
         // --- END NEW TEXTS ---
 
@@ -264,7 +258,7 @@ export const translations = {
     }
 };
 
-// --- AANGEPASTE FUNCTIE ---
+// --- FUNCTIE (ONGEWIJZIGD) ---
 export function translatePage(lang) {
     document.documentElement.lang = lang; // Update de lang attribute op de html tag
 
